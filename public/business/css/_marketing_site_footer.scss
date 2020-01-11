@@ -1,0 +1,164 @@
+
+.marketing_site_footer{
+  display:grid;
+  grid-template-areas:
+    "top top top top"
+    "brand links about photos"
+    "bottom bottom bottom bottom";
+    width: 100%;
+    background: #2D2B2B;
+    margin-top: 4rem;
+    /*grid-template-rows: 2fr 8fr 1fr;*/
+    /*grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));*/
+    grid-template-columns: repeat(4,1fr);
+    color: #C4C4C4;
+    .footer_top{
+      grid-area: top;
+      display:grid;
+      background:#343232;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      height:fit-content;
+      grid-gap:1rem;
+      padding: 0 2rem;
+      .top_text{
+        color:#9E9E9E;
+        flex: 1 auto;
+        padding: 10px;
+        height: fit-content;
+      }
+      .subscribe{
+          flex: 1 auto;
+          display: flex;
+          justify-content: flex-end;
+          padding: 10px;
+          height: fit-content;
+        input{
+          width: 65%;
+          margin:unset;
+          background-color: #343232;
+        }
+        button{
+          width: 30%;
+          background-color: #545252;
+        }
+        input, button{
+          height: 35px;
+          border:thin solid #EAE9E9;
+          color:#9E9E9E;
+        }
+      }
+    }
+    .footer-cards{
+      height: 21rem;
+      padding: 30px 10px 10px;
+    }
+
+    .footer_brand{
+      grid-area:brand;
+      .bt-logo{
+        width:100%;
+        height:2rem;
+        background: url("../images/businesstech_logo1.png") center top no-repeat;
+        background-size:contain;
+        margin-bottom: 1.5rem;
+      }
+      .bt-address{
+        font-family: Montserrat;
+        font-style: normal;
+        font-weight: normal;
+        font-size: 1rem;
+        line-height: 1.7rem;
+        display: flex;
+        align-items: center;
+        text-align: center;
+        margin-bottom: 1.5rem;
+        padding: 0 .8rem;
+      }
+      .bt-world-img{
+        width:100%;
+        height:9rem;
+        background: url("../images/map_stensil.png") center top no-repeat;
+        background-size:contain;
+      }
+    }
+    .footer_links{
+      grid-area:links;
+    }
+    .footer_about{
+      grid-area:about;
+      p{
+        padding:0 .8rem;
+      }
+    }
+    .footer_photos{
+      grid-area:photos;
+      h4{
+
+      }
+      .img-holder{
+        width: 80%;
+        height: 20rem;
+        background: url(../images/image_group.png) center top no-repeat;
+        background-size: contain;
+      }
+    }
+    .footer_bottom{
+      grid-area: bottom;
+      background:#343232;
+      color: #9E9E9E;
+      font-size: .9rem;
+      padding: .5rem 2rem;
+    }
+}/*marketing_site_footer*/
+
+@media only screen and (min-width:300px) and (max-width:324px)
+{
+}
+
+@media only screen and (min-width:320px) and (max-width:479px)
+{
+  .marketing_site_footer{
+    grid-template-areas:
+    "top"
+    "top"
+    "brand"
+    "links"
+    "about"
+    "photos"
+    "bottom";
+    grid-template-columns:unset;
+    .footer_top{
+      padding: 2rem;
+      .top_text{
+      }
+      .subscribe{
+        justify-content: center;
+        button{
+          font-size: 80%;
+          padding: .25rem;
+        }
+      }
+    }
+    .footer-cards{
+      padding: 2rem;
+    }
+    .footer_bottom{
+    }
+  }/*marketing_site_footer*/
+
+}/* @media only min-320*/
+
+@media only screen and (min-width:480px) and (max-width:767px)
+{
+
+}
+
+@media only screen and (min-width:768px) and (max-width:991px)
+{
+
+}
+
+@media only screen and (min-width:992px) and (max-width:1999px)
+{
+
+}

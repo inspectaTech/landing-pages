@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    {{>standards}}
+    {{>business_links}}
+    <style media="screen">
+      .biz-hero{
+          width:100%; height: 40px;
+          border:1px solid #ccc;
+      }
+      .biz-top-menu{width:100%; border:1px solid red;
+        display: flex;
+      }
+    </style>
+  </head>
+  <body>
+  <!-- <div class="biz-hero">
+    <div class="biz-top-menu">
+
+    </div>
+  </div> -->
+    <div id="offcanvas-full-screen" class="offcanvas-full-screen z-30" data-off-canvas data-transition="overlap">
+    <div class="offcanvas-full-screen-inner">
+      <button class="offcanvas-full-screen-close" aria-label="Close menu" type="button" data-close>
+        <span aria-hidden="true">&times;</span>
+      </button>
+
+        <ul class="offcanvas-full-screen-menu">
+          <!-- offcanvas-full-screen-menu -->
+          <li><a href="#">ENTREPRENEURS</a></li>
+          <li><a href="#">INVESTORS</a></li>
+          <li><a href="#">ABOUT</a></li>
+          <li class="auth-btn"><a href="#">Sign Up</a></li>
+          <li class="auth-btn"><a href="#">Sign In</a></li>
+        </ul>
+    </div>
+  </div>
+
+  <div class="off-canvas-content" data-off-canvas-content>
+
+    <!-- Your page content lives below -->
+    <header class="sticky-shrinknav-header">
+      <div class="sticky-shrinknav-header-title intro-text">YOU CHOOSE THE ADVENTURE</div>
+      <div class="sticky-shrinknav-header-title main-text">WE MAKE IT HAPPEN</div>
+      <div class="sticky-shrinknav-header-title sub-text">We’ll help you find the business experience you’ve always dreamed of and tailor it to your needs</div>
+      <div class="hero-action"><a href="#">Discover BusinessTech</a></div>
+      <div class="menu-container sticky-shrinknav-menu">
+        <div class="brand-title color-white">BusinessTech</div>
+        <button class="menu-icon offCanvas-menu-icon m-20px" type="button" data-toggle="offcanvas-full-screen"></button>
+        <ul class="menu align-center">
+          <li><a href="#">ENTREPRENEURS</a></li>
+          <li><a href="#">INVESTORS</a></li>
+          <li><a href="#">ABOUT</a></li>
+          <li class="auth-btn"><a href="#">Sign Up</a></li>
+          <li class="auth-btn"><a href="#">Sign In</a></li>
+        </ul>
+      </div>
+    </header>
+    <div class="content-filler" style="">
+      <div class="lead-title color-d1 d3po-action">Our Philosophy</div>
+
+      <div class="lft-image-block d3po-action">
+        <div class="lft-image-container slide-in-bottom z-10 d-flex g-img">
+          <img class="lft-image" src="./brand/business/images/open4biz.png" alt="" loading="lazy">
+        </div>
+        <div class="lft-image-Block-text-cont slide-in-right bg-l1 g-txt">
+          <h1 class="lft-image-Block-text-main color-white">Its Our Business To Mind Your Business.</h1>
+          <p class="lft-image-Block-text-sub">We know getting started is a challenge. Let us help take the pain out of your start up. We can't wait to hear you say you're "open for business".</p>
+        </div>
+      </div>
+
+      <div class="rt-image-block d3po-action">
+        <div class="rt-image-container slide-in-bottom z-10 d-flex g-img">
+          <img class="rt-image" src="./brand/business/images/brick.png" alt="" loading="lazy">
+        </div>
+        <div class="rt-image-Block-text-cont slide-in-right g-txt">
+          <h1 class="rt-image-Block-text-main color-l2">To Funding And Beyond.</h1>
+          <p class="rt-image-Block-text-sub color-g">We want to take crowd funding a step further by working together to build a large funding network whose small contributions can have a greater impact on your business.</p>
+        </div>
+      </div>
+
+      <div class="lft-image-block d3po-action">
+        <div class="lft-image-container slide-in-bottom z-10 d-flex g-img">
+          <img class="lft-image" src="./brand/business/images/welcome.png" alt="" loading="lazy">
+        </div>
+        <div class="lft-image-Block-text-cont slide-in-right bg-d1 g-txt">
+          <h1 class="lft-image-Block-text-main color-l1">There’s Nowhere Like Being Somewhere.</h1>
+          <p class="lft-image-Block-text-sub color-lg">Headquarterd in beautiful co-working spaces, we have the place where you and your business can call home.</p>
+        </div>
+      </div>
+
+      <div class="rt-image-block d3po-action">
+        <div class="rt-image-container slide-in-bottom z-10 d-flex g-img">
+          <img class="rt-image" src="./brand/business/images/chart.png" alt="" loading="lazy">
+        </div>
+        <div class="rt-image-Block-text-cont slide-in-right g-txt">
+          <h1 class="rt-image-Block-text-main color-l1">Ready, Set, Connect.</h1>
+          <p class="rt-image-Block-text-sub color-d1">Together we will build a greater network of business connections, and research resources,  giving you a place to ask the types of questions that help remove the uncertainty in your next steps forward.</p>
+        </div>
+      </div>
+
+      <div class="lft-image-block d3po-action">
+        <div class="lft-image-container slide-in-bottom z-10 d-flex g-img">
+          <img class="lft-image" src="./brand/business/images/idea.png" alt="" loading="lazy">
+        </div>
+        <div class="lft-image-Block-text-cont slide-in-right bg-d2 g-txt">
+          <h1 class="lft-image-Block-text-main color-w">A Few Heads Are Better Than One.</h1>
+          <p class="lft-image-Block-text-sub color-lg">Team sessions are a great environment for ideas to flow.  Let your team turn your ideas into a powerhouse of inspiration.</p>
+        </div>
+      </div>
+
+      <div class="rt-image-block d3po-action">
+        <div class="rt-image-container slide-in-bottom z-10 d-flex g-img">
+          <img class="rt-image" src="./brand/business/images/ingredients.png" alt="" loading="lazy">
+        </div>
+        <div class="rt-image-Block-text-cont slide-in-right g-txt">
+          <h1 class="rt-image-Block-text-main color-l1">The Perfect Pair.</h1>
+          <p class="rt-image-Block-text-sub color-d2">Do you have a great idea, a great product or a great talent but feel you're still missing something.  Let us help you find individuals with the talent to suppliment your own and finally finish your masterpiece.</p>
+        </div>
+      </div>
+
+      <div class="trio-text d3po-action">
+        <div class="trio-title color-d2">How It Works</div>
+
+        <div class="trio-cube cube1 ends slide-in-left">
+          <div class="cube-nbr">01.</div>
+          <div class="cube-main color-d2">MIND YOUR BUSINESS</div>
+          <div class="cube-sub">
+            Begin with the process of developing the right types of business practices that will help your business grow.
+            Think of it like a crash course in business.
+            With it you will begin to understand how to maximize your bottom line.</div>
+        </div>
+
+        <div class="trio-cube cube2 bg-l1 z-2 scale-up-center">
+          <div class="cube-nbr color-w">02.</div>
+          <div class="cube-main color-d2">RAISE AWARENESS</div><!-- PAY ATTENTION  -->
+          <div class="cube-sub color-lg">
+            Create your presentation and promote it to gather support and acquire what we call pre-startup capital.
+            With it you will be able to grow your business and recruit the kind of talent that you need to help you deliver your project.
+          </div>
+        </div>
+
+        <div class="trio-cube cube3 ends slide-in-right">
+          <div class="cube-nbr">03.</div>
+          <div class="cube-main color-d2">BUILD TOGETHER</div>
+          <div class="cube-sub">
+            You can finally get the type of help your business needs.
+            Use your initial capital and the network of skills found in the program participants and alumni partners to futher your business goals.
+          </div>
+        </div>
+
+      </div><!-- trio-text -->
+
+      <footer class="marketing_site_footer d3po-action">
+        <div class="footer_top">
+          <div class="top_text">
+            Sign up for our newsletter and keep up to date on our latest projects, opportunities and user stories.
+          </div>
+          <div class="subscribe">
+            <input type="text" name="" value="" placeholder="Please Enter Your Email.">
+            <button type="button" name="button">SUBSCRIBE</button>
+          </div>
+        </div>
+        <div class="footer_brand footer-cards">
+          <div class="bt-logo"></div>
+          <address class="bt-address">
+            12345 Whatever St, NW
+            Washington D.C. 2xxxx
+          </address>
+          <div class="bt-world-img">
+
+          </div>
+        </div>
+        <div class="footer_links footer-cards">
+          <h5>Useful Links</h5>
+        </div>
+        <div class="footer_about footer-cards">
+          <h5>About Us</h5>
+          <p>We know that starting your own company can sometimes leave you feeling all alone.
+            We are a brand who understands that the definition of a successful company begins with whether or not you have company.
+            Our staple is bringing you the resource of others.</p>
+        </div>
+        <div class="footer_photos footer-cards">
+          <h5>Flickr Photos</h5>
+          <div class="img-holder"></div>
+        </div>
+        <div class="footer_bottom">
+          © {{thisYear}} BusinessTech. All rights reserved.    Terms of use | Privacy Policy
+        </div>
+      </footer>
+      <!-- your page content lives above -->
+
+    </div><!-- content-filler -->
+  </div><!-- off-canvas-content -->
+
+  </body>
+</html>

@@ -1,0 +1,80 @@
+.lft-image-block{
+  display: grid;
+  grid-template-areas: "image text";
+  grid-template-columns:1fr 1fr;
+  font-family: Montserrat;
+  padding: 1.5rem;
+  .lft-image-Block-text-cont{
+    /*width:50%;
+    z-index: 1;
+    background:#AE71DC;*/
+    padding: 2.5rem;
+    padding-left: 3.2rem;
+    .lft-image-Block-text-main{
+      text-align: center;
+      font-size: 2em;
+      line-height: 1.3em;
+      margin:unset;
+    }
+    .lft-image-Block-text-sub{
+      color: #4E0785;
+      font-size: 1.7em;
+      line-height: 1.2em;
+      margin:unset;
+      padding-top: 1.5rem;
+    }
+  }/*.lft-image-Block-text-cont*/
+  .lft-image-container{
+    /*width: 50%;
+    z-index: 10;*/
+    display: flex;
+    align-items: center;
+    .lft-image{
+      width: 110%;
+      max-width: unset;
+    }
+  }
+}/*.lft-image-block*/
+
+@media only screen and (min-width:300px) and (max-width:324px)
+{
+
+}
+
+@media only screen and (min-width:320px) and (max-width:479px)
+{
+
+  .lft-image-block {
+    grid-template-areas: "image" "text";
+    grid-template-columns:  1fr;
+    padding: 10px 1.5rem;
+    .lft-image-Block-text-cont{
+      padding-left: 2.5rem;
+      .lft-image-Block-text-main{
+        font-size: 1.5em $mp;
+      }
+      .lft-image-Block-text-sub{
+        font-size: 1.3em $mp;
+      }
+    }
+    .lft-image {
+      width: 100% $mp;
+    }
+  }/*.lft-image-block*/
+
+}/* @media only min-320*/
+
+@media only screen and (min-width:480px) and (max-width:767px)
+{
+
+}
+
+@media only screen and (min-width:768px) and (max-width:991px)
+{
+
+}
+
+@media only screen and (min-width:992px) and (max-width:1999px)
+{
+
+}

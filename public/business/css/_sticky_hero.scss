@@ -1,0 +1,245 @@
+$mp: !important;
+
+header{
+    z-index: 20;
+}
+
+body.sticky-shrinknav-wrapper {
+  /*padding-top: 200px $mp;*/
+  padding-top: 450px $mp;
+}
+body.sticky-shrinknav-wrapper.fix_me {
+  /*padding-top: 200px $mp;*/
+  padding-top: 150px $mp;
+}
+
+body.sticky-shrinknav-wrapper .sticky-shrinknav-header {
+  height: 3.75rem;
+  /*background-color: rgba(23, 121, 186, 0.9);*/
+  background-color:#6A0AB4;
+}
+
+body.sticky-shrinknav-wrapper .sticky-shrinknav-header .sticky-shrinknav-header-title {
+  -webkit-transform: scale(0);
+      -ms-transform: scale(0);
+          transform: scale(0);
+  transition: all 0.3s ease;
+}
+
+.sticky-shrinknav-menu {
+  position: absolute;
+  left: 50%;
+  -webkit-transform: translateX(-50%);
+      -ms-transform: translateX(-50%);
+          transform: translateX(-50%);
+  /* bottom: 0; */
+  top:0;
+  height: 3.75rem;
+  line-height: 3.75rem;
+  width: 100%;
+  background-color: rgba(23, 121, 186, 0.1);
+  transition: all 0.5s ease;
+}
+
+.sticky-shrinknav-menu > li {
+  border-radius: 2px;
+  transition: all 0.3s ease;
+}
+
+.sticky-shrinknav-menu > li:hover {
+  box-shadow: 0 0 0 1px #fefefe;
+}
+
+.sticky-shrinknav-menu a {
+  color: #fefefe;
+}
+
+.sticky-shrinknav-header-title {
+  transition: all 0.3s ease;
+  position: relative;
+  -webkit-transform: translateY(-1.875rem);
+      -ms-transform: translateY(-1.875rem);
+          transform: translateY(-1.875rem);
+  margin-bottom: 0;
+  color: #fefefe;
+}
+
+.sticky-shrinknav-header {
+  width: 100%;
+  height: 400px;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-justify-content: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  background-color: #2196e3;
+  text-align: center;
+  position:relative;
+  top: 0;
+  left: 0;
+  overflow: hidden;
+  transition: all 0.5s ease;
+  background: url("../images/architecture-big-apple-buildings-2579705.png") black center top no-repeat;
+  background-attachment: fixed;
+  transform: translateZ(-1px) scale(1.01);
+  background-size:auto 75%;
+}
+.sticky-shrinknav-header.fix_me{
+  position: fixed;
+  background-position: center center;
+  background-size: cover !important;
+  background-attachment: unset;
+}
+.menu > li > a {
+    display: block;
+    padding: 0.7rem 1rem;
+    line-height: 1;
+    text-decoration: none;
+}
+.menu{
+  font-family: Montserrat;
+  font-style: normal;
+  font-weight: bold;
+  font-size: .8em;
+  line-height: 22px;
+  text-align: center;
+}
+.menu > li, .menu.horizontal > li {
+    -webkit-flex: 0 0 auto;
+    -ms-flex: 0 0 auto;
+    flex: 0 0 auto;
+}
+.menu {
+    margin: 0;
+    list-style-type: none;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-flex-wrap: nowrap;
+    -ms-flex-wrap: nowrap;
+    flex-wrap: nowrap;
+    -webkit-align-items: center;
+    -ms-flex-align: center;
+    align-items: center;
+    width: 100%;
+}
+
+ul.menu{
+  padding:unset;
+  width:unset;
+  margin: .5rem;
+}
+.menu-container{
+  display:flex;
+  justify-content: space-between;
+  border-bottom: thin solid #ccc;
+}
+.align-center {
+    -webkit-justify-content: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+}
+
+.brand-title{
+  width: auto;
+  margin: unset;
+  padding: 0 1rem;
+  vertical-align: top;
+  font-family: Montserrat;
+  font-size: 1rem;
+  font-weight: bold;
+}
+/*sign up and sign in bts*/
+.auth-btn{
+  border: 1px solid #fff;
+  margin: .25rem;
+}
+
+.hero-action{
+  font-size: 1.2rem;
+  font-family: Montserrat;
+  background: #7f28c1;
+  padding: .5rem;
+  a{
+    color: #fff;
+    display: block;
+    padding: 0.7rem 1rem;
+    line-height: 1;
+    text-decoration: none;
+  }
+  a:hover{
+    color: #AE71DC $mp;
+  }
+}
+.sticky-shrinknav-header {
+  flex-flow:column;
+}
+
+.intro-text, .main-text, .sub-text{
+  font-family: Montserrat;
+}
+.intro-text{
+  margin-top: 3em;
+  font-size: 1em;
+  font-weight: bold;
+}
+.main-text{
+  font-size: 3.5em;
+  line-height: 1.5em;
+  font-weight: bold;
+}
+.sub-text{
+  width:45%;
+}
+
+
+@media only screen and (min-width:300px) and (max-width:324px)
+{
+
+}
+
+@media only screen and (min-width:320px) and (max-width:479px)
+{
+  ul.menu {
+    display:none;
+  }
+
+  .brand-title{
+    font-size: 1em;
+    font-weight: bold;
+  }
+  .main-text {
+    font-size: 2em;
+    line-height: 1.8em;
+  }
+  .intro-text{
+    font-size: .9em;
+  }
+  .sub-text {
+      width: 80%;
+      font-size: .9em;
+  }
+  .hero-action {
+    font-size: .9em;
+  }
+
+}/* @media only min-320*/
+
+@media only screen and (min-width:480px) and (max-width:767px)
+{
+
+}
+
+@media only screen and (min-width:768px) and (max-width:991px)
+{
+
+}
+
+@media only screen and (min-width:992px) and (max-width:1999px)
+{
+
+}

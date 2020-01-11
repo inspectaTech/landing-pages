@@ -1,0 +1,103 @@
+.d3-ico, .d3-ico-full {
+  padding: .15em;
+  cursor: pointer;
+  text-indent: unset !important;
+  text-shadow: none; }
+
+.d3-ico {
+  width: fit-content !important;
+  -webkit-appearance: unset;
+  border-style: unset; }
+
+.d3-bg {
+  /*i needed without a transparent bg*/
+  background-color: #f6f6f6; }
+
+.d3-disc-outer {
+  border-radius: 50px; }
+
+.d3-outer, .d3-disc-outer {
+  border: 1px solid #ccc !important;
+  height: unset !important; }
+
+.d3-outer:before {
+  margin: .15em; }
+
+.d3-disc:before, .d3-disc-bg:before {
+  color: white;
+  -webkit-border-radius: 1em;
+  border-radius: 1em;
+  line-height: 22px;
+  padding: 4px;
+  margin: auto; }
+
+.d3-bloc {
+  /*font-size: 25px;*/
+  text-shadow: none; }
+
+.d3-bloc:before {
+  -webkit-border-radius: 7px;
+  border-radius: 7px; }
+
+.d3-ico-btn {
+  background-color: #f6f6f6 !important;
+  border-color: #ddd;
+  color: #333;
+  text-shadow: none;
+  display: inline-block;
+  vertical-align: middle;
+  border-radius: 1em;
+  /*this text indent moves the icon waaayyyy off the page - never use*/
+  /*text-indent: -9999px;*/
+  white-space: nowrap !important;
+  position: relative;
+  text-align: center;
+  overflow: hidden;
+  cursor: pointer;
+  user-select: none;
+  border-width: 1px;
+  border-style: solid; }
+
+.d3-ico-btn:hover, .d3-disc-bg:hover {
+  background-color: #ededed;
+  border-color: #ddd;
+  color: #333; }
+
+.d3-disc-bg:before {
+  background-color: rgba(0, 0, 0, 0.3);
+  color: white;
+  display: block;
+  width: 22px;
+  height: 22px;
+  text-align: center;
+  line-height: 22px;
+  padding: unset !important; }
+
+.d3-card {
+  -webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+  -moz-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+  border: 1px solid #ddd; }
+
+.d3-dot {
+  margin: 5px; }
+
+.d3-dot:hover {
+  background: transparent; }
+
+.d3-hov-blue:hover:before {
+  color: blue; }
+
+.d3-hov-sky:hover:before {
+  color: deepskyblue; }
+
+.d3-hov-gold:hover:before {
+  color: #ff6; }
+
+.d3-abs {
+  position: absolute; }
+
+.media_btn.icon-doing {
+  font-size: 21px; }
+
+/*# sourceMappingURL=d3po.css.map */

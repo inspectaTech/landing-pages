@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Weather</title>
+    <link rel="icon" href="/img/sunzao.png">
+    <link rel="stylesheet" href="/css/style.css">
+  </head>
+  <body>
+    <div class="main-content">
+      {{>header}}
+      <p>Use this site to get your weather!</p>
+
+      <form class="" action="index.html" method="post">
+        <input type="text" name="" value="" placeholder="Enter a location">
+        <button type="submit" name="button">Search</button>
+      </form>
+
+      <p id="message-1" class="message"></p>
+      <p id="message-2" class="message"></p>
+    </div>
+    {{>footer}}
+    <script type="text/javascript" src="/js/app.js"></script>
+  </body>
+</html>
