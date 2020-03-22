@@ -1,10 +1,18 @@
+const dotenv = require('dotenv');
+const chalk = require('chalk');
+dotenv.config();
 // var whitelist = ['http://example1.com', 'http://example2.com'];
 var whitelist = [
   'https://sunzao.us',
   'https://www.sunzao.us',
-  'https://beta.sunzao.us',
-  'http://localhost:3000'
+  'https://beta.sunzao.us'
 ];
+
+if(process.env.NODE_ENV == "development"){
+  whitelist.push('http://localhost:3000');
+}
+
+console.log(chalk.yellow(`[cors-options] whitelist `), whitelist);
 
 // this works
 // var corsOptions = {
@@ -36,3 +44,9 @@ const corsOptions = {
 }//corsOptions
 
 module.exports = corsOptions;
+
+// app.use(function(req, res, next) {
+//   res.header("Access-Control-Allow-Origin", "*");
+//   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+//   next();
+// });

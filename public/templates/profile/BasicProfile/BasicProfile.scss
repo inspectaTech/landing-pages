@@ -1,0 +1,20 @@
+$mp: !important;
+.basicProfile{
+  .basicProfile_image_cont{
+    display:flex;
+    justify-content: center;
+    margin-top: 5rem;
+    .basicProfile_image{
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 12rem;
+      height: 12rem;
+      border: 1px solid #ccc;
+    }
+  }
+  .basicProfile_email_cont{
+    margin-top: 2rem;
+    h3, h4, h5{ text-align: center;  margin: unset $mp;}
+  }
+}

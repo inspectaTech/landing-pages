@@ -1,9 +1,21 @@
-import { observable, computed } from 'mobx';
+import { observable, computed, decorate } from 'mobx';
+
+// class Todo {
+//   @observable values
+//   @observable id
+//   @observable complete
+//
+//   constructor(value){
+//     this.value = value
+//     this.id = Date.now()
+//     this.complete = false
+//   }
+// }
 
 class Todo {
-  @observable values
-  @observable id
-  @observable complete
+  values
+  id
+  complete
 
   constructor(value){
     this.value = value
@@ -11,6 +23,12 @@ class Todo {
     this.complete = false
   }
 }
+
+decorate(Todo,{
+  values: observable,
+  id: observable,
+  complete: observable
+})
 
 class TodoStore {
   @observable todos = []

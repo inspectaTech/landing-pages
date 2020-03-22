@@ -49,7 +49,7 @@ document.addEventListener('DOMContentLoaded', async function () {
   });
 
   get_pp_contents();
-  // get_mobx();
+  // get_mobx();// use 'nrd' in the root directory to activate throught webpack
   // get_mxr();
 
 

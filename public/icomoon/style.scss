@@ -29,7 +29,12 @@ $site_path:'#{$mod_route}/icomoon';// public version
   -moz-osx-font-smoothing: grayscale;
 }
 
-
+.icon-attach-in:before {
+  content: "\e912";
+}
+.icon-attach-out:before {
+  content: "\e913";
+}
 .icon-file:before {
   content: "\e904";
 }
@@ -140,6 +145,15 @@ $site_path:'#{$mod_route}/icomoon';// public version
 }
 .icon-compass:before {
   content: "\e949";
+}
+.icon-compass2:before {
+  content: "\e94a";
+}
+.icon-map:before {
+  content: "\e94b";
+}
+.icon-map2:before {
+  content: "\e94c";
 }
 .icon-clock:before {
   content: "\e94e";
@@ -264,6 +278,9 @@ $site_path:'#{$mod_route}/icomoon';// public version
 .icon-link:before {
   content: "\e9cb";
 }
+.icon-flag:before {
+  content: "\e9cc";
+}
 .icon-attachment:before {
   content: "\e9cd";
 }
@@ -356,4 +373,7 @@ $site_path:'#{$mod_route}/icomoon';// public version
 }
 .icon-share2:before {
   content: "\ea82";
+}
+.icon-mail2:before {
+  content: "\ea84";
 }

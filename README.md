@@ -40,3 +40,8 @@ set up an express server with the given route
 
 **GOTCHA: subdomain couldn't find 'A' record**
 fix:  i has to update 'A' record on cloudflare's dns server
+
+#### Run server with nodemon
+```
+  nodemon src/index.js
+```

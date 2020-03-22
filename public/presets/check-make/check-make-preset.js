@@ -28,7 +28,7 @@
     if(!exists(requested_preset)){
 
       // here requested_preset == null
-      console.log(chalk.red('no requested_preset was found'));
+      console.log(chalk.red('no requested_preset was found!'));
 
       let generic_date = ( new Date() ).getTime();
 
@@ -36,6 +36,7 @@
       let test_binder = { user_id: user._id, title_data: "presets", data_type: "folder", admin: 1, root: 1, type: "info"};
       let preset_binder = await Item.findOne(test_binder)
 
+      // there are 2 of these one in src/oauth_server and another in public/presets
       let test_preset = {
         user_id: user._id,
         admin: 1,
@@ -52,6 +53,8 @@
           template: keys.preset.default.tool.template
         }
       }
+
+      console.log(chalk.yellow('making preset'),test_preset);
 
       // test_preset = {...test_preset, ...additions};
       let newItem = new Item(test_preset);

@@ -2,7 +2,7 @@
     //d3po Bootstrap Toolkit
     console.log('BTK running!');
     /****************************************************************************************
-	//TODO:140 store & validate the data on change
+	//TODO:820 store & validate the data on change
 
     !!!!!!!Important
 
@@ -300,7 +300,7 @@
           }//
         }//if
 
-		//TODO:130 see where each of these can work in each display
+		//TODO:760 see where each of these can work in each display
     this._(key).setText = function(vKey,str)
     {
       vKey.inner_html = str;
@@ -2179,7 +2179,7 @@
         }//end reset
       }//end if
 
-		//TODO:100 Needs a reset
+		//TODO:620 Needs a reset
     if(typeof this.create_text_input != "function"){
       masterButtons.prototype.create_text_input = function()
   		{//let create_text_input
@@ -5026,7 +5026,7 @@
 
     			let msgStr = "<h7>remaining " + char_rem + "/" + char_limit + "</h7>" ;
     			/*
-    			//TODO:120 modify the target element to have a h7 childNode with an id
+    			//TODO:700 modify the target element to have a h7 childNode with an id
     			so I can refernce it here and just use text for its innerHTML
     			*/
 

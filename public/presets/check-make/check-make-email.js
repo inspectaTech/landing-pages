@@ -4,7 +4,16 @@
   const User = require('../../../models/user');// centralized models  ./check-make
   const { alias_maker } = require('./alias_maker');
 
-  const check_make_email = async ({user, method, type, category, title, email}, rtn) => {
+  const check_make_email = async ({user}, rtn) => {
+
+// const { method, type, category, title, email } = user;
+// user, method, type: "info", category:"email", title: "google login email", email
+
+  let method = user.method;
+  let type = "info";
+  let category = "email";
+  let title = `${method} login email`;
+  let email = user[method].email;
 
   try {
 

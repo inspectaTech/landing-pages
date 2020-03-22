@@ -9,19 +9,22 @@ const {check_pair_items} = require('./lib/check-make/check-pair-items');
 // const group_binder_array = ['public','business','family','friend','online','project','education','team','social','spiritual','work'];
 const group_binder_array = ['public'];
 
+// prep default info binders - default binders
+// the name is the data type
 const info_binder_array = [
     'presets',
-    'collection',
+    /*'collection',*/
     'email',
     'e-commerce',
-    'favorite apps',
-    'name',
+    /*'favorite apps',*/
+    /*'name',*/
     'notification',
     'phone',
     'address',
-    'profile picture',
-    "social community",
-    'web address'
+    /*'profile picture',*/
+    'picture'/*,*/
+    /*'social community',*/
+    /*'web address'*/
   ];
 
 	const initiate_starter_data = async function({user})

@@ -134,7 +134,7 @@ var component_title = "com_com_aliintro";
         var has_callout = "false";
         var callout_params = ["","","","","","","",""];
 
-        //TODO add to template
+        //TODO:0 add to template
         var has_go_callout = "false";
         var go_callout_params = ["","","","","","","",""];
         var has_can_callout = "false";
@@ -212,7 +212,7 @@ var component_title = "com_com_aliintro";
 
         }//end setCallout
 
-        //TODO add to template
+        //TODO:10 add to template
         this.setGoCallout = function()
         {
               /*sample use
@@ -1179,7 +1179,7 @@ var component_title = "com_com_aliintro";
 
         }//end display
 
-        //TODO add to template
+        //TODO:20 add to template
         var checkChange = function(e,eID,mob,tObj)
         {
           var mode = (mob != undefined && mob.mode != undefined && mob.mode  != "") ? mob.mode : "validate" ;
@@ -1255,11 +1255,11 @@ var component_title = "com_com_aliintro";
 
         }//end checkChange
 
-        //TODO add to template
+        //TODO:30 add to template
         var giveItAGo = function(gOb)
     		{
     			//mod is edit or make passed from form_display
-    			//TODO:10 enter key go btn
+    			//TODO:270 enter key go btn
           var go_btn_id = prefix + "_go_btn_" + iUN;
 
     			if(gOb.ready == "yes")
@@ -1316,7 +1316,7 @@ var component_title = "com_com_aliintro";
 
     		}//end giveItAGo
 
-        //TODO add to template
+        //TODO:40 add to template
         var validityCheck = function(objAry)
     		{
     			/********  sample use *********
@@ -1365,7 +1365,7 @@ var component_title = "com_com_aliintro";
 
     		}//end validityCheck
 
-        //TODO add to template
+        //TODO:50 add to template
         function wait_a_minute(mod,txt)
         {
           //global scope function
@@ -1385,7 +1385,7 @@ var component_title = "com_com_aliintro";
 
         }//end wait_a_minute
 
-        //TODO add to template
+        //TODO:60 add to template
         var makeContact = function(tObj)
     		{
 

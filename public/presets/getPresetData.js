@@ -11,6 +11,7 @@
     const {check_make_email} = require('./check-make/check-make-email');
     const {check_make_picture} = require('./check-make/check-make-picture');
     const {item_reducer} = require('./check-make/item-reducer');
+    const {unpair} = require('./check-make/unpair');
     const {exists} = require('./check-make/exists');
     const keys = require('./check-make/keys');
 
@@ -39,7 +40,7 @@
           if(exists(target_preset) && exists(target_preset.error)){
             return target_preset;
           }//if
-          
+
           preset_id = target_preset.link_id;
           // use check_make_preset only if i need a default preset
 
@@ -67,15 +68,15 @@
           preset_attachments = await check_pair_items({user, host_id: preset_id, all: true}, true);
           console.log(chalk.yellow("[get preset data] preset attachments"),preset_attachments);
 
-          console.log(chalk.magenta("[preset_attachments] = false? "),preset_attachments == false);
+          console.log(chalk.magenta("[preset_attachments] exist? "),exists(preset_attachments));
           // if no attachments make defaults
           if(!exists(preset_attachments)){
 
             console.log(chalk.yellow("[get preset data] no attachments found, finding default data"));
 
-            item_email = await check_make_email({ user }, true);
+            item_email = await check_make_email({ user }, true);//user, method, type, category, title, email
 
-            item_picture = await check_make_picture({ user }, true);
+            item_picture = await check_make_picture({ user }, true);//user, method, type, category, title, picture
 
             preset_items = [];
             if(item_email){preset_items.push(item_email);}
@@ -95,8 +96,36 @@
             preset_items = [];
 
             for(pair of preset_attachments) {
+              console.log(chalk.yellow(`[get preset data] getting ${pair.link_type} data`), pair);
               let item = await get_item_data(pair.link_id);
-              preset_items.push(item);
+              console.log(chalk.yellow(`[get preset data] ${pair.link_type} data`), item);
+
+              if(!exists(item)){
+                console.log(chalk.yellow(`[get preset data] making new ${pair.link_type}`));
+                //unpair the broken item
+                await unpair(pair,"one");
+                //make a new item
+                switch (pair.link_type) {
+                  case "picture":
+                    item = await check_make_picture({ user }, true);
+                    preset_items.push(item);
+                    break;
+                  case "email":
+                    item = await check_make_email({ user }, true);
+                    preset_items.push(item);
+                    break;
+                  default:
+                  // any other items will be omitted
+                  // i need this to do nothing so i had to repeat the .push
+                }
+              }else{
+                // add as regular
+                preset_items.push(item);// use else to protect from other null pair items that should be omitted
+              }
+
+              //ISSUE: if these presets fail to load - pair.link_id no longer an existing item the details page breaks (PRESET_DATA issue)
+              // simulate the error with:
+              // preset_items = [null,null];// then figure out how to show the page with no preset data
             };
 
           }
@@ -105,12 +134,17 @@
           let reduced_items = await item_reducer(preset_items);
           console.log(chalk.green("[get preset data] preset items"), reduced_items);
 
+          // only return published items
+          preset_items = preset_items.filter((item) => {
+            return item.published == true;
+          })
+
           //try to rerun getItemPreset
-          return {preset, data: reduced_items};
+          return {preset, data: preset_items /*reduced_items*/};
 
-          break;
+          break;// break case "true":
         default:
-
+        // what if its not published?
       }
 
 

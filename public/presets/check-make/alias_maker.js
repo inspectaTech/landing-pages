@@ -30,7 +30,7 @@ const Item = require('../../../models/item');// ./check-make
     item.alias = prep_alias.alias;
     item.path = prep_alias.path;
 
-    let update_obj = await Item.findOneAndUpdate({ _id: item._id, user_id: item.user_id}, item, { new: true });
+    let update_obj = await Item.findOneAndUpdate({ _id: item._id, user_id: item.user_id}, item, { new: true }).lean();
 
     return update_obj;
   }// alias_maker

@@ -110,7 +110,7 @@ class TableAliAssets extends JTableNested
 		$db->quote(htmlentities($dStr->token_endpoint)),
 		$db->quote(htmlentities($dStr->password))
 		);//$db->quote(htmlentities($str)) ,$dStr->phone,$dStr->email,$dStr->data_str
-    //TODO $db->quote(htmlentities(pubic_notes))
+    // $db->quote(htmlentities(pubic_notes))
 
         //prep the insert query
         $query->insert($db->quoteName('#__ali_gpscnx'))
@@ -720,7 +720,7 @@ class TableAliAssets extends JTableNested
 		$login_data = json_decode($result);
     $login_data->host = "google";
 
-    //TODO put an if != "" empty set?
+    //TODO:150 put an if != "" empty set?
 		$log_string .= " [google_result]" . $result . "[google_result] ";
     // return $log_string;
 
@@ -935,7 +935,7 @@ class TableAliAssets extends JTableNested
         $db->quote(htmlentities($pass_string))
     		);//$db->quote(htmlentities($str))
 
-        //TODO what about the password? if they login using sites login there is not password?
+        //TODO:230 what about the password? if they login using sites login there is not password?
 
 
         //prep the insert query
@@ -1648,8 +1648,8 @@ class TableAliAssets extends JTableNested
 
     $curr_user = jFactory::getUser();
 
-    //TODO create preferences if not exits with initiate_starter_data use public id
-    //TODO get prefernece for src_group - default public - use public id
+    //TODO:100 create preferences if not exits with initiate_starter_data use public id
+    //TODO:110 get prefernece for src_group - default public - use public id
     //use the users id and src_grp community id to get profile picture, username
     //if not exists get the public one -  add them to the $dstr JSON
     //re-encode the string and pass it to uploadGPSData
