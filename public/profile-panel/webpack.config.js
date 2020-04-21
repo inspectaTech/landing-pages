@@ -48,6 +48,10 @@ module.exports = {
       publicPath: '/js/dist/'
   },
   devtool: isProd ? false : 'cheap-module-eval-source-map',
+  watch: true,
+  watchOptions: {
+    ignored: ['files/**/*.js', 'node_modules/**']
+  },
   plugins:[
     /*new BundleAnalyzerPlugin(),*/
     /* i can require my node_modules here and i won't have to require them all over my codebase*/

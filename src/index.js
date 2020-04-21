@@ -1,5 +1,10 @@
+// CHANGING SECTION
+
 const path = require('path');
 const express = require('express');
+const app = express();
+// var http = require('http').Server(app);// added for socket.io
+// const io = require('socket.io')(http);
 const hbs = require('hbs');
 const chalk = require('chalk');
 const bodyParser = require("body-parser");
@@ -15,6 +20,7 @@ const process_memory = require('./utils/process_memory.js');
 let PORT = (os.hostname().includes("sunzao")) ? 1027 : 3000 ;// local doesn't work because my laptop was 'DESKTOP' not local
 // let dbConnect = (os.hostname().includes("sunzao")) ? 'mongodb://167.99.57.20:27017/APIAuthentication' : 'mongodb://localhost/APIAuthentication' ;
 
+// app.set('socketio', io);
 
 // set up mongoose
 // let dbConnect = 'mongodb://localhost/SunzaoAlight';// what is this in production?
@@ -40,6 +46,8 @@ const ppAPIRouter = require("../public/profile-panel/routers/api");
 const businessRouter = require("../public/business/routers/business");
 const updraftRouter = require("../public/updraftjs/routers/updraft");
 const updraftApi = require("../public/updraftjs/routers/api");
+const rocketRouter = require("../public/rocket/routers/rocket");
+// const liftoffRouter = require("../public/rocket/routers/liftoff");
 
 
 // const {appspagesRouter} = require("../public/apps/routers/apps");// i want to use this version as a hub for routers
@@ -51,7 +59,7 @@ console.log(`[dirname]`,__dirname);
 console.log(`[dirname public path]`,path.join(__dirname,"../public"));
 
 
-const app = express();
+// const app = express();
 //GOTCHA: when i tried to leave the files in templates instead of templates/views it failed
 
 // mongo db setup
@@ -64,10 +72,11 @@ const alightPath = path.join(__dirname,"../public/alight/views");
 const oauthClientPath = path.join(__dirname,"../public/oauth_client/views");// client side auth
 const businessPath = path.join(__dirname,"../public/business/views");
 const updraftPath = path.join(__dirname,"../public/updraftjs/views");
+const rocketPath = path.join(__dirname,"../public/rocket/views");
 
 //setup handlebars engine and views location
 app.set('view engine', 'hbs');
-app.set('views', [viewsPath, appsPath, alightPath, oauthClientPath, businessPath, updraftPath]);//this works
+app.set('views', [viewsPath, appsPath, alightPath, oauthClientPath, businessPath, updraftPath, rocketPath]);//this works
 
 // set up the partials path
 const partialsPath = path.join(__dirname,"../templates/partials");
@@ -79,6 +88,7 @@ const bizPartialsPath = path.join(__dirname,"../public/business/views");
 const alightPartialPath = path.join(__dirname,"../public/alight/views");
 const updraftPartialPath = path.join(__dirname,"../public/updraftjs/views");
 const firebasePartialPath = path.join(__dirname,"../public/d3firebase");
+const rocketPartialPath = path.join(__dirname,"../public/rocket/views");
 // console.log("[partialsPath]",partialsPath);
 // console.log("[qlPartialsPath]",qpPartialsPath);
 // console.log("[qlPartialsPath]",qlPartialsPath);
@@ -92,6 +102,7 @@ hbs.registerPartials(bizPartialsPath);
 hbs.registerPartials(alightPartialPath);
 hbs.registerPartials(updraftPartialPath);
 hbs.registerPartials(firebasePartialPath);
+hbs.registerPartials(rocketPartialPath);
 // hbs.registerPartial(partialsPath);
 
 hbs.registerHelper('json', function(context) {
@@ -128,6 +139,8 @@ app.use('/brand',express.static(publicDirectoryPath));
 app.use('/updraft',express.static(publicDirectoryPath));//
 app.use('/updraft/:val1?',express.static(publicDirectoryPath));// needed for the links and scripts to work
 app.use('/updraft/:val1?/:val2?',express.static(publicDirectoryPath));// needed for the links and scripts to work
+app.use('/rocket',express.static(publicDirectoryPath));
+// app.use('/liftoff',express.static(publicDirectoryPath));
 
 // app.use(bodyParser.urlencoded({ extended: false }));
 // app.use(bodyParser.json());
@@ -157,6 +170,8 @@ app.use('/api/alight', arcAPIRouter);// server side auth
 app.use('/api/profile', ppAPIRouter);// server side auth
 app.use('/updraft',updraftRouter);// similar to details
 app.use('/api/updraft',updraftApi);
+app.use('/rocket',rocketRouter);
+// app.use('/socket.io',liftoffRouter);
 
 
 // app.options('*', cors(corsOptions),function(req,res){
@@ -189,6 +204,7 @@ app.use('/api/updraft',updraftApi);
 
 console.log("[prepping server] ... ");
 
+// http.listen(PORT, () => {
 app.listen(PORT, () => {
   console.log(`Server is up on port ${PORT}.`);
   process_memory();
