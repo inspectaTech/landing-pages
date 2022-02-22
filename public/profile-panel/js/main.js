@@ -13,7 +13,7 @@ export const get_pp_contents = () => {
     let react_display;
 
     const jwtToken = localStorage.getItem('JWT_TOKEN');
-    console.log("[jwtToken]", jwtToken);
+    // console.log("[jwtToken]", jwtToken);
 
     if(typeof jwtToken != "undefined" && jwtToken != null){
       axios.defaults.headers.common['Authorization'] = jwtToken;

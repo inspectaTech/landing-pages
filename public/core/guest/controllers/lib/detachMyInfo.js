@@ -3,13 +3,15 @@ const chalk = require('chalk');
 const getItemData = require('./getData/getItemData');
 const {processPair} = require('./getData/pair');
 
+const display_console = false;
+
 const detachMyInfo = async function(req, res)
 {
   let error_msg = "[detachMyInfo] error: ";
 
   try {
 
-  console.log(chalk.yellow(`[detachMyInfo] body`),req.body);
+  if(display_console) console.log(chalk.yellow(`[detachMyInfo] body`),req.body);
 
   let dtchStr = req.body;// .data
 

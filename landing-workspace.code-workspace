@@ -1,0 +1,13 @@
+{
+	"folders": [
+    {
+      "path": "."
+    },
+    {
+      "path": "..\\..\\bash_scripting\\notes"
+    }
+  ],
+	"settings": {
+		"liveServer.settings.multiRootWorkspaceName": "landing-pages"
+	}
+}

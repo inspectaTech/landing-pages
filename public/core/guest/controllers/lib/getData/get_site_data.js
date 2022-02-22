@@ -1,6 +1,9 @@
   // const puppeteer = require("puppeteer");
   const request = require("request");
   const cheerio = require("cheerio");
+  const chalk = require('chalk');
+
+  const display_console = false;
 
   const get_site_data = async (obj, callback) => {
 
@@ -8,8 +11,8 @@
 
     let meta_data = "";
 
-    console.log("get_site_data url = ",url)
-    // console.log("puppeteer = ", puppeteer);
+    if(display_console) console.log("get_site_data url = ",url)
+    // if(display_console) console.log("puppeteer = ", puppeteer);
     let has_error = false;
     let error_msg = "";
 
@@ -25,9 +28,9 @@ try{
       // })
       //
       // if(has_error == true){
-      //   console.error("[browser] launch",error_msg);
+      //   if(display_console) console.error("[browser] launch",error_msg);
       //   await browser.close();
-      //   console.error("[browser] closed: launch");
+      //   if(display_console) console.error("[browser] closed: launch");
       //   return callback(error_msg,null);
       // }
 
@@ -42,9 +45,9 @@ try{
       // })
       //
       // if(has_error == true){
-      //   console.error("[browser] newpage",error_msg);
+      //   if(display_console) console.error("[browser] newpage",error_msg);
       //   await browser.close();
-      //   console.error("[browser] closed: newpage");
+      //   if(display_console) console.error("[browser] closed: newpage");
       //   return callback(error_msg,null);
       // }
     // try{
@@ -53,7 +56,7 @@ try{
     // }
 
 
-    console.log("[goto time stamp] ",Date());
+    if(display_console) console.log("[goto time stamp] ",Date());
     // await page.goto(url, {waitUntil: 'networkidle2'})
     // await page.goto(url)//
     // await page.goto(url, {waitUntil: 'domcontentloaded',timeout:15000})//
@@ -63,9 +66,9 @@ try{
     // });
     //
     // if(has_error == true){
-    //   console.error("[browser] page goto",error_msg);
+    //   if(display_console) console.error("[browser] page goto",error_msg);
     //   await browser.close();
-    //   console.error("[browser] closed: page goto");
+    //   if(display_console) console.error("[browser] closed: page goto");
     //   return callback(error_msg,null);
     // }
 
@@ -76,9 +79,9 @@ try{
     // });
     //
     // if(has_error == true){
-    //   console.error("[browser] waitForSelector",error_msg);
+    //   if(display_console) console.error("[browser] waitForSelector",error_msg);
     //   await browser.close();
-    //   console.error("[browser] closed: waitForSelector");
+    //   if(display_console) console.error("[browser] closed: waitForSelector");
     //   return callback(error_msg,null);
     // }
 
@@ -95,33 +98,33 @@ try{
     // })
 
 
-    // page.on('console', msg => {
-    //   console.log("[page.on console] ",msg.text());
+    // page.on('if(display_console) console', msg => {
+    //   if(display_console) console.log("[page.on if(display_console) console] ",msg.text());
     // });
 
-    // page.on('console', msg => {
+    // page.on('if(display_console) console', msg => {
     //   msg.args.forEach((arg,ndx) => {
-    //     console.log(`${ndx}: ${arg}`);
+    //     if(display_console) console.log(`${ndx}: ${arg}`);
     //   });
     // });
 
     // const meta_data = await page.evaluate(async () => {
-      // treat this like im in an iframe - consoles don't register outside - vars arent accessed inside
-      // debugger;
+      // treat this like im in an iframe - if(display_console) consoles don't register outside - vars arent accessed inside
+
       //properties
       await request(url, async (error, response, html) => {
 
         if(error){
-          console.log("[request] response error",error);
+          console.log(chalk.red("[request] response error"),error);
           return callback(error,null);
         }
 
-      // console.log("[request] response",response);
-      // console.log("[request] html",html);
+      // if(display_console) console.log("[request] response",response);
+      // if(display_console) console.log("[request] html",html);
 
       $ = await cheerio.load(html);
-      // console.log("[cheerio]", $);
-      console.log("[request] ",Date());
+      // if(display_console) console.log("[cheerio]", $);
+      if(display_console) console.log("[request] ",Date());
 
       let meta_obj = {};
       let data_array = ["title","image","description"];
@@ -130,7 +133,7 @@ try{
       // let head = document.querySelector("head");// can i speed this up by only looking in the head section?
       // let meta_els = document.querySelectorAll("meta");
       // let meta_els = head.querySelectorAll("meta");
-      console.log("[pre select] ",Date());
+      if(display_console) console.log("[pre select] ",Date());
       // let meta_els = document.querySelectorAll(`
       //   meta[property^='og:'],
       //   meta[property^='twitter:'],
@@ -145,18 +148,18 @@ try{
         meta[itemprop='description'],
         meta[itemprop='image']`
       );//
-      console.log("[select finished] ",Date());
+      if(display_console) console.log("[select finished] ",Date());
       // return JSON.stringify(meta_els);
       // return meta_els[7].outerHTML;
       // get og: data
 
       //parse meta tags
-      // console.log("[meta_els]",meta_els);
+      // if(display_console) console.log("[meta_els]",meta_els);
       meta_els = Array.from(meta_els);
-      console.log("[meta_els] array ",meta_els);
+      if(display_console) console.log("[meta_els] array ",meta_els);
       last_ndx = 0;
       if(meta_els.length > 0){
-        console.log(`[meta_el length] ${meta_els.length}`);
+        if(display_console) console.log(`[meta_el length] ${meta_els.length}`);
         await meta_els.some((mdata,ndx) => {
           // return meta_obj[ndx] = mdata.outerHTML;
           // return meta_obj[ndx] = mdata.getAttribute("property");
@@ -169,23 +172,23 @@ try{
           //if its blank or its not og: or twitter:
           if(m_prop == null || m_prop.indexOf("og:") == -1 && m_prop.indexOf("twitter:") == -1){
             ///try the itemprop
-            console.log("[itemprop]",mdata.attribs);
+            if(display_console) console.log("[itemprop]",mdata.attribs);
             m_prop = mdata.attribs["itemprop"];
           }
 
           if(m_prop == null){
-            console.log("[m_prop] is null");
+            if(display_console) console.log("[m_prop] is null");
             return;
           }
 
-          console.log(`prop = ${m_prop}`);
-          // console.log(`snippet = ${m_prop} ${mdata.content}`);// works but tmi
+          if(display_console) console.log(`prop = ${m_prop}`);
+          // if(display_console) console.log(`snippet = ${m_prop} ${mdata.content}`);// works but tmi
 
 
           if(m_prop.indexOf("og:") != -1){
             // prioritized og: over twitter:
             let obj_key = m_prop.replace("og:","");
-            console.log("[obj_key]",obj_key);
+            if(display_console) console.log("[obj_key]",obj_key);
             // return meta_obj[ndx] = m_prop;//works
             // return meta_obj[ndx] = obj_key;//works
             // return meta_obj[ndx] = m_prop.content;
@@ -195,7 +198,7 @@ try{
             }
           }else if(m_prop.indexOf("twitter:") != -1){
             let obj_key = m_prop.replace("twitter:","");
-            console.log("[obj_key]",obj_key);
+            if(display_console) console.log("[obj_key]",obj_key);
             if(!meta_obj[obj_key] && mdata.attribs.content != "" && data_array.includes(obj_key)){
                meta_obj[obj_key] = mdata.attribs.content;
             }
@@ -212,15 +215,15 @@ try{
             meta_obj[`${data_array[2]}`]) ? true : false;
         });
 
-        console.log(`[last ndx =  ${last_ndx}]`);
+        if(display_console) console.log(`[last ndx =  ${last_ndx}]`);
         let meta_str = JSON.stringify(meta_obj);
-        console.log(`[meta data] ${meta_str}`);
-        console.log("[process finished] ",Date());
+        if(display_console) console.log(`[meta data] ${meta_str}`);
+        if(display_console) console.log("[process finished] ",Date());
         // return meta_str;
         meta_data = meta_str;
-        console.log("[meta_data] console",meta_data);
+        if(display_console) console.log("[meta_data] if(display_console) console",meta_data);
 
-        console.log("[meta_data] returning");
+        if(display_console) console.log("[meta_data] returning");
         return callback(null,meta_data);
       }else{
         JSON.stringify({error:"no meta data available"});// callback is not defined here?
@@ -235,9 +238,9 @@ try{
     // })
     //
     // if(has_error == true){
-    //   console.error("[browser] page evaluate ",error_msg);
+    //   if(display_console) console.error("[browser] page evaluate ",error_msg);
     //   await browser.close();
-    //   console.error("[browser] closed: page evaluate");
+    //   if(display_console) console.error("[browser] closed: page evaluate");
     //   return callback(error_msg,null);
     // }
 
@@ -246,21 +249,21 @@ try{
     //   return callback(`page content error ${err}`,null);
     // }
     // await page.close();
-    // console.log("[browser] regular browser close");
-    // console.log("[browser] browser close");
+    // if(display_console) console.log("[browser] regular browser close");
+    // if(display_console) console.log("[browser] browser close");
     //
     // // return callback(null,html);
-    // console.log("[meta_data] returning");
+    // if(display_console) console.log("[meta_data] returning");
     // return callback(null,meta_data);
   }catch(err){
-    console.log("[browser] error",err);
+    console.log(chalk.red("[browser] error"),err);
       try{
         //if the site doesn't exist browser will be undefined
         // await browser.close();
       }catch(err2){
-        console.log("[browser] error closing browser",err2)
+        console.log(chalk.red("[browser] error closing browser"),err2)
       }
-      console.log("[browser] browser close");
+      console.log(chalk.red("[browser] browser close"));
       // return callback(null,html);
       return callback(err,null);
   }

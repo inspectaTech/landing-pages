@@ -1,5 +1,6 @@
   const mongoose = require('mongoose');
   const Schema = mongoose.Schema;
+  const preset_defaults = require('../core/check-make/preset_defaults');
   // const removeSomething = require('../controllers/lib/getData/remove_something');
   // const testAlias = require('../controllers/lib/getData/test_alias');// cant reference itself
 
@@ -13,6 +14,9 @@
       trim: true
     },
     user_id: {
+      type: Schema.Types.ObjectId
+    },
+    project_id: {
       type: Schema.Types.ObjectId
     },
     category: {
@@ -62,10 +66,33 @@
       trim: true,
       default: ""
     },
-    tag_data: {
+    note_enabled: {
+      type: Boolean,
+      default: true
+    },
+    note_data: {
       type: String,
       trim: true,
       default: ""
+    },
+    caption: {
+      type: String,
+      trim: true,
+      default: ""
+    },
+    code_enabled: {
+      type: Boolean,
+      default: false
+    },
+    code_data: {
+      type: String,
+      trim: true,
+      default: ""
+    },
+    tag_data: {
+      type: Array,
+      trim: true,
+      default: []
     },
     meta_data: {
       type: Schema.Types.Mixed,
@@ -73,20 +100,59 @@
       default: ""/*,
       validate()*/
     },
+    tasks_enabled:{
+      type: Boolean,
+      default: false
+    },
     task_data: {
-      type: String,
-      trim: true,
-      default: ""
+      type: Schema.Types.Mixed,
+      default: {ids:[], data:{}, display: false}
+    },
+    links_enabled: {
+      type: Boolean,
+      default: true
+    },
+    links: {
+      type: Schema.Types.Mixed,
+      default: {ids:[],data:{}}
+    },
+    comments_enabled: {
+      type: Boolean,
+      default: true
+    },
+    discussion_enabled: {
+      type: Boolean,
+      default: true
+    },
+    chat_data: {
+      type: Schema.Types.Mixed,
+      default: { chat_ref: "inherit", chat_ref_id: null, video_ref: "inherit", video_ref_id: null}
+      /** chat_data holds meeting and discussion settings - differs from comments */
+    },
+    config_data: {
+      type: Schema.Types.Mixed,
+      auto_img: {
+        type: Boolean,
+        trim: true,
+        default: true
+      },
+      img_enabled: {
+        type: Boolean,
+        trim: true,
+        default: true
+      }
     },
     tool: {
       type: Schema.Types.Mixed,
       name: {
         type:String,
-        trim: true
+        trim: true,
+        default: preset_defaults.preset.default.tool.name
       },
       template: {
         type:String,
-        trim: true
+        trim: true,
+        default: preset_defaults.preset.default.tool.template
       }
     },
     created: {
@@ -107,9 +173,23 @@
         }
       }
     },
-    picture: {
+    is_event:{
+      type: Boolean,
+      default: false
+    },
+    event_date:{
+      type: Date,
+    },
+    event_data: {
+      type: Schema.Types.Mixed,
+    },
+    icon: {
       type: String,
       default: ""
+    },
+    text_only:{
+      type: Boolean,
+      default: false
     },
     published: {
       type: Boolean,
@@ -148,6 +228,14 @@
       type: Number,
       default: 0
     },
+    priority: {
+      type: Number,
+      default: 0
+    },
+    review: {
+      type: Number,
+      default: 0
+    },
     filter: {
       type: String,
       trim: true,
@@ -161,6 +249,24 @@
     path:{
       type: String,
       trim: true,
+    },
+    preset_id: {
+      type: Schema.Types.ObjectId
+    },
+    pin: {
+      type: Boolean,
+      default: false
+    },
+    pin_expires: {
+      type: Date,
+    },
+    pin_archive: {
+      type: Boolean,
+      default: false
+    },
+    archive: {
+      type: Boolean,
+      default: false
     },
     deprecated_data:{
         type: Schema.Types.Mixed,

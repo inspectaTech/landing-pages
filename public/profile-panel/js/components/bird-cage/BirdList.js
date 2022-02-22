@@ -1,4 +1,4 @@
-    console.log("[BirdList]");
+    // console.log("[BirdList]");
     import React, { Component, useEffect, Fragment } from "react";
     import { observer, inject } from "mobx-react";
 
@@ -6,7 +6,7 @@
       (props) => {
 
         useEffect(() => {
-          console.log("[BirdList] props",props);
+          // console.log("[BirdList] props",props);
 
         })// useEffect
 

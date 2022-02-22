@@ -1,3 +1,12 @@
+$mp: !important;
+html, body, #root{height: 100%;}
+body {
+  margin: unset $mp;
+  *{box-sizing: border-box;}
+  font-size: 15px;
+  overflow: hidden;
+}
+// #root{border: 5px solid green;}
 .container {
     margin: auto;
     text-align: center;
@@ -11,4 +20,29 @@
 
 .left {
     text-align: left;
+}
+.video{width: 100%;}
+.icon-video-on, .icon-mic-on{ color: green $mp;}
+.icon-video-off, .icon-mic-off{ color: red $mp;}
+
+.white_bg, .white-bg{
+  background-image: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjEwbW0iIGhlaWdodD0iMjk3bW0iIHZlcnNpb249IjEuMSIgdmlld0JveD0iMCAwIDIxMCAyOTciIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3QgeT0iLS4yMDM3MSIgd2lkdGg9IjIxMS42OCIgaGVpZ2h0PSIzMDMuMDgiIGZpbGw9IiNmZmYiIGZpbGwtb3BhY2l0eT0iLjcwOTA5Ii8+PC9zdmc+DQo=
+  );
+}
+.dark_bg, .dark-bg{
+  background-image: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjEwbW0iIGhlaWdodD0iMjk3bW0iIHZlcnNpb249IjEuMSIgdmlld0JveD0iMCAwIDIxMCAyOTciIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3QgeT0iLS4yMDM3MSIgd2lkdGg9IjIxMS42OCIgaGVpZ2h0PSIzMDMuMDgiIGZpbGwtb3BhY2l0eT0iLjcwOTA5Ii8+PC9zdmc+DQo=
+  );
+  backdrop-filter: blur(2px);
+}
+
+.visible{
+  visibility: visible;
+  transition: 500ms;
+  &.header{height: 4rem;}
+  &.footer{height: 5rem;}
+}
+
+.hidden{
+  visibility: hidden;
+  height: 0;
 }

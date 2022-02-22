@@ -4,7 +4,7 @@ import { observer, inject } from "mobx-react";
 import axios from "axios";
 require('./Profile.scss');
 
-console.log("[Profile]");
+// console.log("[Profile]");
 
 // class Profile extends React.Component{
 const Profile = inject('ProfileStore')(observer(
@@ -22,7 +22,7 @@ const Profile = inject('ProfileStore')(observer(
       try {
 
         const result = await axios.get(ctrl_Url);
-        console.log("[Profile] user docs",result);
+        // console.log("[Profile] user docs",result);
 
       } catch (e) {
         console.error("[Profile] user docs an error has occured", e);
@@ -31,7 +31,7 @@ const Profile = inject('ProfileStore')(observer(
     }// get_user_doc
 
     useEffect(() => {
-      console.log("[Profile] initiated", props);
+      // console.log("[Profile] initiated", props);
 
       get_user_doc();
 

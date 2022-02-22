@@ -13,7 +13,7 @@ import { AppContainer } from 'react-hot-loader';
 
 import App from './App';
 
-import './style.scss';
+require('./style.scss');
 
 const root = document.getElementById('root');
 

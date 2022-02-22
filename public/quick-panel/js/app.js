@@ -1,4 +1,4 @@
-console.log('[quick panel running]');
+// console.log('[quick panel running]');
 $(document).ready(function () {
 
   // $("#sidebar").mCustomScrollbar({

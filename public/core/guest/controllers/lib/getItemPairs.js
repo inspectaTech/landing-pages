@@ -9,14 +9,16 @@ const { pairMyData } = require('./getData/pair');
 const detachMyInfo = require('./detachMyInfo');
 const mongoose = require('mongoose');
 
+const display_console = false;
+
   const getItemPairs = async function(req, res)
   {
 
-      console.log("addMyInfo running!");
-      console.log("[getItemPairs] body ",req.body);
-      console.log("[getItemPairs] body item_data ",req.body.item_data);
-      console.log("[getItemPairs] body item_data id ",req.body.item_data._id);
-      // console.log("[addMyInfo] type ", typeof req.body.arc_input);
+      if(display_console) console.log("addMyInfo running!");
+      if(display_console) console.log("[getItemPairs] body ",req.body);
+      if(display_console) console.log("[getItemPairs] body item_data ",req.body.item_data);
+      if(display_console) console.log("[getItemPairs] body item_data id ",req.body.item_data._id);
+      // if(display_console) console.log("[addMyInfo] type ", typeof req.body.arc_input);
 
     let item_data = req.body.item_data,
     return_obj = {},
@@ -37,7 +39,7 @@ const mongoose = require('mongoose');
     item_type = (type_array.includes(item_data.display_data)) ? item_data.display_data : "media";
     let { mode = "none", page, limit } = req.body;
 
-    console.log("[i am root]",item_data.root);
+    if(display_console) console.log("[i am root]",item_data.root);
 
     try {
       // let updated = await Item.update({"order":0}, {$set:{desc_data: ""}}, {multi:true});// worked
@@ -45,21 +47,21 @@ const mongoose = require('mongoose');
       // let updated = await Item.updateMany({}, {desc_data: ""});// worked
       // let updated = await Item.updateMany({}, {$rename:{"description": "desc_data"}});//failed until schema
 
-        console.log("[ancestor] searching....");
+        if(display_console) console.log("[ancestor] searching....");
         // [using equals](https://docs.mongodb.com/manual/reference/operator/query/eq/#op._S_eq)
 
         // NO ITEM DATA
 
         // here i used exists == true to only find documents were the ancestor field exists and also equals the
         // item_ancestor ObjectId - without exists it will include items where the ancestor doesn't exist at all
-        // console.log("[req_data]",req_data);
+        // if(display_console) console.log("[req_data]",req_data);
 
         ancestor_obj = await getItemData(item_ancestor);
         // get the ancestors ordering format
         return_obj.filter = (ancestor_obj && ancestor_obj.filter != undefined) ? ancestor_obj.filter : "alpha";
 
 
-      console.log("[updating many]");
+      if(display_console) console.log("[updating many]");
 
 
 
@@ -81,8 +83,11 @@ const mongoose = require('mongoose');
 
       // for data and full modes
       // data_mode == "data"
+      if(display_console) console.log(chalk.yellow("[rows] length"),rows.length);
+      // this section is deprecated
       for(let y = 0; y < rows.length; y++)
       {
+        if(display_console) console.log(chalk.yellow("[rows] for loop entered..."));
         //I have to get this on a case by case basis.
         //get my pair data
 
@@ -96,9 +101,9 @@ const mongoose = require('mongoose');
 
         //prepare the object to help get the pair data
         //- needed to avoid duplicate code blocks (shortens code)
-        // console.log(chalk.red(`[getPairObject] rows[${l}]`),rows[l]);
+        // if(display_console) console.log(chalk.red(`[getPairObject] rows[${l}]`),rows[l]);
         // forms the pair object request instructions
-        let prep_pair_obj = await getPairObject(rows[y], display_data, item_data.user_id);//preps a pair request using ancestor object
+        let prep_pair_obj = await getPairObject(rows[y], display_data/*, item_data.user_id*/);//preps a pair request using ancestor object
 
         // get this ancestors pair data
         let _pair_data = await pairMyData(prep_pair_obj);
@@ -123,7 +128,7 @@ const mongoose = require('mongoose');
         // i would make admin_info_ids = "";
 
         //get the ancestors pair info_ids
-        let ancestor_pair_obj = await getPairObject(ancestor_obj,display_data, item_data.user_id);
+        let ancestor_pair_obj = await getPairObject(ancestor_obj,display_data/*, item_data.user_id*/);
 
         let ancestor_pair_data = await pairMyData(ancestor_pair_obj);
         admin_info_ids = ancestor_pair_data;
@@ -164,20 +169,20 @@ const mongoose = require('mongoose');
         }// for
 
         //if hold_me array is not empty pass its data in string form to a data getter
-        console.log(chalk.magenta(`[item_data ancestor]`),item_data._id);
-        console.log(chalk.magenta(`[hold_me]`),hold_me);
+        if(display_console) console.log(chalk.magenta(`[item_data ancestor]`),item_data._id);
+        if(display_console) console.log(chalk.magenta(`[hold_me]`),hold_me);
         if(hold_me.length != 0 && isValid(hold_me[0]))
         {
           //get the info_data
           // hold_me = hold_me.join();// ","
-          // console.log(chalk.magenta(`[hold_ary] before`),hold_ary);
+          // if(display_console) console.log(chalk.magenta(`[hold_ary] before`),hold_ary);
           let attached_items = await getInfoData(hold_me,item_data._id);//host_id
 
           if(attached_items){
 
             hold_ary = [...hold_ary, ...attached_items];
           }
-          console.log(chalk.magenta(`[hold_ary] after`),hold_ary, typeof hold_ary);
+          if(display_console) console.log(chalk.magenta(`[hold_ary] after`),hold_ary, typeof hold_ary);
         }//if
 
         //merge the data attachment array with the data rows array
@@ -251,7 +256,7 @@ const mongoose = require('mongoose');
       });
 
     } catch (err) {
-      console.log("[update Many ] error",err);
+      console.log(chalk.red("[update Many ] error"),err);
 
       res.json({
         message:"an error occured",

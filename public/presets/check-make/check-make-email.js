@@ -3,6 +3,7 @@
   const Item = require('../../../models/item');// centralized models ./check-make
   const User = require('../../../models/user');// centralized models  ./check-make
   const { alias_maker } = require('./alias_maker');
+  const display_console = false;
 
   const check_make_email = async ({user}, rtn) => {
 
@@ -17,16 +18,16 @@
 
   try {
 
-    console.log(chalk.yellow('[check_make_email] accessed'));
-    console.log(chalk.magenta('[check_make_email] user'),user);
-    console.log(chalk.blue('[check_make_email] email'),email);
-    console.log(chalk.blue('[check_make_email] user method'),user.method);
-    console.log(chalk.blue('[check_make_email] email id '),user[user.method].email_id);
+    if(display_console) console.log(chalk.yellow('[check_make_email] accessed'));
+    if(display_console) console.log(chalk.magenta('[check_make_email] user'),user);
+    if(display_console) console.log(chalk.blue('[check_make_email] email'),email);
+    if(display_console) console.log(chalk.blue('[check_make_email] user method'),user.method);
+    if(display_console) console.log(chalk.blue('[check_make_email] email id '),user[user.method].email_id);
 
     // see if it has an email id
     let requested_email;
     let has_email_item = (typeof user[`${user.method}`].email_id != "undefined") ? true: false;
-    console.log(chalk.yellow("[check make email] has_email_item = "), has_email_item);
+    if(display_console) console.log(chalk.yellow("[check make email] has_email_item = "), has_email_item);
 
     //
     if(has_email_item){
@@ -36,7 +37,7 @@
     }
 
     if(rtn && requested_email != false){
-      console.log(chalk.cyan("[requested_email] returning "),requested_email);
+      if(display_console) console.log(chalk.cyan("[requested_email] returning "),requested_email);
       return requested_email;
     }
 
@@ -44,7 +45,7 @@
     if(requested_email == false){
 
       // here requested_email == null
-      console.log(chalk.red('no requested_email was found'));
+      if(display_console) console.log(chalk.red('no requested_email was found'));
 
       let generic_date = ( new Date() ).getTime();
 
@@ -81,12 +82,12 @@
       return update_obj;
     }else {
 
-      console.log(chalk.green('[requested_email]'),requested_email);
+      if(display_console) console.log(chalk.green('[requested_email]'),requested_email);
       return requested_email;
     }
 
   } catch (e) {
-    console.log(chalk.red("[check-make-email] an error occured"),e);
+    if(display_console) console.log(chalk.red("[check-make-email] an error occured"),e);
   }
 
   }//check_make_email

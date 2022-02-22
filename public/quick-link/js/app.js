@@ -1,10 +1,9 @@
-console.log('[quick link running]');
+// console.log('[quick link running]');
 $(document).ready(function () {
   makeSpace();
 });
 
 //alert("quick_link.js is running");
-console.log("ql running");//**
 
 var component_title = "com_com_aliintro";
 
@@ -749,7 +748,7 @@ var component_title = "com_com_aliintro";
 
                 var prev_img_id_array = object_elements.prev_img.get_event_ids();
                 object_elements.prev_imgElement = prev_img_id_array[1];
-                console.dir(object_elements.prev_imgElement);
+                // console.dir(object_elements.prev_imgElement);
               }//end if
 
 
@@ -1071,7 +1070,7 @@ var component_title = "com_com_aliintro";
 
                       //alert(xmlDoc.getElementsByTagName("title")[0].childNodes[0].nodeValue);
                       var result_value = xmlDoc.getElementsByTagName("title")[0].childNodes[0].nodeValue;
-                      console.log("test scrape return value = ",result_value);
+                      // console.log("test scrape return value = ",result_value);
 
                       //result output for:
                       //http://mashable.com/2017/04/04/mastodon-twitter-social-network/#Md.eDvQdhiqm
@@ -1117,7 +1116,7 @@ var component_title = "com_com_aliintro";
 
               ql_rex(uploadData)
               .then((results) => {
-                console.log("parse results = ",results);
+                // console.log("parse results = ",results);
                 resolve(results)
               })
               .catch(err => {
@@ -1442,7 +1441,7 @@ var component_title = "com_com_aliintro";
 
       			uploadData.arc_input = JSON.stringify(arc_input);
       			uploadData.display_data = "media";
-            console.log(uploadData);
+            // console.log(uploadData);
 
     				var form_token = FORM_TOKEN;
 

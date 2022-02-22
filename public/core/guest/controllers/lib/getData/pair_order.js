@@ -2,6 +2,8 @@
   // const Pair = require('../../../models/pair');
   const Pair = require('../../../../../models/pair');
 
+  const display_console = false;
+
   const pair_order = async function(mod,LID,HID,OSTR)
   {
 
@@ -36,7 +38,7 @@
         let pair_item = await Pair.findOne({ host_id: HID, link_id: LID}).lean();
 
         let order = pair_item.pair_order;
-        console.log(chalk.yellow("[pair_item]"),pair_item);
+        if(display_console) console.log(chalk.yellow("[pair_item]"),pair_item);
 
         if(pair_item){
           return order;

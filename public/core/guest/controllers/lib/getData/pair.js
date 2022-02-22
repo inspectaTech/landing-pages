@@ -7,6 +7,8 @@
   const getItemData = require('./getItemData');
   const {exists} = require('./exists');
 
+  const display_console = false;
+
 
   const pairMyData = async function(pObj)
   {
@@ -15,7 +17,7 @@
       let pp_ret = "";
       let link_data;
 
-      // console.log(chalk.blue("[pair body]"),pairObj);
+      // if(display_console) console.log(chalk.blue("[pair body]"),pairObj);
 
       // pair sample:
       // [pair body] {
@@ -38,11 +40,30 @@
 
       let display_data = pairObj.display_data;
 
-      let pair_table = '#__arc_pair_host_link';
+      // let pair_table = '#__arc_pair_host_link';
 
       let cur_pair_IDs_ary = [];// formerly db_info_ids_ary
+      let cur_pair_OBJ_ary;
       // get everything that is attached to this ancestor/parent
-      let cur_pair_OBJ_ary = await Pair.find({ host_id: pairObj.host_id, editor_id: pairObj.editor_id });
+      if(pairObj.sort == true && pairObj.mode == "get"){
+
+        let orderBy = [];
+        let filter = pairObj.filter;
+        let filter_array = pair_obj[filter];
+
+        if(exists(filter_array)){
+          filter_array.forEach((item) => {
+            orderBy.push(item);
+          });
+        }
+
+        let limit = pairObj.limit;
+        let start_ndx = (exists(pairObj.start_ndx)) ? pairObj.start_ndx : 0;
+
+        cur_pair_OBJ_ary = await Pair.find({ host_id: pairObj.host_id, editor_id: pairObj.editor_id }).skip(start_ndx).limit(limit).lean();
+      }else {
+        cur_pair_OBJ_ary = await Pair.find({ host_id: pairObj.host_id, editor_id: pairObj.editor_id }).lean();
+      }
 
       if(exists(cur_pair_OBJ_ary)){
         // create an array of just _ids
@@ -53,7 +74,7 @@
         }// for
       }// if
 
-      // console.log(chalk.yellow("[db info ids ary]"),cur_pair_IDs_ary);
+      // if(display_console) console.log(chalk.yellow("[db info ids ary]"),cur_pair_IDs_ary);
       /*******************   get data section   *********************/
 
       //use the getter to get an updated list of current pairing
@@ -69,7 +90,7 @@
 
       if(pairObj.info_ids == undefined){pairObj.info_ids = "";}
 
-      console.log(chalk.cyan("[pairObj] see info_ids"),pairObj);
+      if(display_console) console.log(chalk.cyan("[pairObj] see info_ids"),pairObj);
 
       let input_ids_ary = pairObj.info_ids.split(",");
 
@@ -93,7 +114,7 @@
 
           //if the recorded list has entries not on the current list use the
           //deleter to remove those paired entries
-          console.log(chalk.magenta("[input_ids_ary] compare"),input_ids_ary, cur_pair_IDs_ary[b]);
+          if(display_console) console.log(chalk.magenta("[input_ids_ary] compare"),input_ids_ary, cur_pair_IDs_ary[b]);
 
           //do the new info ids array have any of the values of the old infoid?
           let is_it_there = input_ids_ary.includes(cur_pair_IDs_ary[b]);
@@ -105,13 +126,13 @@
             // appear in the set will be deleted here
             //return cur_pair_IDs_ary[b] . " is not there - delete";//works
 
-            console.log(chalk.red(`[pair deleting] entered`), cur_pair_IDs_ary[b]);
+            if(display_console) console.log(chalk.yellow(`[pair deleting] entered`), cur_pair_IDs_ary[b]);
 
             del_obj = {};// (object)[]
             del_obj.display_data = display_data;
             del_obj.host_id = pairObj.host_id;
             del_obj.link_id = cur_pair_IDs_ary[b];
-            del_obj.pair_table = pair_table;
+            // del_obj.pair_table = pair_table;
             del_obj.owner_id = pairObj.owner_id;
             del_obj.editor_id = pairObj.editor_id;
             del_obj.mode = "delete";
@@ -135,12 +156,12 @@
         add_obj.host_type = pairObj.host_type;
         add_obj.link_id = input_ids_ary[c];// could also be link_data._id
         add_obj.link_type = link_data.data_type;
-        add_obj.pair_table = pair_table;
+        // add_obj.pair_table = pair_table;
         add_obj.owner_id = pairObj.owner_id;
         add_obj.editor_id = pairObj.editor_id;
         add_obj.mode = "add";
 
-        console.log(chalk.magenta("[1st add section] object"),add_obj);
+        if(display_console) console.log(chalk.magenta("[1st add section] object"),add_obj);
         // type_array = explode("-",input_ids_ary[c]);
         // switch(type_array[0])
         // {
@@ -178,7 +199,7 @@
         if(pairObj.task == "portal"){
 
           // link_data = await getItemData(input_ids_ary[c]);
-          console.log(chalk.green(`[link_data]`),link_data);
+          if(display_console) console.log(chalk.green(`[link_data]`),link_data);
 
           if(exists(link_data)){
 
@@ -195,7 +216,7 @@
               port_obj.host_type = link_data.data_type;
               port_obj.link_id = pairObj.host_id;//input_ids_ary[c];
               port_obj.link_type = pairObj.host_type;
-              port_obj.pair_table = pair_table;
+              // port_obj.pair_table = pair_table;
               port_obj.owner_id = link_data.user_id;//pairObj.owner_id;
               port_obj.editor_id = pairObj.editor_id;
               port_obj.mode = "add";
@@ -212,6 +233,7 @@
 
   };//end pairMyData
 
+
   const processPair = async function(pObj, uId)
   {
 
@@ -223,7 +245,7 @@
     // db = jFactory::getDbo();
     // query = db.getQuery(true);
 
-    console.log(chalk.greenBright("[process pair] entered"), action);
+    if(display_console) console.log(chalk.greenBright("[process pair] entered"), action);
 
     switch(action)
     {
@@ -250,11 +272,11 @@
         let my_host_item = await Item.findOne({ _id: process_data.host_id, user_id: process_data.editor_id});
 
 
-        console.log(chalk.yellowBright("[process pair] test result"),test_result);
+        if(display_console) console.log(chalk.yellowBright("[process pair] test result"),test_result);
 
         if(!exists(test_result) && exists(my_host_item))
         {
-          console.log(chalk.yellowBright("[process pair] test entered"));
+          if(display_console) console.log(chalk.yellowBright("[process pair] test entered"));
 
           try {
 
@@ -287,11 +309,11 @@
 
       case "delete":
 
-          console.log(chalk.yellowBright("[process pair] delete entered"),process_data.link_id);
+          if(display_console) console.log(chalk.yellowBright("[process pair] delete entered"),process_data.link_id);
 
           // it needs a where you are either the owner or the editor
           let del_results = await Pair.deleteOne({ host_id: process_data.host_id, link_id: process_data.link_id, owner_id: process_data.editor_id });
-          console.log(chalk.yellowBright("[process pair] delete results"),del_results);
+          if(display_console) console.log(chalk.yellowBright("[process pair] delete results"),del_results);
           //return results;
           if(!del_results){
             return `${display_data} delete pairing failed and del_results = ${del_results}`;
@@ -304,10 +326,10 @@
 
   }//end processPair;
 
-  const pair_order = async function(mod,LID,HID,OSTR)
+  const pair_order = async function({mode,link_id,host_id,order,response = "order"})
   {
 
-    switch (mod) {
+    switch (mode) {
       case 'get':
 
         // let updated = await Pair.updateMany({}, {$set:{pair_order: "0"}});
@@ -317,12 +339,21 @@
         // in any case give me a zero when nothing is present
         // i don't want null though so i do need to do something
         // return pair_order;
-        let pair_item = await Pair.findOne({ host_id: HID, link_id: LID}).lean();
+        let pair_item = await Pair.findOne({ host_id: host_id, link_id: link_id}).lean();
 
-        console.log(chalk.yellow("[pair_item]"),pair_item);
+        // if(display_console) console.log(chalk.yellow("[pair_item]"),pair_item);
 
-        if(exists(pair_item)){
-          return pair_item.pair_order;
+        if(pair_item){
+          switch (response) {
+            case "order":
+              return pair_item.pair_order;
+            break;
+            case "pair":
+              return pair_item;
+            break;
+            default:
+
+          }
         }else{
           return "0";
         }//if
@@ -334,15 +365,15 @@
       // cur_arc_user = jFactory::getUser();
       // arc_user_id = cur_arc_user.id;
       // if(arc_user_id == 0){return "[server note:]unregistered user[server note]";}
-      // OSTR = order string
+      // order = order string
 
-        if(isNaN(OSTR) || OSTR === "" || OSTR == null){
+        if(isNaN(order) || order === "" || order == null){
           // do nothing
           return;
         }
 
 
-        let response_item = await Pair.findOneAndUpdate({ host_id: HID, link_id: LID},{$set:{ pair_order: Number(OSTR) }});
+        let response_item = await Pair.findOneAndUpdate({ host_id: host_id, link_id: link_id},{$set:{ pair_order: Number(order) }});
 
         return;
 

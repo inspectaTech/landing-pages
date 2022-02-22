@@ -16,7 +16,7 @@
     // db.setQuery(query);
     //
     // iDta = db.loadObject();
-    let iDta = await Item.findOne( { _id: item_id } );
+    let iDta = await Item.findOne( { _id: item_id } ).lean();
     return iDta;
 
   };//get_item_data

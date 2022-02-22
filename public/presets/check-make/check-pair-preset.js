@@ -6,14 +6,15 @@
   const keys = require('./keys');
   const {exists} = require('./exists');
   const {unpair} = require('./unpair');
+  const display_console = false;
 
-  const check_pair_preset = async ({user, host_id, host_type, link_type, all}, rtn) => {
+  const check_pair_preset = async ({user, host_id, host_type, link_type, admin = false, all}, rtn) => {
     // finds preset that is paired with the group
 
     try {
 
-      console.log(chalk.yellow('[check_pair_preset] accessed'));
-      console.log(chalk.magenta('[check_pair_preset] user'),user);
+      if(display_console) console.log(chalk.yellow('[check_pair_preset] accessed'));
+      if(display_console) console.log(chalk.magenta('[check_pair_preset] user'),user);
 
       // check to see if already paired
       let find_all = all || false;
@@ -30,12 +31,12 @@
         pair_obj = {host_id, owner_id: user._id, editor_id: user._id, link_type};
         requested_pair = await Pair.findOne(pair_obj).lean();
       }
-      console.log(chalk.yellow("[check_pair_preset] requested_pair"),requested_pair);
+      if(display_console) console.log(chalk.yellow("[check_pair_preset] requested_pair"),requested_pair);
 
       // does the paired preset still actually exist?
       if(exists(requested_pair)){
         does_item_exist = await get_item_data(requested_pair.link_id);
-        console.log(chalk.yellow("[check_pair_preset] does_item_exist"),does_item_exist);
+        if(display_console) console.log(chalk.yellow("[check_pair_preset] does_item_exist"),does_item_exist);
       }
 
 
@@ -46,14 +47,14 @@
 
 
       if(exists(requested_pair) && exists(does_item_exist) && rtn){
-        console.log(chalk.green("[check_pair_preset] all is well, returning early"));
+        if(display_console) console.log(chalk.green("[check_pair_preset] all is well, returning early"));
         return requested_pair;
       }else if(exists(requested_pair) && !exists(does_item_exist)){
         // if not delete this pairing and see if there others available for this binder? - this may run recursively 3x
-        console.log(chalk.red("[check_pair_preset] expired pairing detected, deleting pair"));
+        if(display_console) console.log(chalk.red("[check_pair_preset] expired pairing detected, deleting pair"));
         // this is going to delete the false pair and try to get another one
         let unpaired = await unpair({ link_id:requested_pair.link_id, owner_id: user._id, mode: "all"})
-        console.log(chalk.magenta("[unpaired] results"),unpaired);
+        if(display_console) console.log(chalk.magenta("[unpaired] results"),unpaired);
 
         // run this again recursively
         requested_pair = await check_pair_preset({user, host_id, host_type, link_type, all}, true);
@@ -79,23 +80,25 @@
           pair_obj.host_type = host_type;
         }
 
+        pair_obj.admin = admin;// admin generated pair
+
         let newPair = new Pair(pair_obj);
         await newPair.save();
-        console.log(chalk.green("[check_pair_preset] newPair"),newPair);
+        if(display_console) console.log(chalk.green("[check_pair_preset] newPair"),newPair);
 
         let lean_newPair = newPair.toObject();
 
         return lean_newPair;
 
       }else{
-        console.log(chalk.green("[check_pair_preset] a requested_pair was found"),requested_pair);
+        if(display_console) console.log(chalk.green("[check_pair_preset] a requested_pair was found"),requested_pair);
         return requested_pair;
       }
 
 
     } catch (e) {
       let error_msg = "[check-pair-preset] an error occured";
-      console.log(chalk.red(error_msg),e);
+      if(display_console) console.log(chalk.red(error_msg),e);
       return {
         error: true,
         message: error_msg,

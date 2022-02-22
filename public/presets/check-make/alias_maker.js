@@ -4,9 +4,10 @@
   const mongoose = require('mongoose');
 
   // location customized for src/oauth_server/controllers/lib/alias_maker.js
-const Item = require('../../../models/item');// ./check-make
+  const Item = require('../../../models/item');// ./check-make
   const chalk = require('chalk');
   const removeSomething = require('./remove_something');
+  const display_console = false;
 
   const alias_maker = async function(item)
   {
@@ -18,7 +19,7 @@ const Item = require('../../../models/item');// ./check-make
     let isValid = mongoose.Types.ObjectId.isValid,
     valid_id = isValid(item.user_id);
 
-    console.log(chalk.yellow("[alias_maker] item"),item);
+    if(display_console) console.log(chalk.yellow("[alias_maker] item"),item);
 
     let id_str = (isValid) ? item.user_id.toString() : item.user_id;
 
@@ -48,7 +49,7 @@ const Item = require('../../../models/item');// ./check-make
       let is_ok = false;
 
       let match = await Item.findOne({user_id, alias: prep_alias.alias}).lean();
-      console.log(chalk.cyan("[match]"),match);
+      if(display_console) console.log(chalk.cyan("[match]"),match);
 
       // let items = await Item.find({user_id}).lean();
       // if(items){setDefaultAlias(items)}
@@ -56,7 +57,7 @@ const Item = require('../../../models/item');// ./check-make
       if(mode == "add"){
         // if it matches its not this item (hasn't been created) move on.
         is_ok = (!match) ? true : false;
-        console.log(chalk.yellow("[is_ok]"),is_ok);
+        if(display_console) console.log(chalk.yellow("[is_ok]"),is_ok);
       }else{
         // if it doesn't match or it matches and the match matches the id of the edited item
         // if one matches see if the ids match, if so do nothing
@@ -66,7 +67,7 @@ const Item = require('../../../models/item');// ./check-make
       if(is_ok){
         // if the similar one
         // return prep_alias;
-        console.log(chalk.yellow("[prep_alias value]"),prep_alias);
+        if(display_console) console.log(chalk.yellow("[prep_alias value]"),prep_alias);
       }else{
         // !match || match._id ==  similar || similar.length < 2
 
@@ -74,7 +75,7 @@ const Item = require('../../../models/item');// ./check-make
           // if its edit try to use the same thing it already had
           // use this to preserve the custom alias i.e. < aliasName-nbr >
           let similar = await Item.find({ user_id, alias: {"$regex": prep_alias.alias,"$options": "i" }}).lean();
-          console.log(chalk.magenta("[item alias length]"),similar.length);
+          if(display_console) console.log(chalk.magenta("[item alias length]"),similar.length);
 
           // if its similar match each similar one to the current alias
           if(similar){
@@ -107,7 +108,7 @@ const Item = require('../../../models/item');// ./check-make
 
       return prep_alias; // "similar";
     } catch (e) {
-      console.error(chalk.red("[testAlias]"),"an error has occured",e);
+      if(display_console) console.error(chalk.red("[testAlias]"),"an error has occured",e);
     }
 
   }// testAlias
@@ -117,7 +118,7 @@ const Item = require('../../../models/item');// ./check-make
     let prep_alias = {};
     prep_alias.alias = `${pA.alias}-${iUN}`;
     prep_alias.path = `${pA.path}-${iUN}`;
-    console.log(chalk.yellow("[prep_alias value] iUN"),prep_alias);
+    if(display_console) console.log(chalk.yellow("[prep_alias value] iUN"),prep_alias);
     return prep_alias;
   }
 
@@ -134,15 +135,15 @@ const Item = require('../../../models/item');// ./check-make
         prep_alias.alias = escape(`${value.user_id.toString()}/${alias_title}`);
         prep_alias.path = escape(`${alias_title}`);
 
-        console.log(chalk.yellow("[prep_alias]"),prep_alias);
+        if(display_console) console.log(chalk.yellow("[prep_alias]"),prep_alias);
         let ils = await Item.find({user_id: value.user_id, alias: {"$regex": alias_title,"$options": "i"}}).lean();//"$regex": "Alex", "$options": "i"
 
-        console.log(chalk.magenta("[item alias length]"),ils.length);
+        if(display_console) console.log(chalk.magenta("[item alias length]"),ils.length);
 
         if(ils && ils.length < 2){
           value.alias = prep_alias.alias;
           value.path = prep_alias.path;
-          console.log(chalk.yellow("[alias value]"),value);
+          if(display_console) console.log(chalk.yellow("[alias value]"),value);
           await Item.findOneAndUpdate({_id: value._id}, value, { new: true });
         }else{
           let iUN = Math.round(Math.random() * 1000);
@@ -150,14 +151,14 @@ const Item = require('../../../models/item');// ./check-make
           prep_alias.path = `${prep_alias.path}-${iUN}`;
           value.alias = prep_alias.alias;
           value.path = prep_alias.path;
-          console.log(chalk.yellow("[alias value] iUN"),value);
+          if(display_console) console.log(chalk.yellow("[alias value] iUN"),value);
           await Item.findOneAndUpdate({_id: value._id}, value, { new: true });
         }// else
 
       }// for
 
     } catch (e) {
-      console.error(chalk.red("[set default alias]"),"an error has occured",e);
+      if(display_console) console.error(chalk.red("[set default alias]"),"an error has occured",e);
     }
   }// setDefaultAlias
 

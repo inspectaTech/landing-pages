@@ -3,11 +3,14 @@ const chalk = require('chalk');
 // const Item = require('../../models/item');
 const Item = require('../../../../models/item');
 
-console.log("addMyInfo loaded!");
 const remove_ancestor = require('./remove_ancestor');
 const removeSomething = require('./getData/remove_something');
 const { alias_maker } = require('./getData/alias_maker');
+
+const display_console = false;
+
 // getItemData
+if(display_console) console.log("editMyInfo loaded!");
 
 const editMyInfo = async function(req, res)
 {

@@ -1,6 +1,7 @@
   const chalk = require('chalk');
   // const User = require('../../../src/oauth_server/models/user');
   const User = require('../../../models/user');
+  const display_console = false;
 
 
   const getUserDoc = async function(req, res)
@@ -8,15 +9,15 @@
     try {
 
       //i need this protected by the new jw_token
-      console.log("[profile api] / api accessed");
-      console.log("[req.body]",req.body);
+      if(display_console || false) console.log("[profile api] / api accessed");
+      if(display_console || false) console.log("[req.body]",req.body);
 
       let user = await User.findOne({ _id: req.user._id}).lean();
 
       let { _id : id, method } = user;
       let { email } = user.google;
 
-      console.log("[user doc]",user);
+      if(display_console || false) console.log("[user doc]",user);
 
 
       // res.send("[profile] userDoc controller api connected");// ok this works, we're connected

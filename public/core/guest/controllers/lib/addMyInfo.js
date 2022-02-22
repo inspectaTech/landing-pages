@@ -1,6 +1,8 @@
 // <?php
 // defined('_JEXEC') or die;
 // const Item = require('../../models/item');
+const chalk = require('chalk');
+
 const Item = require('../../../../models/item');
 const remove_ancestor = require('./remove_ancestor');
 const removeSomething = require('./getData/remove_something');
@@ -8,22 +10,24 @@ const { alias_maker } = require('./getData/alias_maker');
 const { set_container } = require('./getData/container');
 const {exists} = require('./getData/exists');
 
-console.log("addMyInfo loaded!");
+const display_console = false;
+
+if(display_console) console.log("addMyInfo loaded!");
 
 const addMyInfo = async function(req, res)
 {
   //inStr,dsp_Dta
-  console.log("addMyInfo running!");
-  console.log("[addMyInfo] body ",req.body);
-  console.log("[addMyInfo] type ", typeof req.body.arc_input);
+  if(display_console) console.log("addMyInfo running!");
+  if(display_console) console.log("[addMyInfo] body ",req.body);
+  if(display_console) console.log("[addMyInfo] type ", typeof req.body.arc_input);
   //set up variables
   let has_info_ids = "false";// is this for early pairing? Do i need this again?
   // let pair_table = "false";
 
   // decode the json string
   let arc_input = JSON.parse(req.body.arc_input);
-  console.log("[user _id]",req.user._id);
-  console.log("[user id]",req.user.id);
+  if(display_console) console.log("[user _id]",req.user._id);
+  if(display_console) console.log("[user id]",req.user.id);
   arc_input.user_id = req.user.id;
 
   // get the display data category string (media, info, group)
@@ -61,7 +65,7 @@ const addMyInfo = async function(req, res)
 
     await item.save();
 
-    if(item) console.log("[controller add] successfully saved", item);
+    if(item) if(display_console) console.log("[controller add] successfully saved", item);
 
     // let alias_title = removeSomething(item.title_data,' ','-');
     // alias_title = alias_title.replace(/[^a-zA-Z0-9 -]/g, "");
@@ -79,10 +83,10 @@ const addMyInfo = async function(req, res)
 
     let update_obj = await alias_maker(item);
 
-    if(update_obj) console.log("[controller add] update successfully saved", update_obj);
+    if(update_obj) if(display_console) console.log("[controller add] update successfully saved", update_obj);
 
-    console.log("[item id] ObjectId",item._id);
-    console.log("[item id] ObjectId",String(item._id));
+    if(display_console) console.log("[item id] ObjectId",item._id);
+    if(display_console) console.log("[item id] ObjectId",String(item._id));
 
     let set_ancestor = exists(item.ancestor) ? item.ancestor : get_ancestor(req.body.display_data);
 
@@ -93,7 +97,7 @@ const addMyInfo = async function(req, res)
     });
 
   } catch (e) {
-    console.log("[controller add] error",e);
+    console.log(chalk.red("[controller add] error"),e);
 
     // using a 500 error stopped all other client side processes
     // res.status(500).json({

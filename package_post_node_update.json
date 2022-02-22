@@ -1,0 +1,42 @@
+{
+  "name": "landing-pages",
+  "version": "1.0.0",
+  "description": "### nginx setup [nginx server block](https://www.nginx.com/resources/wiki/start/topics/examples/server_blocks/)    server should already be set up to reverse proxy node js servers running express",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/inspectaTech/landing-pages.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/inspectaTech/landing-pages/issues"
+  },
+  "homepage": "https://github.com/inspectaTech/landing-pages#readme",
+  "devDependencies": {
+    "socket.io": "^2.3.0"
+  },
+  "dependencies": {
+    "axios": "^0.19.2",
+    "bcryptjs": "^2.4.3",
+    "chalk": "^2.4.2",
+    "cheerio": "^1.0.0-rc.3",
+    "cors": "^2.8.5",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "hbs": "^4.1.1",
+    "i": "^0.3.6",
+    "mongoose": "^5.11.4",
+    "passport": "^0.4.1",
+    "passport-facebook-token": "^3.3.0",
+    "passport-google-oauth20": "^2.0.0",
+    "passport-google-plus-token": "^2.1.0",
+    "passport-google-token": "^0.1.2",
+    "passport-jwt": "^4.0.0",
+    "passport-local": "^1.0.0",
+    "request": "^2.88.2"
+  }
+}

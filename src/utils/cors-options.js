@@ -1,22 +1,26 @@
 const dotenv = require('dotenv');
 const chalk = require('chalk');
+const { DOMAIN_NAME } = require('./keys');
+const display_console = false;
+
 dotenv.config();
 // var whitelist = ['http://example1.com', 'http://example2.com'];
 var whitelist = [
-  'https://sunzao.us',
-  'https://www.sunzao.us',
-  'https://beta.sunzao.us'
+  `https://${DOMAIN_NAME}`,
+  `https://www.${DOMAIN_NAME}`,
+  `https://beta.${DOMAIN_NAME}`,
+  `https://alt.${DOMAIN_NAME}`,
 ];
 
 if(process.env.NODE_ENV == "development"){
   whitelist.push('http://localhost:3000');
 }
 
-console.log(chalk.yellow(`[cors-options] whitelist `), whitelist);
+if(display_console || false) console.log(chalk.yellow(`[cors-options] whitelist `), whitelist);
 
 // this works
 // var corsOptions = {
-//   origin: 'https://sunzao.us',
+//   origin: `https://${DOMAIN_NAME}`,
 //   optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
 // }
 
@@ -26,18 +30,18 @@ console.log(chalk.yellow(`[cors-options] whitelist `), whitelist);
 const corsOptions = {
   methods: "GET,POST",
   origin: function (origin, callback) {
-    console.log("[cors origin]",origin);//sometimes its undefined
+    if(display_console || false) console.log("[cors origin]",origin);//sometimes its undefined
     if(!origin){
-      console.log(`[no origin detected]`,origin);
+      if(display_console || false) console.log(`[no origin detected]`,origin);
       return callback(null, true);
     }
 
-    console.log(`[checking origin] ${origin} against whitelist`);
+    if(display_console || false) console.log(`[checking origin] ${origin} against whitelist`);
     if (whitelist.indexOf(origin) !== -1) {
-      console.log(`[origin permitted]`,origin);
+      if(display_console || false) console.log(`[origin permitted]`,origin);
       callback(null, true)
     } else {
-      console.log(`[origin not permitted]`,origin);
+      if(display_console || false) console.log(`[origin not permitted]`,origin);
       callback('Not allowed by CORS')
     }//else
   }

@@ -93,16 +93,33 @@ border-bottom:2px solid #ccc !important;}
 .ql_column_cont{height:600px;overflow-y:auto; margin-top: 15px;}
 .ql_perm_btn_cont{min-height:45px;width:100%;}
 .ql_media_cont{
-  height:45px; width:100%; text-align: center; margin:1rem 0 .5rem;
-  display: flex; justify-content: center;
+  display: flex; 
+  justify-content: flex-start;
+  flex-flow: column nowrap;
+  height:100%; 
+  width:100%; 
+  text-align: center; 
+  margin:1rem 0 .5rem;
+  grid-area: ctrls;
+  gap: 1rem;
 }
 .ql_media_btn{}
 .quick_btn{margin: 0px auto !important;
     width: 40px !important;
     height: 40px !important;
-    border-radius: 50% !important;}
+    border-radius: 50% !important;
+    flex: 0 0 auto;
+  }
 .quick_btn:after{background-size: 30px 30px !important; height:35px !important; width:35px !important;
   margin-top:-17px !important; margin-left:-18px !important;}
+.quick_btn_imoon{
+  font-size: 2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: unset;
+  color: rgba(0,0,0,.3);
+}/* quick_btn_imoon */
 /*for the empty list items */
 .empty_list_H a{padding:1.33em;}
 

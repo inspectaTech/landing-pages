@@ -1,5 +1,9 @@
 $mp: !important;
 .basicProfile{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-flow: column;
   .basicProfile_image_cont{
     display:flex;
     justify-content: center;
@@ -11,10 +15,17 @@ $mp: !important;
       width: 12rem;
       height: 12rem;
       border: 1px solid #ccc;
+      cursor: pointer;
+      img{
+        object-fit: cover;
+      }// image
     }
   }
   .basicProfile_email_cont{
     margin-top: 2rem;
     h3, h4, h5{ text-align: center;  margin: unset $mp;}
+  }
+  .basicProfile_share{
+    margin-top: 2rem;
   }
 }

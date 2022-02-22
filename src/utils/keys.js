@@ -1,6 +1,7 @@
 const dotenv = require('dotenv');
-dotenv.config();// .env has to be in the site root to work
+dotenv.config();
 
+// NOTE: Deprecated - use ../../configuration/keys.js
 
 module.exports = {
   mongodb:{
@@ -12,8 +13,8 @@ module.exports = {
   },
   session:{
     cookieKey:process.env.SESSION_COOKIE_KEY
-  }
+  },
+  SITE_SERVER: process.env.SITE_SERVER,
+  DOMAIN_NAME: process.env.DOMAIN_NAME,
+  HOSTNAME: process.env.DOMAIN_NAME.split(".")[0],
 }
-
-// copied from oauth_server
-//https://medium.com/the-node-js-collection/making-your-node-js-work-everywhere-with-environment-variables-2da8cdf6e786

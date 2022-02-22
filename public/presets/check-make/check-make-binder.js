@@ -3,14 +3,15 @@ const chalk = require('chalk');
 const Item = require('../../../models/item');// ./check-make
 const User = require('../../../models/user');// centralized models
 const { alias_maker } = require('./alias_maker');
+const display_console = false;
 
 const check_make_binder = async ({user, binder, type, category}, rtn) => {
 
 try {
 
-  console.log(chalk.yellow('[check_make_binder] accessed'));
-  console.log(chalk.magenta('[check_make_binder] user'),user);
-  console.log(chalk.blue('[check_make_binder] binder'),binder);
+  if(display_console) console.log(chalk.yellow('[check_make_binder] accessed'));
+  if(display_console) console.log(chalk.magenta('[check_make_binder] user'),user);
+  if(display_console) console.log(chalk.blue('[check_make_binder] binder'),binder);
 
   let test_binder = { user_id: user._id, admin: 1, title_data: binder, root: 1, type}
 
@@ -23,7 +24,7 @@ try {
   if(!requested_binder){
 
     // here requested_binder == null
-    console.log(chalk.red('no requested_binder was found'));
+    if(display_console) console.log(chalk.red('no requested_binder was found'));
 
     let generic_date = ( new Date() ).getTime();
 
@@ -46,13 +47,13 @@ try {
     return update_obj;
   }else {
 
-    console.log(chalk.green('[requested_binder]'),requested_binder);
+    if(display_console) console.log(chalk.green('[requested_binder]'),requested_binder);
     return requested_binder;
 
   }
 
 } catch (e) {
-  console.log(chalk.red("[check-make-binder] an error occured"),e);
+  if(display_console) console.log(chalk.red("[check-make-binder] an error occured"),e);
 }
 
 }//check_make_binder

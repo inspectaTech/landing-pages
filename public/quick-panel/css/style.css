@@ -8,6 +8,9 @@
 ----------------------------------------------------- */
 
 #qp_sidebar {
+  display: grid;
+  grid-template-areas: "close""ctrls";
+  grid-template-rows: .5fr 8fr;
     width: 250px;
     position: fixed;
     top: 0;

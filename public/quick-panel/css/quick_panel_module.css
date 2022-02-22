@@ -3,7 +3,7 @@
   /***************************    Jquery Mobile css    ***************************/
   /**********  responsive panel modifications  *************/
   .qp_panel{background-color: transparent;position:fixed;}
-  .qp_close_cont{height:50px; display: flex; justify-content: flex-end;}
+  .qp_close_cont{height:50px; display: flex; justify-content: flex-end;grid-area: close;}
   .qp_panel_cls_btn{margin:10px !important;}
   .qp_panel.ui-panel, .qp_panel{width:5em !important;}/* fixes both when one side is open "side" Panel width*/
   .qp_panel.ui-panel-wrapper.ui-panel-animate.ui-panel-page-content-position-right.ui-bar-a

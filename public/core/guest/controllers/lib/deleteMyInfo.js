@@ -7,9 +7,11 @@
   const { get_container, check_container, set_container } = require('./getData/container');
   const {exists} = require('./getData/exists');
 
+  const display_console = false;
+
 	const deleteMyInfo = async function(req,res)
 	{
-    console.log(chalk.green("[deleteMyInfo] delete entered"));
+    if(display_console) console.log(chalk.green("[deleteMyInfo] delete entered"));
 
     try {
 
@@ -19,14 +21,14 @@
       let display_data = req.body.display_data;
       // display_data = dsp_Dta;
 
-      // console.log(chalk.blue('chalk is working'));
-      console.log(chalk.blue("[arc_input]"),arc_input);
+      // if(display_console) console.log(chalk.blue('chalk is working'));
+      if(display_console) console.log(chalk.blue("[arc_input]"),arc_input);
 
       //TODO:640 i need to check if the id belongs to the user
 
       // check to see if its the last item, if so remove collection indication
       let item_ancestor = await get_container(arc_input._id);//active or inactive
-      console.log(chalk.yellow('[item_ancestor]'),item_ancestor);// returns either an ObjectID or undefined - undefined will be for root items
+      if(display_console) console.log(chalk.yellow('[item_ancestor]'),item_ancestor);// returns either an ObjectID or undefined - undefined will be for root items
       //return ' item_ancestor = ' . item_ancestor;//works
   //
       // only authorized users should be able to delete
@@ -54,7 +56,7 @@
       if(container_status == "inactive")
       {
         let unset_container = await set_container(item_ancestor,"unset");
-        console.log(chalk.green("[unset container]"), unset_container);
+        if(display_console) console.log(chalk.green("[unset container]"), unset_container);
         //return ' unset_container results = ' . unset_container;//works
       }//end if
   //
@@ -69,7 +71,7 @@
       });
 
     } catch (e) {
-      console.log("[controller deleteMyInfo delete] error",e);
+      console.log(chalk.red("[controller deleteMyInfo delete] error"),e);
 
       // using a 500 error stopped all other client side processes
       // res.status(500).json({

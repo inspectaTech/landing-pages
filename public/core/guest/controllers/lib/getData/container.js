@@ -1,6 +1,6 @@
 
   // const Item = require('../../../models/item');
-  const Item = require('../../../../../models/item');
+  const Item = require('../../../../../../models/item');
     // exports:
     // get_container
     // check_container
@@ -42,7 +42,7 @@
   {
     let targ_item = cVar;
 
-    let container_setting = (sCMod == "set") ? 1 : 0;
+    let container_setting = (sCMod == "set" || sCMod == true) ? 1 : 0;
 
     let res = Item.findOneAndUpdate({ _id: targ_item }, {$set: { container: container_setting} });
 

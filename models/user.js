@@ -37,11 +37,10 @@ const userSchema = new Schema({
     password: {
       type: String,
     },
-    picture: {
+    image: {
       type: String,
-      lowercase: true
     },
-    picture_id: { type: Schema.Types.ObjectId },
+    image_id: { type: Schema.Types.ObjectId },
     email_id: { type: Schema.Types.ObjectId }
   },
   google: {
@@ -52,11 +51,10 @@ const userSchema = new Schema({
       type: String,
       lowercase: true
     },
-    picture: {
+    image: {
       type: String,
-      lowercase: true
     },
-    picture_id: { type: Schema.Types.ObjectId },
+    image_id: { type: Schema.Types.ObjectId },
     email_id: { type: Schema.Types.ObjectId }
   },
   facebook: {
@@ -67,11 +65,10 @@ const userSchema = new Schema({
       type: String,
       lowercase: true
     },
-    picture: {
+    image: {
       type: String,
-      lowercase: true
     },
-    picture_id: { type: Schema.Types.ObjectId },
+    image_id: { type: Schema.Types.ObjectId },
     email_id: { type: Schema.Types.ObjectId }
   }
 });

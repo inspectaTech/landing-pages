@@ -3,26 +3,29 @@
   const cheerio = require("cheerio");
   const url_tool = require("url");
   const chalk = require('chalk');
-  const keys = require('../../../configuration/keys');
+  // const keys = require('../../../configuration/keys');
+  const keys = require('../../../../../../configuration/keys');
+
+  const display_console = false;
 
   const get_youtube_data = async (obj, callback) => {
 
     let meta_data = {};
     // let url = obj.url;
-    console.log("[youtube url] = ",obj.url);
-    console.log("[new preview]");
+    if(display_console) console.log("[youtube url] = ",obj.url);
+    if(display_console) console.log("[new preview]");
 
-    console.log(chalk.blue("[new dotenv api key is]"),keys);
-    console.log(chalk.blue("[new youtube api key is]"),keys.youtube.APIKey);
+    if(display_console) console.log(chalk.blue("[new dotenv api key is]"),keys);
+    if(display_console) console.log(chalk.blue("[new youtube api key is]"),keys.youtube.APIKey);
 
     const url = url_tool.parse(obj.url,true);
 
-    console.log("[new url] = ",url);
+    if(display_console) console.log("[new url] = ",url);
     // const urlParams = new URLSearchParams(url.search);
     // const v_id = urlParams.get("v");
     let url_param_obj = url.query;//works
     let v_id = url_param_obj.v;//works
-    console.log(chalk.blue("[v_id]",v_id));
+    if(display_console) console.log(chalk.blue("[v_id]",v_id));
     // const v_id = url.searchParams.get("v");
 
     if(v_id == undefined){
@@ -41,7 +44,7 @@
     const api_url = `https://www.googleapis.com/youtube/v3/videos`;
     let req_url = `${api_url}?id=${v_id}&key=${api_key}&part=snippet`;
 
-    console.log("[api url] = ",req_url);
+    if(display_console) console.log("[api url] = ",req_url);
 
     let has_error = false;
     let error_msg = "";
@@ -50,7 +53,7 @@
     //   try {
     //     const browser = await puppeteer.launch({headless: true,devtools: true});
     //   } catch (e) {
-    //     console.log("[browser launch] error",e);
+    //     if(display_console) console.log("[browser launch] error",e);
     //     return callback(e,null);
     //   }
     // }
@@ -58,7 +61,7 @@
     // try {
     //   const page = await browser.newPage();
     // } catch (e) {
-    //   console.log("[newPage] error",e);
+    //   if(display_console) console.log("[newPage] error",e);
     //   return callback(e,null);
     // }
     // const browser = await puppeteer.launch({headless: true,devtools: true})
@@ -68,12 +71,12 @@
     // });
     //
     // if(has_error == true){
-    //   console.error("[browser] launch",error_msg);
+    //   if(display_console) console.error("[browser] launch",error_msg);
     //   try {
     //     await page.close();
-    //     console.error("[browser] closed: launch");
+    //     if(display_console) console.error("[browser] closed: launch");
     //   } catch (e) {
-    //     console.error("[browser] launch error closing browser",e);
+    //     if(display_console) console.error("[browser] launch error closing browser",e);
     //   }
     //   return callback(error_msg,null);
     // }
@@ -91,9 +94,9 @@
       // })
 
       // if(has_error == true){
-      //   console.error("[browser] newpage",error_msg);
+      //   if(display_console) console.error("[browser] newpage",error_msg);
       //   await page.close();
-      //   console.error("[browser] closed: newpage");
+      //   if(display_console) console.error("[browser] closed: newpage");
       //   return callback(error_msg,null);
       // }
     // try{
@@ -102,7 +105,7 @@
     // }
 
 
-    console.log("[goto time stamp] ",Date());
+    if(display_console) console.log("[goto time stamp] ",Date());
     // await page.goto(url, {waitUntil: 'networkidle2'})
     // await page.goto(url)//
     // await page.goto(req_url, {waitUntil: 'domcontentloaded',timeout:15000})//
@@ -112,14 +115,14 @@
     // });
 
     // if(has_error == true){
-    //   console.error("[browser] page goto",error_msg);
+    //   if(display_console) console.error("[browser] page goto",error_msg);
     //   await page.close();
-    //   console.error("[browser] closed: page goto");
+    //   if(display_console) console.error("[browser] closed: page goto");
     //   return callback(error_msg,null);
     // }
 
 
-    console.log("[starting content] ",Date());
+    if(display_console) console.log("[starting content] ",Date());
 
 
     // const res_obj = await page.content()
@@ -129,13 +132,13 @@
     // })
     //
     // if(has_error == true){
-    //   console.log(error_msg);
+    //   if(display_console) console.log(error_msg);
     //   await page.close();
     //   return callback(error_msg,null);
     // }
 
-    // page.on('console', msg => {
-    //   console.log("[page.on console] ",msg.text());
+    // page.on('if(display_console) console', msg => {
+    //   if(display_console) console.log("[page.on if(display_console) console] ",msg.text());
     // });
 
     // meta_data = await page.evaluate(async () =>
@@ -143,10 +146,10 @@
     request(req_url, async (error, response, html) => {
 
       if(error){
-        console.log("[request] response error",error);
+        console.log(chalk.red("[request] response error"),error);
         return callback(error,null);
       }
-      console.log("[page.evaluate] ",Date());
+      if(display_console) console.log("[page.evaluate] ",Date());
       let meta_obj = {};
       let ret_data = {};
       let data_array = ["title","image","description"];
@@ -155,26 +158,26 @@
       // let head = document.querySelector("head");// can i speed this up by only looking in the head section?
       // let meta_els = document.querySelectorAll("meta");
       // let meta_els = head.querySelectorAll("meta");
-      console.log("[pre select] ",Date());
+      if(display_console) console.log("[pre select] ",Date());
       // let pre_el = document.querySelector(`pre`);//
 
-      console.log("[response] body",response.body);
+      if(display_console) console.log("[response] body",response.body);
 
       // $ = cheerio.load(html);
 
-      // console.log("[cheerio] $",$);
+      // if(display_console) console.log("[cheerio] $",$);
 
       // let pre_el = $(`pre`);// pre_el
-      // console.log("[pre el]",pre_el);
+      // if(display_console) console.log("[pre el]",pre_el);
       //
       // let meta_str = pre_el.innerHTML;
 
-          console.log("[content ready] ",Date());
-          // console.log(`[res data] = ${meta_str}`);
+          if(display_console) console.log("[content ready] ",Date());
+          // if(display_console) console.log(`[res data] = ${meta_str}`);
 
           try{
             // meta_obj = JSON.parse(meta_str);
-            console.log("[response] type of",typeof response.body);
+            if(display_console) console.log("[response] type of",typeof response.body);
 
             // meta_obj = response.body;
             meta_obj = JSON.parse(response.body);
@@ -187,12 +190,12 @@
             // image: snippet.thumbnails.default.url
 
             ret_data = JSON.stringify(ret_data)
-            console.log(`[return data] = ${ret_data}`);
+            if(display_console) console.log(`[return data] = ${ret_data}`);
             return callback(null,ret_data);
 
           }catch(err){
             error_msg = `JSON error - not a json object ${err}`;
-            console.log("[page evaluate] fn catch",error_msg);
+            console.log(chalk.red("[page evaluate] fn catch"),error_msg);
 
             return callback({error:true, message:error_msg},null);
           }// catch
@@ -205,9 +208,9 @@
     // })
 
     // if(has_error == true){
-    //   console.error("[browser] page evaluate ",error_msg);
+    //   if(display_console) console.error("[browser] page evaluate ",error_msg);
     //   await page.close();
-    //   console.error("[browser] closed: page evaluate");
+    //   if(display_console) console.error("[browser] closed: page evaluate");
     //   return callback(error_msg,null);
     // }
 

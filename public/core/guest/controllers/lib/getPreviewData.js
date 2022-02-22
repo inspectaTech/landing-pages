@@ -2,12 +2,14 @@ const url_tool = require('url');
 const get_site_data =  require('./getData/get_site_data.js');
 const get_youtube_data = require('./getData/get_youtube_data.js');
 
+const display_console = false;
+
 const getPreviewData = async function (req, res)
 {
   // constroller - distribute by task
   try {
 
-    console.log("[req/post req.body]",req.body);
+    if(display_console) console.log("[req/post req.body]",req.body);
     let obj = req.body;
     let task = obj.task;
 
@@ -18,7 +20,7 @@ const getPreviewData = async function (req, res)
 
     let url_obj = url_tool.parse(url,true);
     let host = url_obj.host;
-    console.log(`[url obj] = ${JSON.stringify(url_obj)}`);
+    if(display_console) console.log(`[url obj] = ${JSON.stringify(url_obj)}`);
 
     let is_youtube = youtube_array.some((entry) => {
       return host.includes(entry);
@@ -26,7 +28,7 @@ const getPreviewData = async function (req, res)
 
     let site_type = (is_youtube) ? "youtube" : "other";
 
-    console.log("url = ",url);
+    if(display_console) console.log("url = ",url);
     switch (site_type) {
       case "youtube":
       if(url.indexOf("?" != -1)){
@@ -38,8 +40,8 @@ const getPreviewData = async function (req, res)
       get_youtube_data({url},(error,ret_obj) => {
 
         if(error){
-          console.log(error);
-          return res.send({error:true,message:error});
+          console.log(chalk.red("[getPreviewData] get_youtube_data an error occured"), error);
+          return res.send({error:true, message:error});
         }
 
         return res.send(ret_obj);
@@ -50,8 +52,8 @@ const getPreviewData = async function (req, res)
       get_site_data({url},(error,ret_obj) => {
 
         if(error){
-          console.log(error);
-          return res.send({error:true,message:error});
+          console.log(chalk.red("[getPreviewData] get_site_data an error occured"),error);
+          return res.send({error:true, message:error});
         }
 
         return res.send(ret_obj);
@@ -59,8 +61,8 @@ const getPreviewData = async function (req, res)
 
     }// switch
   } catch (e) {
-      console.log("[getPreviewData] an error occured ",e);
-      return res.send({error:true,message:e});
+      console.log(chalk.red("[getPreviewData] overall an error occured "),e);
+      return res.send({error:true, message:e});
   }
 
 }//getPreviewData

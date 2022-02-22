@@ -1,0 +1,282 @@
+$mp: !important;
+%grid_item{
+  min-height: 0;
+  min-width: 0;
+}
+.narr_wrapper{
+  height: 100%;
+  padding-bottom: .5rem;
+  .narr_cont{
+    display: flex;
+    flex-flow:column;
+    height: 100%;
+    --surround: #ddd; //#e9ecef;
+    border: thin solid var(--surround);
+    .narr_btn{justify-self:center; height: fit-content; font-size: 1.3rem; &.footer{align-self: flex-end; margin-bottom: .25rem;}}
+    .narr_header{
+      display: grid;
+      & > *{ @extend %grid_item; }
+      grid-template-areas: "users invite . video options";
+      grid-template-columns: 6fr 1fr 3fr 1fr 1fr;
+      align-items: center;
+      width: 100%;
+      background: rgba(239, 224, 47, 0.53);
+      .narr_users{
+        display: flex;
+        width: 100%;
+        grid-area: users;
+        // @extend %grid_item;
+        .narr_profile{
+          height: 3rem;
+          width: 3rem;
+          padding: .25rem;
+          // &:nth-child(2){ margin-left: -1rem;}
+          &:nth-child(1n+2){ margin-left: -1.5rem;}// every item - starts at 2
+          .image_area{width: 100%; height: 100%; border: unset;}
+          img, canvas{
+            height: 100%;
+            width: 100%;
+            min-height: unset;
+            border-width: .15rem;
+            object-fit: cover;
+            background: #fff;
+          }// img, canvas
+        }// narr_profile
+      }// narr_users
+      .narr_invite{grid-area: invite; /*@extend %grid_item;*/}
+      .narr_video{grid-area: video; font-size: 1.6rem $mp; /*@extend %grid_item;*/}
+      .narr_options{grid-area: options; font-size: 1.6rem $mp; /*@extend %grid_item;*/}
+
+    }// narr_header
+    .narr_content_cont{
+      flex: 1 auto;
+      height: 22rem;
+      overflow-y: auto;
+      height: 22rem;/* from flex - height this section fixes the Entry editor overflowing improperly*/
+      .narr_messages{
+        height: 100%;
+        .message{
+          @extend %message;
+        }//.message
+      }// narr_messages
+    }
+    .narr_footer{
+      display: grid;
+      & > *{ @extend %grid_item; }
+      position: relative;
+      height: fit-content;
+      grid-template-areas: "ctrls ctrls ctrls ctrls" "input . send options";
+      grid-template-columns: 8fr .5fr 1fr 1fr;
+      grid-template-rows: auto 1fr;
+      border-top: thin solid var(--surround);
+      // height: 10%;
+      padding: .5rem;
+      .narr_comment_ctrls{
+        display: flex;
+        justify-content: flex-start;
+        gap: 1rem;
+        padding: 0 .5rem;
+        grid-area: ctrls;
+        // @extend %grid_item;
+        &.visible{margin-bottom: .5rem;}
+        .comment_btn{
+          height: 1.7rem;
+          font-size: 1.3rem;
+          color: #6c757d;
+        }// comment_btn
+      }// narr_comment_ctrls
+      .narr_text{
+        //deprecated - when i was using an input - now using draftjs
+        grid-area:input;
+        // @extend %grid_item;
+        // position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 2rem;
+        padding:.25rem .5rem;
+        &:focus{outline-color: aquamarine;}
+
+        @extend %input_style;
+
+      }// narr_input
+      .narr_send{
+        grid-area: send;
+        // @extend %grid_item;
+        font-size: 1.6rem;
+      }// narr_send
+      .narr_options{
+        grid-area: options;
+        // @extend %grid_item;
+        &.icon-cross{color: #ccc;}
+      }// narr_options
+      .entry_editor{
+        grid-area: input;
+        // @extend %grid_item;
+      }
+    }// narr_footer
+  }// narr_cont
+}// narr_wrapper
+
+%input_style{
+  border-width: 1px;
+  border-style: solid;
+  background-color: #fff;
+  border-color: #ddd;
+  color: #333;
+  text-shadow: 0 1px 0 #f3f3f3;
+  box-shadow: inset 0 1px 3px rgba(0,0,0,.2);
+  border-radius: .3125em;
+}
+
+%message{
+  padding: .75rem 0;
+  &.viewer{
+    display: grid;
+    & > *{ @extend %grid_item; }
+    grid-template-areas:"message profile";
+    grid-template-columns: 8fr 1fr;
+    margin-left: 2rem;
+    .narr_message_profile, .narr_reply_profile{align-self: flex-end;}
+    .narr_message_content{border-bottom-right-radius: unset $mp;}
+  }
+  &.contact{
+    display: grid;
+    & > *{ @extend %grid_item; }
+    grid-template-areas:"profile message";
+    grid-template-columns: 1fr 8fr;
+    margin-right: 2rem;
+    .narr_message_profile, .narr_reply_profile{align-self: flex-start;}
+    .narr_message_content{border-top-left-radius: unset $mp;}
+  }
+  .narr_message_profile, .narr_reply_profile{
+    height: 2.5rem;
+    width: 2.5rem;
+    padding: .25rem;
+    grid-area: profile;
+    // @extend %grid_item;
+    justify-self: center;
+    .image_area{width: 100%; height: 100%; border: unset;}
+    img, canvas{
+      height: 100%;
+      width: 100%;
+      min-height: unset;
+      border-width: .15rem;
+      object-fit: cover;
+      background: #fff;
+    }// img, canvas
+  }// narr_message
+  .narr_message_content{
+    display: grid;
+    & > *{ @extend %grid_item; }
+    grid-template-areas: ". upper reply" ". inner reply" ". lower reply";
+    grid-template-columns: 1fr 9fr 1fr;
+    grid-template-rows: auto 1fr auto;
+    grid-area: message;
+    // @extend %grid_item;
+    border-radius: 1rem;
+    position: relative;
+    .inner{
+      grid-area: inner;
+      // @extend %grid_item;
+      // .draft_editor{padding: .5rem;}
+    }
+    .narr_reply_section{
+      display: grid;
+      & > *{ @extend %grid_item; }
+      grid-template-areas: "up_text up_btn";
+      grid-template-columns: 9fr auto;
+      grid-area: upper;
+      // @extend %grid_item;
+      padding: .5em 0;
+      &:empty{padding: unset $mp;}
+      .narr_reply{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+        flex-flow: row nowarp;
+        gap: .5rem;
+        grid-area: up_text;
+        // @extend %grid_item;
+        margin-bottom: -2%;// this will cut into the lower gap a little
+        .reply_ref{
+          // position:absolute;
+          // transform: scale(0.70);
+          // margin: 0 -15%;// there is some room to overflow
+          margin: .5rem auto 0;
+          padding: 0;
+          // width: 86%;
+          // min-width: 100%;
+          font-size: .8rem;
+          .narr_reply_profile_icon_img {
+            img{width:80%; height: 80%;}
+          }
+          .draft_editor.reply{ padding: .5rem .8rem; color: #000;}
+        }// reply_ref
+      }// narr_reply
+      .narr_un_reply{
+        width: 2rem $mp;
+        grid-area: up_btn;
+        // @extend %grid_item;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        position: absolute;
+        right: 0;
+        top: 1em;
+      }// narr_un_reply
+    }// narr_reply_section
+    .narr_reply_icon{
+      grid-area: reply;
+      // @extend %grid_item;
+      justify-self: center;
+      align-self: flex-end;
+      margin-bottom: .5rem;
+      color: #fff;
+      font-size: 1.2rem;
+    }
+    .narr_ref_section{
+      display: flex;
+      justify-content: center;
+      grid-area: lower;
+      // @extend %grid_item;
+      font-size: 20px;
+      padding: .5em 0;
+      &:empty{padding: unset $mp;}
+      .clip_wrapper, .clip_item{
+        font-size: .6em;
+        // width: 60%;
+        .clip_item{ 
+          img,canvas {
+            min-height: unset $mp;
+          }
+        }// clip_item
+      }// clip_wrapper
+    }// narr_ref_section
+  }// narr_message_content
+}// %message
+.narr_hidden_area{
+  // i want the hidden area to conceal the message_cont unless/until i create a btn to reveal it.
+  height: 0px;
+  overflow: hidden;
+  .preview_label{
+    font-size: .9rem;
+    display: inline-block;
+    /* margin-bottom: .5rem; */
+    margin: 0 1.5rem 0;
+    color: #ccc;
+  }
+  &.preview{height:unset; overflow:unset;
+  }
+  .narr_hidden_message_cont{
+    // im using the _cont to get an accurrate height from getBoundingClientRect().height
+    // position: absolute;
+    // top: -9999px;
+    // left: -9999px;
+    .message{
+      @extend %message;
+    }
+  }// narr_hidden_message_cont
+}// narr_hidden_area
+// [CSS tricks: useful snippets for your web project](https://www.ionos.com/digitalguide/websites/web-design/css-tricks-everyone-should-know/)

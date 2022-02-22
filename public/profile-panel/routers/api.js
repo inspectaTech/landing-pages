@@ -3,6 +3,7 @@
   const cors = require('cors');// make sure not just anyone can use my post requests
   const passport = require('passport');
   const passportJWT = passport.authenticate('jwt', {session: false, failureRedirect: '/auth'});
+  const display_console = false;
 
 
   const getUserDoc = require('../controllers/getUserDoc');
@@ -15,7 +16,7 @@
 
   // origin/api/
   router.all('/*', cors(corsOptions), passportJWT,  async (req, res, next) => {
-    console.log('[cors/passport] passed');
+    if(display_console || false) console.log('[cors/passport] passed');
     next();
   })
 
@@ -24,8 +25,8 @@
 
   router.post('/', async (req, res) => {
     //i need this protected by the new jw_token
-    console.log("[profile api] / api accessed");
-    console.log("[req.body]",req.body);
+    if(display_console || false) console.log("[profile api] / api accessed");
+    if(display_console || false) console.log("[req.body]",req.body);
 
     let task = req.body.task;
 
@@ -35,8 +36,8 @@
 
   router.get('/', async (req, res) => {
     //i need this protected by the new jw_token
-    console.log("[profile api] / api accessed");
-    console.log("[req.body]",req.body);
+    if(display_console || false) console.log("[profile api] / api accessed");
+    if(display_console || false) console.log("[req.body]",req.body);
 
     let task = req.body.task;
 

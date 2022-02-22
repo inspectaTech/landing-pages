@@ -9,7 +9,8 @@
   const chalk = require('chalk');
   // const {getPresetData} = require('../../../presets/getPresetData');
   const {getPresetData} = require('./getPresetData');
-  const {is_objectId_valid} = require('./check-make/is_objectId_valid');
+  const {is_objectId_valid} = require('../../core/check-make/is_objectId_valid');
+  const display_console = false;
   // const {removeSomething} = require('./getData/removeSomething');
 
   // this processes the url to deliver the item details to the view page
@@ -17,16 +18,16 @@
   {
     try {
 
-      console.log(chalk.yellow("[details route] user"),req.user);
+      if(display_console || false) console.log(chalk.yellow("[details route] user"),req.user);
 
-      console.log(chalk.red("[req params]"),req.params)
-      console.log(chalk.green("[params] val1"),req.params.val1);
-      console.log(chalk.green("[params] val2"),req.params.val2);
-      console.log(chalk.green("[params] val3"),req.params.val3);
+      if(display_console || false) console.log(chalk.red("[req params]"),req.params)
+      if(display_console || false) console.log(chalk.green("[params] val1"),req.params.val1);
+      if(display_console || false) console.log(chalk.green("[params] val2"),req.params.val2);
+      if(display_console || false) console.log(chalk.green("[params] val3"),req.params.val3);
 
       // http://localhost:3000/view/
       // view will still try to run the details view without any directing data - this prevents interval
-      // it also prevents view from showing the consoles js.map and css.map data
+      // it also prevents view from showing the if(display_console || false) consoles js.map and css.map data
       if(!req.params.val1 && !req.params.val2) return send_404(res);
 
 
@@ -41,7 +42,7 @@
       switch (is_objectId_valid(value_1)) {
         case true:
 
-        console.log(chalk.green("[params] val1 is valid"),req.params.val1);
+        if(display_console || false) console.log(chalk.green("[params] val1 is valid"),req.params.val1);
 
           // is it an item
           let item = await Item.findOne({ _id: value_1}).lean();
@@ -52,14 +53,14 @@
           // #17 5db0a8449e0bc559604e968b
           // #24 5db0ba1ce291b972cc3c5e72
 
-          // if its an item it should have any other params
+          // if its an item it shouldn't have any other params
           if(item && !value_2) return send_item(req, res, item);
 
           // if anything is added to the url send a 404
           // if its not an item it needs another param to properly locate an item
           if(item && value_2 || !item && !value_2){
-            console.log(chalk.red("[params] either val1 is an item and it has a 2nd value"));
-            console.log(chalk.red("[params] or 1 is not an item and there is no second value"));
+            if(display_console || false) console.log(chalk.red("[params] either val1 is an item and it has a 2nd value"));
+            if(display_console || false) console.log(chalk.red("[params] or 1 is not an item and there is no second value"));
             return send_404(res);
           }
 
@@ -70,24 +71,24 @@
           // this seems to support the former
 
           let valid_test = "smooth-jazz";
-          console.log(chalk.red(`[valid test] ${valid_test}`), is_objectId_valid(valid_test));
+          if(display_console || false) console.log(chalk.red(`[valid test] ${valid_test}`), is_objectId_valid(valid_test));
 
           if(!user || user && is_objectId_valid(value_2)){
-            console.log(chalk.red("[params] either val1 is not a user"),user);
-            console.log(chalk.red("[params] or val1 is a user and val2 is a valid id"),value_2, is_objectId_valid(value_2));
+            if(display_console || false) console.log(chalk.red("[params] either val1 is not a user"),user);
+            if(display_console || false) console.log(chalk.red("[params] or val1 is a user and val2 is a valid id"),value_2, is_objectId_valid(value_2));
             return send_404(res);
           }
 
           // !value_2 is covered above
           item = await Item.findOne({user_id: value_1, path: value_2}).lean();
 
-          console.log(chalk.magenta("[value_2 item]"),item);
+          if(display_console || false) console.log(chalk.magenta("[value_2 item]"),item);
 
           //if its not an item is it an attachment?
           // if(!item) // test to see if its a pair? how?
 
           if(!item){
-            console.log(chalk.red("[params] item not found by that pathname"));
+            if(display_console || false) console.log(chalk.red("[params] item not found by that pathname"));
             return send_404(res);
           }
           if(item) return send_item(req, res, item);
@@ -102,15 +103,15 @@
       }// switch
       // if it is an item and val2 && 3 are not undefined - send a 404
 
-      console.log(`[index] running!`);
+      if(display_console || false) console.log(`[index] running!`);
 
       // let data/
       //
-      // console.log(chalk.green("[data]"),data);
+      // if(display_console || false) console.log(chalk.green("[data]"),data);
 
 
     } catch (e) {
-      console.log(chalk.red("[view item details] error"),e);
+      if(display_console || false) console.log(chalk.red("[view item details] error"),e);
 
       res.json({
         message:"a [view item details] error occured",
@@ -122,17 +123,19 @@
   const send_item = async function (req, res, data) {
 
     // get preset
+    // if(display_console || false) console.log(chalk.cyan("[send_item] getPresetData",JSON.stringify(data)));
+    // if you wan't to display only published items filter that out here before getting preset data
     let preset = await getPresetData(data);
 
-    console.log(chalk.cyan("[vID req] protocol"),req.protocol);
-    console.log(chalk.cyan("[vID req] originalUrl"),req.originalUrl);//pathname
-    console.log(chalk.cyan("[vID req] url"),req.url);
+    if(display_console || false) console.log(chalk.cyan("[vID req] protocol"),req.protocol);
+    if(display_console || false) console.log(chalk.cyan("[vID req] originalUrl"),req.originalUrl);//pathname
+    if(display_console || false) console.log(chalk.cyan("[vID req] url"),req.url);
 
     var fullUrl = req.protocol + '://' + req.get('host') + req.originalUrl;
-    console.log(chalk.cyan("[vID req] fullUrl"),fullUrl);
+    if(display_console || false) console.log(chalk.cyan("[vID req] fullUrl"),fullUrl);
 
     let toolname = await get_tool_name(req.originalUrl);
-    console.log(chalk.cyan("[vID req] toolname"),toolname);
+    if(display_console || false) console.log(chalk.cyan("[vID req] toolname"),toolname);
 
     return res.render(toolname, {
       title:'details title',

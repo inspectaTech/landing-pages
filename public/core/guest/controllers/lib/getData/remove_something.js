@@ -1,6 +1,8 @@
 // const {removeSomething} = require('./getData/remove_something');
 const chalk = require('chalk');
 
+const display_console = false;
+
   const removeSomething = function(targ,char,repl)
   {
     /*
@@ -19,7 +21,7 @@ const chalk = require('chalk');
     let multi_converter = new RegExp(char + '+','g');//  '/'+ char + '+/g or / +/g
     curVal = curVal.replace(multi_converter,char); //convert all multispaces to space
 
-    console.log(chalk.yellow("[removeSomething] multi"),curVal);
+    if(display_console) console.log(chalk.yellow("[removeSomething] multi"),curVal);
 
     if(char == " "){
       // let start_converter = new RegExp('^' + char,'g');
@@ -27,16 +29,16 @@ const chalk = require('chalk');
       // let end_converter = new RegExp(char + '$','g');
       // curVal = curVal.replace (end_converter,"");  //and end / $/g
       curVal = curVal.trim();
-      console.log(chalk.yellow("[removeSomething] trim"),curVal);
+      if(display_console) console.log(chalk.yellow("[removeSomething] trim"),curVal);
     }//if
 
     if(repl != undefined && repl != ""){
       let replacer = new RegExp(char,'g');
       curVal = curVal.replace(replacer,repl);
-      console.log(chalk.yellow("[removeSomething] repl"),curVal);
+      if(display_console) console.log(chalk.yellow("[removeSomething] repl"),curVal);
     }
 
-    console.log(chalk.yellow("[removeSomething] final"),curVal);
+    if(display_console) console.log(chalk.yellow("[removeSomething] final"),curVal);
     return curVal;
   };//end removeSomething
 

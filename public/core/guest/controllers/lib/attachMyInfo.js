@@ -1,8 +1,11 @@
 
+  const chalk = require('chalk');
+
   // const Item = require('../../models/item');
   const Item = require('../../../../models/item');
   const { pairMyData } = require('./getData/pair');
-  const chalk = require('chalk');
+
+  const display_console = false;
 
 	const attachMyInfo = async function(req,res)
 	{
@@ -76,7 +79,7 @@
       }
       // return retData;
 
-      console.log(chalk.green("[attach my info]"));
+      if(display_console) console.log(chalk.green("[attach my info]"));
 
       res.json({
         data: retData,
@@ -85,7 +88,7 @@
 
 
     } catch (e) {
-      console.log("[controller attach] error",e);
+      console.log(chalk.red("[controller attach] error"),e);
 
       // using a 500 error stopped all other client side processes
       // res.status(500).json({
