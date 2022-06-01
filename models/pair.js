@@ -10,6 +10,14 @@ const pairSchema = new Schema({
     trim: true,
     default:""
   },
+  host_display: {
+    type: String,
+    trim: true,
+    default: "media"
+  },
+  host_project_id: {
+    type: Schema.Types.ObjectId
+  },
   link_id:{
     type: Schema.Types.ObjectId
   },
@@ -17,6 +25,14 @@ const pairSchema = new Schema({
     type: String,
     trim: true,
     default:""
+  },
+  link_display: {
+    type: String,
+    trim: true,
+    default: "media"
+  },
+  link_project_id: {
+    type: Schema.Types.ObjectId
   },
   owner_id:{
     type: Schema.Types.ObjectId
@@ -63,7 +79,7 @@ const pairSchema = new Schema({
     type: Boolean,
     default: false
   },
-  created: {
+  pair_created: {
     type: Date,
     default: Date.now,
     validate: {
@@ -72,7 +88,7 @@ const pairSchema = new Schema({
       }
     }
   },
-  modified: {
+  pair_modified: {
     type: Date,
     default: Date.now,
     validate: {
@@ -81,7 +97,7 @@ const pairSchema = new Schema({
       }
     }
   }
-},{timestamp: true, createdAt: "created", updatedAt: "modified"});
+},{timestamp: true, createdAt: "pair_created", updatedAt: "pair_modified"});
 
 
 const Pair = mongoose.model("pair", pairSchema);

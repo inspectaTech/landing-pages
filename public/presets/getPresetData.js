@@ -14,7 +14,7 @@
       const {check_make_item} = require('../../core/check-make/check-make-item');
       const {item_reducer} = require('../../core/check-make/item-reducer');
       const {unpair} = require('../../core/check-make/unpair');
-      const {exists} = require('../../core/check-make/exists');
+      const {exists, obj_exists} = require('../../core/check-make/exists');
       const preset_defaults = require('../../core/check-make/preset_defaults');
       const {sandwich_sorter} = require('../alight/controllers/lib/getData/sandwich_sorter');
       const { project_types, user_org } = require('../alight/controllers/lib/getData/types');
@@ -63,6 +63,9 @@
      * @requires presets-item-reducer
      * @see [add_presets]{@link module:getPresetData~add_presets}
      */
+
+    // GOTCHA: this needs protection from errors - if it doesn't find values it should do something
+
     const getPresetData = async function(dObj, rrn)
     {
       let { project_id, data_type, _id, title_data, preset_id, user_id} = dObj;
@@ -100,13 +103,24 @@
           // if(preset) preset_id = preset._id;// this seems redundant.  i had to have the preset_id to get the preset
         }// if
 
-          let project = await Project.findOne({ _id: project_id }).lean();
+        let project = await Project.findOne({ _id: project_id }).lean();
+
+        if (!project) {
+          console.log(chalk.red("[getPresetData] no project was found"), project);
+          console.log(chalk.red("[getPresetData] missing project_id"), project_id);
+          // if there is no project or no user - i need to send back some generic data and a way to fix the issue
+          // "orphaned" files - use 5f9b1bafb309802c1784e89e as the test project_id (in question)
+        }
 
           // for consistency it needs to fall back to the project owner's id not the item owner's id
         let user;
           try {
-            
+            // LATER: what happens if it doesn't find a user?
             user = await User.findOne({ _id: project.owner_id });// should throw an error if no user
+
+            if(!user) {
+              console.log(chalk.red("[getPresetData] no user was found"), user);
+            }
           } catch (error) {
             if (display_console || true) console.log(chalk.yellow("[getPresetData] project error"),error, project);
           }
@@ -179,17 +193,16 @@
 
         }else{
           // here the user._id is the project owner's (or organization's) id
-          preset = await check_make_preset({_id:user._id});
-          preset_id = preset._id;
+          preset = await check_make_preset({_id:user._id});// DOCS: depends on finding a user
+            preset_id = (obj_exists(preset,"_id")) ? preset._id : null;
           if(display_console || false) console.log(chalk.yellow("[getPresetData] using default preset_id"),preset_id);
         }// else
-
 
       }// if !preset
 
 
             // get all preset item's attachments (paired items) - returns an array of "Pair" data not "Item" data
-            let preset_attachments = await check_pair_items({user, host_id: preset_id, all: true}, true);
+            let preset_attachments = preset_id ? await check_pair_items({user, host_id: preset_id, all: true}, true) : null;
 
             if(display_console || false) console.log(chalk.yellow("[getPresetData] preset attachments"),preset_attachments);
 

@@ -2,6 +2,8 @@ const mongoose = require('mongoose');
 // const Schema = mongoose.Schema();
 const Schema = mongoose.Schema;
 
+// what does this button do?
+
 const promoSchema = new Schema({
   owner_id: {
     type: Schema.Types.ObjectId,

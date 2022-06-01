@@ -15,14 +15,17 @@ const passport = require('passport');
 const passportConfig = require('./oauth_server/passport');// OAUTH
 // const Keys = require('./utils/keys').mongodb;
 // const {SITE_SERVER, HOSTNAME} = require('./utils/keys');
+const display_console = false;
+if(display_console || true) console.log(process.versions);
+
 const Keys = require('../configuration/keys').mongodb;
 const { SITE_SERVER, HOSTNAME } = require('../configuration/keys');
 
 const corsOptions = require('./utils/cors-options.js');
 const process_memory = require('./utils/process_memory.js');
-const display_console = false;
 
 if(display_console || false) console.log(`[server] Keys`,Keys);
+
 
 // GOTCHA: make sure Keys hostname matches os.hostname (don't use subdomain name in .env file)
 if(display_console || true) console.log(`[server] key hostname`, HOSTNAME);

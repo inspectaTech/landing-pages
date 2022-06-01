@@ -32,7 +32,7 @@ const corsOptions = {
   origin: function (origin, callback) {
     if(display_console || false) console.log("[cors origin]",origin);//sometimes its undefined
     if(!origin){
-      if(display_console || false) console.log(`[no origin detected]`,origin);
+      if(display_console || true) console.log(`[no origin detected]`,origin);
       return callback(null, true);
     }
 
@@ -41,7 +41,7 @@ const corsOptions = {
       if(display_console || false) console.log(`[origin permitted]`,origin);
       callback(null, true)
     } else {
-      if(display_console || false) console.log(`[origin not permitted]`,origin);
+      if(display_console || true) console.log(`[origin not permitted]`,origin);
       callback('Not allowed by CORS')
     }//else
   }
@@ -54,3 +54,4 @@ module.exports = corsOptions;
 //   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
 //   next();
 // });
+// GOTCHA: postman shows "no origin detected"
