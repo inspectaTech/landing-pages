@@ -26,6 +26,7 @@
     // home_btn.target = "_self";
     sign_out_btn.addEventListener("click",() => {
       localStorage.removeItem('JWT_TOKEN');
+      sessionStorage.removeItem("project_token");
       axios.defaults.headers.common['Authorization'] = '';
 
       location.reload();

@@ -7,6 +7,7 @@
   "library_library",
   "bookmarks_bookmarks",
   "profile_profile",
+  "home_home",
   "recent_recent",
   "pin_pin",
   // "projects_projects"
@@ -45,6 +46,14 @@
       owner: true,
       guest: true
     },
+    "home_home": {
+      home: false,
+      icon: "home3",
+      name: "home",
+      type: "home",
+      owner: true,
+      guest: true
+    },
     "recent_recent":{
       home: false,
       icon: "clock",
@@ -73,7 +82,9 @@
 
   const default_prefs = {
     bookmarks: {
-        protected:["bookmarks","faith","recommended","community","events","discussions","wishlist","projects"],
+        protected:["bookmarks","faith","recommended","community","events",
+          "discussions","wishlist","projects", "issues","ideas"
+        ],
         active:"bookmarks",
         bookmarks:{
           icon:"bookmark2",
@@ -86,7 +97,8 @@
   }
 
   // feature no-fly list - items that appear hear won't be processed by feature section
-  const feature_restricted = ["library","profile","sunzao"];// recent is in question
+  const feature_restricted = ["library","profile","sunzao","home"];
+  // IMPORTANT recent is currently in QUESTION
   // docs @ lib/main/section prefs notes.md
 
 

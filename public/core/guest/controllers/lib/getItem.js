@@ -4,12 +4,14 @@ const chalk = require('chalk');
 const getItemData = require('./getData/getItemData');
 const {add_presets} = require('../../../../presets/getPresetData');
 const { getAdvData } = require('../../../../alight/controllers/lib/getData/getAdvData');
-const { set_container } = require('./getData/container');
+const { set_container, is_container } = require('../../../../alight/controllers/lib/getData/container');
+const { get_my_ancestors } = require('../../../../alight/controllers/lib/getData/get_my_ancestors');
 const { getPairObject, getInfoData } = require('./getData/get');
 const { getPureError } = require('./getData/error_manager');
-const { pairMyData } = require('./getData/pair');
+const { pairMyData } = require('../../../../alight/controllers/lib/getData/pair');
 const { add_auto_img } = require('./getData/add_auto_img');
 const { exists, obj_exists } = require('./getData/exists');
+const { backup_pair } = require('./getData/pair_item');
 const display_console = false;
 const ObjectId = mongoose.Types.ObjectId;
 /**
@@ -31,32 +33,70 @@ const getItem = async function(req, res){
 
   try {
 
-    if(display_console || false) console.log("addMyInfo running!");
-    if(display_console || false) console.log("[getItemInfo] body ",req.body);
-    if(display_console || false) console.log("[getItemInfo] body item_data id ",req.body.item_id);
+    if(display_console || true) console.log(chalk.bgMagenta("[getItem] guest running!"));
+    if(display_console || false) console.log("[getItem] body ",req.body);
+    if(display_console || false) console.log("[getItem] body item_data id ",req.body.item_id);
 
-    let item_id = req.body.item_id,
-    pair_id = req.body.pair_id || "",
-    pair,
+    let pair,
     item_data,
     // display_data = req.body.display_data,
     return_obj = {};
 
-    if (exists(pair_id)) {
+    let {
+      item_id = req.body.item_id,
+      pair_id = req.body.pair_id || "",
+      link_id,
+      host_id,
+      mode,
+      get_ancestors = false,
+    } = req.body;
+
+    if (exists(pair_id) || mode == "binder" || mode == "list") {
+
+      // let query = mode == "binder" ? {link_id: new ObjectId(link_id), host_id: new ObjectId(host_id)} : 
+      // { _id: new ObjectId(pair_id) };
+      let query, item_ids;
+      
+      switch(mode){
+        case "binder":
+            query = {link_id: new ObjectId(link_id), host_id: new ObjectId(host_id)};
+          break;
+
+        case "list":
+            item_ids = item_id.map((entry)=>{
+              // i tested the aggregate view - it has to be ObjectId
+              if (display_console || false) console.log(chalk.yellow("[getItem] item_id"), entry);
+              return new ObjectId(entry);
+            });
+
+            query = { _id: { "$in": item_ids } }
+            if (display_console || false) console.log(chalk.yellow("[getItem] query"), query);
+          break;
+
+        default:
+          query = { _id: new ObjectId(pair_id) };
+      }
+
       let pair_obj_ary = await getAdvData({
-        query: { _id: new ObjectId(pair_id) },
+        query,
         info_ids: true,
+        label: `[getItem]`,
       });// GOTCHA: merge failed - but i can run 2 requests instead
 
-      if (display_console || false) console.log(chalk.yellow("[getItem] agg. pair_obj_ary"), pair_obj_ary);
+      if (display_console || false) console.log(chalk.yellow("[getItem] pair_obj_ary"), pair_obj_ary);
 
       item_data = Array.isArray(pair_obj_ary) && pair_obj_ary[0] ? pair_obj_ary[0] : null;
 
     }// if
 
-    if(!item_data){
+    if(!item_data && mode != "list"){
+
+        if(display_console || false) console.log(chalk.bgCyan("[getItem] running new backup_pair!"));
       
-        item_data = await getItemData(item_id);
+        // item_data = await getItemData(item_id);
+        item_data = await backup_pair({ pair_id: item_id });
+
+        if (display_console || true) console.log(chalk.yellow("[getItem] item_data"), item_data);
   
         // get pair data
         let prep_pair_obj = await getPairObject(item_data, item_data.type/*, item_data.user_id*/);//preps a pair request using ancestor object
@@ -81,15 +121,24 @@ const getItem = async function(req, res){
       await set_container(item_data._id, "set");
     }// if
 
+    // this is kind of redundant - but i don't want to rely on info_ids only - i eventually want to DEPRECATE them
+      item_data['container'] = await is_container({id: item_data._id});
+      if(display_console || true) console.log(chalk.bgGreen("[getItem] container"),item_data.container);
+
     /**
      * @callback add_presets
      * @desc adds preset data to each item in the array of nested/related item data
      * @requires getPresetData
      */
-    await add_presets({rows:[item_data]});
-    await add_auto_img({rows:[item_data]});
+    if(item_data) await add_presets({rows:[item_data]});
+    if(item_data) await add_auto_img({rows:[item_data]});
 
-    if(display_console || false) console.log(chalk.green("[getItemInfo] item_data"),item_data);
+    if(get_ancestors){
+      let ancestor_list = await get_my_ancestors({ ancestor: item_data.host_id, root: false }, true);
+      item_data.ancestor_list = ancestor_list;
+    }// if
+
+    if(display_console || false) console.log(chalk.green("[getItem] item_data"),item_data);
 
     return_obj.data = item_data;
 
@@ -103,7 +152,7 @@ const getItem = async function(req, res){
 
     let err_obj = getPureError(err);
 
-    if (display_console || true){
+    if (display_console || false){
       // do nothing
       res.json({
         message: "an error occured",

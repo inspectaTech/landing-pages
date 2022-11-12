@@ -79,9 +79,10 @@
       if(data_type != undefined && project_types.includes(data_type)) project_id = _id;// data_type == "project"
       try {
 
-        let rerun = rrn || false;
-        let preset_items = [];
-        let preset;
+        let rerun = rrn || false,
+        preset_items = [],
+        preset, 
+        project_item;
 
         if(dObj.data_type == "preset"){
           // a presets dObj preset_id will always be itself, even if you try to set it to something else
@@ -140,7 +141,7 @@
           let preset_binder = 'project preset';
 
           // get the default public group binder
-          let project_item = await check_make_item(project_id, true);// deprecated - now there is a project item
+          project_item = await check_make_item(project_id, true);// deprecated - now there is a project item
           // get project item
 
           if(project_item && project_item.preset_id){
@@ -192,7 +193,7 @@
           }// if
 
         }else{
-          // here the user._id is the project owner's (or organization's) id
+          // here the user._id is the project owner's (or organization's) id - NOTE: not likely organization if its the users id
           preset = await check_make_preset({_id:user._id});// DOCS: depends on finding a user
             preset_id = (obj_exists(preset,"_id")) ? preset._id : null;
           if(display_console || false) console.log(chalk.yellow("[getPresetData] using default preset_id"),preset_id);
@@ -371,6 +372,7 @@
               // name: project.name,
               // alias: project.alias,
               // path: project.path
+              type: obj_exists(project_item,"data_type") ? project_item.data_type : "user",
               ...project
             }
 

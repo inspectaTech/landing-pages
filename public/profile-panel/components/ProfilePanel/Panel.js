@@ -41,3 +41,5 @@ const Panel = ({
 }
 
 export default Panel;
+
+// IMPORTANT: DOCS: FOR pp_sign_out click event, see pp_panel.hbs

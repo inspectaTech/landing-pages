@@ -17,7 +17,7 @@ const actionSchema = new Schema({
     unique: true,
     trim: true
   }
-})
+});
 
 const Action = mongoose.model("action", actionSchema);
 

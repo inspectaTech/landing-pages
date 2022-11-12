@@ -81,3 +81,53 @@ signToken.js
     return (raw) ? verifier : (verifier != undefined) ? { user_id: verifier.sub, project_id: verifier[`${project_claim}`] } : verifier;
   }
 ```
+
+#### adding new claims to the token
+
+I need to add editor_id to the token. it will test "network" collection to see if the user has been granted editor access
+LATER - projects need contacts so i can give editor access to certain users (also requires security)
+
+where is the project token processed?
+
+**/configuration/signToken.js**
+\_signProjectToken
+\_verifyToken
+
+update **signProjectToken** with a new claim to add to the token
+
+```
+  let editor_claim = `${namespace}editor_id`;
+  sign_data[`${editor_claim}`] = editor_id;
+```
+
+update **verifyToken** to output the new claim property to passport.js > JwtStrategy verification object
+
+```
+  let editor_claim = `${namespace}editor_id`;
+
+  ...
+
+  const verified_data = (verifier != undefined) ? { 
+    user_id: verifier.sub, 
+    project_id: verifier[`${project_claim}`],
+    editor_id: verifier[`${editor_claim}`],
+  } : null;
+```
+
+GOTCHA IMPORTANT NOTE: new claims still have to be added to JwtStrategy in passport.js to appear in req.user
+
+**src/oauth_server/passport.js**
+```
+  passport.use( new JwtStrategy({
+
+    ...
+
+    let namespace = "https://sunzao.us/";
+
+    // check for the existence of a project_id
+    let project_claim = `${namespace}project_id`;
+    if(payload[`${project_claim}`]){
+      if(display_console || false) console.log(chalk.yellow(`[JwtStrategy] project_claim detected`),payload);
+      user.project_id = payload[`${project_claim}`];
+    }
+```

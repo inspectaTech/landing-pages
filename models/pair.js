@@ -35,9 +35,12 @@ const pairSchema = new Schema({
     type: Schema.Types.ObjectId
   },
   owner_id:{
+    /**is this owner the link owner or the host owner? - i think its the link owner 
+     * - the host owner should be the editor since they have to have permission to attach the link to the host */
     type: Schema.Types.ObjectId
   },
   editor_id:{
+    /**also the host owner */
     type: Schema.Types.ObjectId
   },
   pair_order:{
@@ -53,9 +56,20 @@ const pairSchema = new Schema({
     default: 0
   },
   pair_caption: {
-    type: String,
-    trim: true,
-    default: ""
+    type: Schema.Types.Mixed,
+    text: {
+      type: String,
+      trim: true,
+      default: "",
+    },
+    mode: {
+      type: String,
+      trim: true,
+      default: "owner",
+    },
+    editor: {
+      type: Schema.Types.ObjectId
+    }
   },
   pair_pin: {
     type: Boolean,
@@ -68,6 +82,14 @@ const pairSchema = new Schema({
     type: Date,
   },
   pair_pin_archive: {
+    type: Boolean,
+    default: false
+  },
+  pair_news: {
+    type: Boolean,
+    default: false,//LATER - see also getData/pair_item.js and getRecent.js
+  },
+  primary: {
     type: Boolean,
     default: false
   },
@@ -96,7 +118,10 @@ const pairSchema = new Schema({
         return true;
       }
     }
-  }
+  },
+  init_date: {
+    type: Date,
+  },
 },{timestamp: true, createdAt: "pair_created", updatedAt: "pair_modified"});
 
 

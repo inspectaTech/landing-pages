@@ -63,15 +63,21 @@ mongoose.set('useCreateIndex', true);
 //routers
 // const landingpagesRouter = require("./routers/lead-pages");
 const appspagesRouter = require("../public/apps/routers/apps");
+
 const detailsPagesRouter = require("../public/alight/routers/details/details");
 const detailsApi = require("../public/alight/routers/details/api");
 const arcPagesRouter = require("../public/alight/routers/alight");
 const arcAPIRouter = require("../public/alight/routers/api");
+
 const ppAPIRouter = require("../public/profile-panel/routers/api");
+
 const businessRouter = require("../public/business/routers/business");
+
 const updraftRouter = require("../public/updraftjs/routers/updraft");
 const updraftApi = require("../public/updraftjs/routers/api");
+
 const rocketRouter = require("../public/rocket/routers/rocket");
+
 const oauthClientRouter = require('../public/oauth_client/routers/auth');
 const oauthServerRouter = require('./oauth_server/routers/oauth');
 // const liftoffRouter = require("../public/rocket/routers/liftoff");
@@ -81,6 +87,7 @@ const oauthServerRouter = require('./oauth_server/routers/oauth');
 
 
 // if(display_console || false) console.log('forecast = ',forecast);
+
 
 if(display_console || false) console.log(`[dirname]`,__dirname);
 if(display_console || false) console.log(`[dirname public path]`,path.join(__dirname,"../public"));

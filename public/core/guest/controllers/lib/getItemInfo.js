@@ -20,16 +20,21 @@
 
   const getItemInfo = async function(req, res)
   {
-
+    // DEPRECATED - currently using getMyInfo
     // id_match();// run this first if the idPairs.json file hasn't been created
     // migrate_to_db(req);
     // migrate_pairs(req);
     // migrate_urls(req);
 
     // migrate_dates(req);
+  try {
 
-    if(display_console || true) console.log("getItemInfo running!");
+    throw "[getItemInfo] is this thing on?";
+    return;
+
+    if(display_console || true) console.log(chalk.bgCyan("[getItemInfo] running!"));
     if(display_console || true) console.log(chalk.cyan("[getItemInfo] body "),req.body);
+    console.log(`[getItemInfo] is this thing working?`);
     // if(display_console || false) console.log("[addMyInfo] type ", typeof req.body.arc_input);
 
     // let my_data = req.body.my_data;
@@ -71,7 +76,7 @@
 
     if(display_console || false) console.log(chalk.yellow("[i am root]"),my_data.root);
 
-    try {
+    
       // let updated = await Item.update({"order":0}, {$set:{desc_data: ""}}, {multi:true});// worked
       // let updated = await Item.update({"order":0}, {$unset:{desc_data: ""}}, {multi:true});// worked
       // let updated = await Item.updateMany({}, {desc_data: ""});// worked

@@ -7,6 +7,7 @@
 
   const display_console = false;
 
+  // DEPRECATED? - i don't think i use this at all
 	const attachMyInfo = async function(req,res)
 	{
 

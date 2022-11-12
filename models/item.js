@@ -106,7 +106,7 @@
     },
     task_data: {
       type: Schema.Types.Mixed,
-      default: {ids:[], data:{}, display: false}
+      default: {ids:[], data:{}, display: true, section: false}
     },
     links_enabled: {
       type: Boolean,
@@ -192,6 +192,10 @@
       default: false
     },
     published: {
+      type: Boolean,
+      default: false
+    },
+    news: {
       type: Boolean,
       default: false
     },
