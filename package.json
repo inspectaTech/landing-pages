@@ -69,7 +69,7 @@
     "metascraper-url": "^5.25.5",
     "mongoose": "^5.12.7",
     "nodemon": "^2.0.7",
-    "npm": "^6.14.9",
+    "npm": "^9.4.1",
     "passport": "^0.4.1",
     "passport-facebook-token": "^3.3.0",
     "passport-google-oauth20": "^2.0.0",
