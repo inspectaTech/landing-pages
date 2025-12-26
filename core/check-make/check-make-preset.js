@@ -2,6 +2,7 @@
   // const User = require('../../../../models/user');// centralized models
   const Item = require('../../models/item');// centralized models
   const User = require('../../models/user');// centralized models
+  const { pair_item } = require('../../public/core/guest/controllers/lib/getData/pair_item');
   const { alias_maker } = require('./alias_maker');
   const preset_defaults = require('./preset_defaults');
   const display_console = false;
@@ -25,8 +26,8 @@
 
   try {
 
-    if(display_console || false) console.log(chalk.yellow('[check_make_preset] accessed'));
-    if(display_console || false) console.log(chalk.magenta('[check_make_preset] user'),user);
+    if(display_console || false) console.log(chalk.yellow('[core/check_make_preset] accessed'));
+    if(display_console || false) console.log(chalk.magenta('[core/check_make_preset] user'),user);
 
     // see if it has an preset id
     let requested_preset;
@@ -43,7 +44,7 @@
     if(!requested_preset){
 
       // here requested_preset == null
-      if(display_console || false) console.log(chalk.magenta('[check_make_preset] no requested_preset was found'));
+      if(display_console || false) console.log(chalk.magenta('[core/check_make_preset] no requested_preset was found'));
 
       let generic_date = ( new Date() ).getTime();
 
@@ -66,15 +67,18 @@
         tool:{
           name: preset_defaults.preset.default.tool.name,
           template: preset_defaults.preset.default.tool.template
-        }
+        },
+        project_id: _id,
       }
 
       // test_preset = {...test_preset, ...additions};
-      let newItem = new Item(test_preset);
+      // let newItem = new Item(test_preset);
+      // await newItem.save();// does this need lean(); ?
 
-      await newItem.save();// does this need lean(); ?
+      let newItem = await Item.create(test_preset);
+      await pair_item({item: newItem});
 
-      if(display_console || false) console.log(chalk.green('[check_make_preset] newItem'),newItem);
+      if(display_console || false) console.log(chalk.green('[core/check_make_preset] newItem'),newItem);
 
       let update_obj = await alias_maker(newItem);
 
@@ -87,12 +91,12 @@
 
     }else {
 
-      if(display_console || false) console.log(chalk.green('[check_make_preset] requested_preset'),requested_preset);
+      if(display_console || false) console.log(chalk.green('[core/check_make_preset] requested_preset'),requested_preset);
       return requested_preset;
     }
 
   } catch (e) {
-    if(display_console || false) console.log(chalk.red("[check_make_preset] an error occured"),e);
+    console.log(chalk.red("[core/check_make_preset] an error occured"),e);
   }
 
   }//check_make_preset

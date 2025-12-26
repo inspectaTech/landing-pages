@@ -7,7 +7,7 @@
   const Item = require('../../models/item');// centralized models
   const chalk = require('chalk');
   const removeSomething = require('./remove_something');
-  const display_console = true;
+  const display_console = false;
 
   /**
    * @module oas-alias-maker

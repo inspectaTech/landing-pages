@@ -10,13 +10,14 @@ var whitelist = [
   `https://www.${DOMAIN_NAME}`,
   `https://beta.${DOMAIN_NAME}`,
   `https://alt.${DOMAIN_NAME}`,
+  `https://test.${DOMAIN_NAME}`,
 ];
 
 if(process.env.NODE_ENV == "development"){
   whitelist.push('http://localhost:3000');
 }
 
-if(display_console || false) console.log(chalk.yellow(`[cors-options] whitelist `), whitelist);
+if(display_console || 1) console.log(chalk.yellow(`[cors-options] whitelist `), whitelist);
 
 // this works
 // var corsOptions = {
@@ -30,7 +31,7 @@ if(display_console || false) console.log(chalk.yellow(`[cors-options] whitelist 
 const corsOptions = {
   methods: "GET,POST",
   origin: function (origin, callback) {
-    if(display_console || false) console.log("[cors origin]",origin);//sometimes its undefined
+    if(display_console || 1) console.log("[cors origin]",origin);//sometimes its undefined
     if(!origin){
       if(display_console || true) console.log(`[no origin detected]`,origin);
       return callback(null, true);

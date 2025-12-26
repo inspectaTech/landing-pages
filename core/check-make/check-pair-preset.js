@@ -22,8 +22,8 @@
 
     try {
 
-      if(display_console || false) console.log(chalk.yellow('[check_pair_preset] accessed'));
-      if(display_console || false) console.log(chalk.magenta('[check_pair_preset] user'),user);
+      if(display_console || false) console.log(chalk.yellow('[core/check_pair_preset] accessed'));
+      if(display_console || false) console.log(chalk.magenta('[core/check_pair_preset] user'),user);
 
       // check to see if already paired
       let find_all = all || false;
@@ -39,7 +39,7 @@
         pair_obj = {host_id, owner_id: user._id, editor_id: user._id, link_type};
         requested_pair = await Pair.findOne(pair_obj).lean();
       }
-      if(display_console || false) console.log(chalk.yellow("[check_pair_preset] requested_pair"),requested_pair);
+      if(display_console || false) console.log(chalk.yellow("[core/check_pair_preset] requested_pair"),requested_pair);
 
       if(rtn){
         return requested_pair;
@@ -58,20 +58,20 @@
 
         let newPair = new Pair(pair_obj);
         await newPair.save();
-        if(display_console || false) console.log(chalk.green("[check_pair_preset] newPair"),newPair);
+        if(display_console || false) console.log(chalk.green("[core/check_pair_preset] newPair"),newPair);
 
         let lean_newPair = newPair.toObject();
 
         return lean_newPair;
 
       }else{
-        if(display_console || false) console.log(chalk.green("[check_pair_preset] a requested_pair was found"),requested_pair);
+        if(display_console || false) console.log(chalk.green("[core/check_pair_preset] a requested_pair was found"),requested_pair);
         return requested_pair;
       }
 
 
     } catch (e) {
-      if(display_console || false) console.log(chalk.red("[check-pair-preset] an error occured"),e);
+      console.log(chalk.red("[check-pair-preset] an error occured"),e);
     }
 
   }//check_pair_preset

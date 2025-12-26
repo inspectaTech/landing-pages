@@ -44,7 +44,10 @@ const pair_item = async ({item, test=false, upsert=true}) => {
       "admin": item.admin || false,
       "pair_priority": item.priority || 0,
       "pair_caption": {text: item.caption || "", mode: "default", editor: item.owner_id},
+      "pair_container": item.container || 0,
       "attachment": false,
+      "primary": true,
+      "pair_news": item.news || false,// see also models/pair.js and getRecent.js
     };
 
     if(test){
@@ -67,6 +70,11 @@ const pair_item = async ({item, test=false, upsert=true}) => {
 
 }// pair_item
 
+/** 
+ * @DOCS backup_pair
+ * create a pair record for this item if one doesn't exist and return a valid adv pair item
+ * used in getMoreInfo pair_obj = await backup_pair({ pair_id });
+*/
 const backup_pair = async ({pair_id}) => {
   let item = await Item.findOne({_id: pair_id});
   let pair_obj_ary;

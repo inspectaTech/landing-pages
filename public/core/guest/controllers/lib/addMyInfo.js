@@ -18,8 +18,8 @@ const addMyInfo = async function(req, res)
 {
   //inStr,dsp_Dta
   if(display_console) console.log("addMyInfo running!");
-  if(display_console) console.log("[addMyInfo] body ",req.body);
-  if(display_console) console.log("[addMyInfo] type ", typeof req.body.arc_input);
+  if(display_console) console.log("[guest/addMyInfo] body ",req.body);
+  if(display_console) console.log("[guest/addMyInfo] type ", typeof req.body.arc_input);
   //set up variables
   let has_info_ids = "false";// is this for early pairing? Do i need this again?
   // let pair_table = "false";

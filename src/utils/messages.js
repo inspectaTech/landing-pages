@@ -7,8 +7,10 @@
     const {getPresetData} = require('../../public/presets/getPresetData');
     const display_console = false;
 
+    const ObjectId = mongoose.Types.ObjectId;
+
     async function formatMessage({user, project_id, user_id, room, msg, color, save = false}){
-      let message_id = mongoose.Types.ObjectId();
+      let message_id = new ObjectId();
       let time = new Date().getTime()// date and time in ms
       let {payload, item_id, preset_id, ref_id, reply_id} = msg;
       // save msg to the db

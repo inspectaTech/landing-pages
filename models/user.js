@@ -41,7 +41,11 @@ const userSchema = new Schema({
       type: String,
     },
     image_id: { type: Schema.Types.ObjectId },
-    email_id: { type: Schema.Types.ObjectId }
+    email_id: { type: Schema.Types.ObjectId },
+    verified: {
+      type: Boolean,
+      default: false
+    },
   },
   google: {
     id:{
@@ -55,7 +59,11 @@ const userSchema = new Schema({
       type: String,
     },
     image_id: { type: Schema.Types.ObjectId },
-    email_id: { type: Schema.Types.ObjectId }
+    email_id: { type: Schema.Types.ObjectId },
+    verified: {
+      type: Boolean,
+      default: false
+    },
   },
   facebook: {
     id:{
@@ -69,7 +77,11 @@ const userSchema = new Schema({
       type: String,
     },
     image_id: { type: Schema.Types.ObjectId },
-    email_id: { type: Schema.Types.ObjectId }
+    email_id: { type: Schema.Types.ObjectId },
+    verified: {
+      type: Boolean,
+      default: false
+    },
   }
 });
 
@@ -101,7 +113,7 @@ userSchema.pre('save', async function (next) {
 
 userSchema.methods.isValidPassword = async function (newPassword) {
   try {
-    console.log("this.local.password",this.local.password);
+    console.log("[user] this.local.password",this.local.password);
     console.log("newPassword",newPassword);
 
     return await bcrypt.compare(newPassword, this.local.password)

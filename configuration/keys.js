@@ -1,8 +1,10 @@
 const dotenv = require('dotenv');
 dotenv.config();// .env has to be in the site root to work
 
-console.log(`[Keys] db`, typeof `${process.env.MONGODB_LIVE_DB}/${process.env.DATABASE}`, `${process.env.MONGODB_LIVE_DB}/${process.env.DATABASE}`);
-
+// IMPORTANT - never use in production
+// reveals db login info
+// console.log(`[Keys] db`, typeof `${process.env.MONGODB_LIVE_DB}/${process.env.DATABASE}`, `${process.env.MONGODB_LIVE_DB}/${process.env.DATABASE}`);
+// IMPORTANT - never use in production
 
 module.exports = {
   JWT_SECRET: process.env.JWT_SECRET,
@@ -21,7 +23,7 @@ module.exports = {
     liveURI:`${process.env.MONGODB_LIVE_TASK_URI}`,
     db:`${process.env.MONGODB_LOCAL_DB}/${process.env.DATABASE}`,
     liveDB:`${process.env.MONGODB_LIVE_DB}/${process.env.DATABASE}`,
-    localhost:`${process.env.MONGODB_LOCALHOST_DB}/${process.env.DATABASE}`
+    localhost:`${process.env.MONGODB_LOCALHOST_DB}/${process.env.DATABASE}?directConnection=true`
   },
   session:{
     cookieKey:process.env.SESSION_COOKIE_KEY
@@ -33,7 +35,11 @@ module.exports = {
   SITE_SERVER: process.env.SITE_SERVER,
   DOMAIN_NAME: process.env.DOMAIN_NAME,
   HOSTNAME: process.env.DOMAIN_NAME.split(".")[0],
+  invite_only: process.env.INVITE_ONLY,
+  LINK_LIMIT: process.env.LINK_LIMIT || "3",
+  DKIM: process.env.DKIM,
 }
 
 
 //https://medium.com/the-node-js-collection/making-your-node-js-work-everywhere-with-environment-variables-2da8cdf6e786
+// https://stackoverflow.com/questions/59162342/mongodb-connection-error-mongotimeouterror-server-selection-timed-out-after-30

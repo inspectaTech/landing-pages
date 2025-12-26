@@ -21,6 +21,10 @@ const prefSchema = new Schema({
       }
     }
   },
+  trending:{
+    type: Array,
+    default: []
+  },
   filter: {
     "m-0":{
       type: String,

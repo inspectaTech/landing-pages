@@ -61,21 +61,20 @@
       trim: true,
       default: ""
     },
-    note_data: {
-      type: String,
-      trim: true,
-      default: ""
-    },
     note_enabled: {
       type: Boolean,
       default: true
     },
     note_data: {
+      type: Schema.Types.Mixed,
+      default: {editor: "", text_data: ""}
+    },
+    caption: {
       type: String,
       trim: true,
       default: ""
     },
-    caption: {
+    wim: {
       type: String,
       trim: true,
       default: ""
@@ -85,9 +84,8 @@
       default: false
     },
     code_data: {
-      type: String,
-      trim: true,
-      default: ""
+      type: Schema.Types.Mixed,
+      default: {editor: "", text_data: ""}
     },
     tag_data: {
       type: Array,
@@ -182,6 +180,20 @@
     },
     event_data: {
       type: Schema.Types.Mixed,
+      label: {
+        type: String,
+        default: "event"
+      },
+      active:{
+        type: Boolean,
+        default: false
+      }, 
+      start: {
+        type: Date,
+      },
+      end: {
+        type: Date,
+      },
     },
     icon: {
       type: String,
@@ -243,7 +255,7 @@
     filter: {
       type: String,
       trim: true,
-      default:"alpha"
+      default:"custom_created"
     },
     alias:{
       type: String,
@@ -271,6 +283,18 @@
     archive: {
       type: Boolean,
       default: false
+    },
+    progress: {
+      type: Schema.Types.Mixed,
+      active: {
+        type: Boolean,
+        default: false
+      },
+      status: {
+        type:String,
+        trim: true,
+        default: "pending"
+      }
     },
     deprecated_data:{
         type: Schema.Types.Mixed,

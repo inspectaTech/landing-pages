@@ -7,11 +7,11 @@ const display_console = false;
 
 const detachMyInfo = async function(req, res)
 {
-  let error_msg = "[detachMyInfo] error: ";
+  let error_msg = "[guest/detachMyInfo] error: ";
 
   try {
 
-  if(display_console) console.log(chalk.yellow(`[detachMyInfo] body`),req.body);
+  if(display_console) console.log(chalk.yellow(`[guest/detachMyInfo] body`),req.body);
 
   let dtchStr = req.body;// .data
 

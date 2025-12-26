@@ -70,9 +70,24 @@
 .profile_panel_icon_box{
   grid-area:right;
   display:grid;
-  grid-template-areas:"home core ctrl ctrl";
+  grid-template-areas:"note home core ctrl ctrl";
+  gap: .5rem;
   // grid-template-columns: repeat( auto-fit, minmax(25px, 1fr) );// not needed, works fine without this
-  .pp_panelHomeBtn{grid-area:home;}
+  .pp_panelHomeBtn{
+    grid-area:home;
+    &.dash-text {
+      display: flex;
+      align-items: center;
+      border: 2px solid #fff;//var(--status-active-lt);
+      padding: 0 .25rem;
+      border-radius: 5px;
+      font-size: .9rem;
+      background-color: #acacac;
+      color: #fff;// var(--status-active-lt);
+      text-shadow: none;
+      font-weight: 300;
+    }
+  }// pp_panelHomeBtn
   .pp_panelCtrl{grid-area:ctrl; width: 4rem;}
   .portable_core_cont{grid-area:core;}
 

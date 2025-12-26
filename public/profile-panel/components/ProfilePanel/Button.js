@@ -1,5 +1,8 @@
 import { useEffect } from "react";
-
+/**
+ * DEPRECATED
+ * IMPORTANT: see views pp_btn.hbs for active pp_panelHomeBtn
+ */
 const Button = ({
   uuid
 }) => {
@@ -12,9 +15,12 @@ const Button = ({
   // }, []);
   const sidebar_id = `pp_sidebar${uuid}`;
   return (
-    <div id="profile_panel_icon_box" class="profile_panel_icon_box" >
-      <a id="pp_panelHomeBtn" class="pp_panelHomeBtn icon-home d3-ico d3-disc d3-disc-outer d3-disc d3-disc-outer-outer d3-disc-bg"
+    <div id="profile_panel_icon_box" class="profile_panel_icon_box" data-comp="ProfilePanel">
+      {/* <a id="pp_panelHomeBtn" class="pp_panelHomeBtn icon-home d3-ico d3-disc d3-disc-outer d3-disc d3-disc-outer-outer d3-disc-bg"
         title="home" style="text-decoration: none;">
+      </a> */}
+      <a id="pp_panelHomeBtn" class="pp_panelHomeBtn dash-text"
+        title="home" style="text-decoration: none;">dashboard
       </a>
       <div id="pp_panelCtrl" class="pp_panelCtrl pp_panelBtn icon-user d3-ico d3-disc d3-disc-outer d3-disc d3-disc-outer-outer d3-disc-bg"
         title="profile panel controls"

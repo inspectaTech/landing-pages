@@ -5,8 +5,10 @@
   // const recent = require('./recent');
   // const {exists} = require('./exists');
   const {default_prefs} = require('./default_prefs');
-  const display_console = false;
   const {is_objectId_valid} = require('./is_objectId_valid');
+  const display_console = false;
+
+  const ObjectId = mongoose.Types.ObjectId;
 
 
   /**
@@ -21,21 +23,21 @@
 
     // if(display_console || false) console.log('UsersController.secret() called!');
     if(display_console || false) console.log(chalk.green('I managed to get here'));
-    if(display_console || false) console.log(chalk.yellow('[check_make_prefs] _id '),_id);
+    if(display_console || 0) console.log(chalk.yellow('[core/check_make_prefs] _id '),_id);
     // res.json({secret: 'resource'})
-    // let oid = mongoose.Types.ObjectId()
+    // let oid = new ObjectId()
     try {
 
-    let is_valid = await is_objectId_valid(_id);// this isn't working
-    if(display_console || false) console.log("[check_make_prefs] ObjectId valid",is_valid);
+      let is_valid = await is_objectId_valid(_id);// this isn't working
+      if(display_console || 0) console.log("[core/check_make_prefs] ObjectId valid",is_valid);
 
-    // if(!is_valid) throw "[check-make-prefs] _id ObjectId is invalid";
-    // ISSUE: fix is_objectId_valid - its returning false for valid ids
+      // if(!is_valid) throw "[check-make-prefs] _id ObjectId is invalid";
+      // ISSUE: fix is_objectId_valid - its returning false for valid ids
 
-    let prefs;
+      let prefs;
 
       prefs = await Pref.findOne({_id}).lean();
-      if(display_console || false) console.log(chalk.magenta("[Pref]"),prefs);
+      if(display_console || 0) console.log(chalk.magenta("[Pref]"),prefs);
 
       //if you get here its valid
       if(!prefs){
@@ -66,7 +68,7 @@
         return prefs;
 
     } catch (e) {
-      let error_msg = "[check_make_prefs] an error occured";
+      let error_msg = "[core/check_make_prefs] an error occured";
       console.error(chalk.red(error_msg),e);
       return {
         error: true,

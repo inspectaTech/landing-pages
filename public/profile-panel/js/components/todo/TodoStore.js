@@ -51,6 +51,6 @@ class TodoStore {
 
 }//TodoStore
 
-var store = window.store = new TodoStore;
+var todo = window.todo = new TodoStore;
 
-export default store;
+export default todo;

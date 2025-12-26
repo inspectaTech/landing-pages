@@ -2,6 +2,7 @@
   // const User = require('../../../../models/user');// centralized models
   const Item = require('../../models/item');// centralized models
   const User = require('../../models/user');// centralized models
+  const { pair_item } = require('../../public/core/guest/controllers/lib/getData/pair_item');
   const { alias_maker } = require('./alias_maker');
   const display_console = false;
 
@@ -23,33 +24,33 @@
   const check_make_email = async ({user}, rtn) => {
 
     // , method, type, category, title, email
-
-    let method = user.method;
-    let type = "info";
-    let category = "email";
-    let title = `${method} login email`;
-    let email = user[method].email;
-
     try {
 
-      if(display_console || false) console.log(chalk.yellow('[check_make_email] accessed'));
-      if(display_console || false) console.log(chalk.magenta('[check_make_email] user'),user);
-      if(display_console || false) console.log(chalk.blue('[check_make_email] email'),email);
+      let method = user.method;
+      let type = "info";
+      let category = "email";
+      let title = `${method} login email`;
+      let email = user[method].email;
+
+
+      if(display_console || 0) console.log(chalk.yellow('[core/check_make_email] accessed'));
+      if(display_console || 0) console.log(chalk.magenta('[core/check_make_email] user'),user);
+      if(display_console || 0) console.log(chalk.blue('[core/check_make_email] email'),email);
 
       // see if it has an email id
       let requested_email;
       let has_email_item = (typeof user[method].email_id != "undefined") ? true: false;
-      if(display_console || false) console.log(chalk.yellow("[check make email] has_email_item id = "), has_email_item);
+      if(display_console || 0) console.log(chalk.yellow("[check make email] has_email_item id = "), has_email_item);
 
       //
       if(has_email_item){
 
         // see if it still exists
         requested_email = await Item.findOne({ _id: user[method].email_id }).lean();
+        if(display_console || 0) console.log(chalk.green('[check-make-email] requested_email'),requested_email);
       }
 
       if(rtn && requested_email){
-        if(display_console || false) console.log(chalk.green('[check-make-email] requested_email'),requested_email);
         // can i do this only if requested_email value exists?
         return requested_email;
       }
@@ -79,13 +80,16 @@
           data_type: "email",
           category,
           ancestor: user._id,/*email_binder._id,*/
-          alias: generic_date
+          alias: generic_date, 
+          project_id: user._id,
         }
 
         // test_email = {...test_email, ...additions};
-        let newItem = new Item(test_email);
+        // let newItem = new Item(test_email);
+        // await newItem.save();// does this need lean(); ?
 
-        await newItem.save();// does this need lean(); ?
+        let newItem = await Item.create(test_email);
+        await pair_item({item: newItem});
 
         if(display_console || false) console.log(chalk.green('[check-make-email] newItem'),newItem);
 
@@ -112,7 +116,7 @@
       }
 
     } catch (e) {
-      if(display_console || false) console.log(chalk.red("[check-make-email] an error occured"),e);
+      console.log(chalk.red("[check-make-email] an error occured"),e);
     }// catch
 
   }//check_make_email

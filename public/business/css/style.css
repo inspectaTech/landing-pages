@@ -336,7 +336,6 @@ body.sticky-shrinknav-wrapper .sticky-shrinknav-header .sticky-shrinknav-header-
   transition: all 0.5s ease;
   background: url("../images/architecture-big-apple-buildings-2579705.png") black center top no-repeat;
   background-attachment: fixed;
-  transform: translateZ(-1px) scale(1.01);
   background-size: auto 75%; }
 
 .sticky-shrinknav-header.fix_me {

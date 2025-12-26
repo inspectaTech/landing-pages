@@ -1,6 +1,7 @@
 
 const chalk = require('chalk');
 const Item = require('../../../../../../models/item');
+const { getAdvData } = require('../../../../../alight/controllers/lib/getData/getAdvData');
 const { exists, obj_exists } = require('./exists');
 
 
@@ -15,6 +16,9 @@ const get_auto_img = async (item) => {
   if (display_console || false) console.log(chalk.green(`[get_auto_img] item`), item.title_data);
 
   let info_ids = item.info_ids;// use itself so i don't have to test for an empty string
+  if (display_console || false) console.log(chalk.green(`[get_auto_img] info_ids`), item.info_ids);
+
+
   try {
     info_ids = info_ids.split(",");
   } catch (error) {
@@ -23,17 +27,33 @@ const get_auto_img = async (item) => {
 
   let query = {};
 
+  // using getAdvData doesn't actually need info_ids but since there here...
   if (exists(info_ids) && Array.isArray(info_ids) && info_ids.length > 0) {
-    query[`$or`] = [{ ancestor: item._id }, { _id: { $in: info_ids } }];
+    query[`$or`] = [{ host_id: item._id }, { pair_id: { $in: info_ids } }];
   } else {
-    query = { ...query, ancestor: item._id }
+    query = { ...query, host_id: item._id }
   }
 
-  query = { ...query, img_url: { $ne: "" } };
+  let query2 = { img_url: { $ne: "" } };
 
   if (display_console || false) console.log(chalk.green(`[get_auto_img] query`), query);
 
-  let iDta = await Item.findOne({ ...query }).sort([[["created"], [-1]]]).lean();
+  // let iDta = await Item.findOne({ ...query }).sort([[["created"], [-1]]]).lean();
+
+  let pair_obj_ary = await getAdvData({
+    query,
+    limit: 1,
+    query2,
+    sort: { pair_created: -1 },
+    label: "[get_auto_img] pair",
+    // vp: true,// view (console.log) pipeline
+    // vq: true,
+    // vs: true,
+  });
+  
+  let iDta = Array.isArray(pair_obj_ary) && pair_obj_ary[0] ? pair_obj_ary[0] : null;
+
+
   // let iDta = await Item.findOne({ $or: [{ancestor: item._id} , {_id:{ $in: info_ids }}], img_url: { $ne: "" }, img_url: { $ne: null } }).sort([[["created"], [-1]]]).lean();
   // let iDta = await Item.findOne({ ancestor: item._id, img_url: { $ne: "" }, img_url: { $ne: null } }).sort([[["created"], [-1]]]).lean();
   if (display_console || false) console.log(chalk.cyan(`[get_auto_img] iDta`), iDta.title_data, iDta.img_url);
@@ -57,8 +77,9 @@ const add_auto_img = async ({rows}) => {
       let alt_img = await get_auto_img(item);
 
       if (alt_img){
+        if (display_console || false) console.log(chalk.cyan(`[add_auto_img] alt_img`), alt_img);
         item.alt_img = alt_img;
-        if (display_console || false) console.log(chalk.cyan(`[add_auto_img] alt img`), item.title_data, item.alt_img);
+        if (display_console || false) console.log(chalk.cyan(`[add_auto_img] item alt_img`), item.title_data, item.alt_img);
       }
       // db.getCollection('items').findOne({ $or: [ {ancestor: ObjectId("5e2d883a6be8ab12f02ed94b")} , {ancestor:{ $in: [] }}], img_url: { $ne: "" }, img_url: { $ne: null } })
       // $or:[{access:{$in:[user_id]}}, {access:{$eq:[]}}] }

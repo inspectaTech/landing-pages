@@ -40,6 +40,10 @@ module.exports = {
       path: path.resolve(__dirname,'js','dist'),
       publicPath: 'components/com_arc/xfiles/js/dist/'
   },
+  watch: true,
+  watchOptions: {
+    ignored: ['files/**/*.js', 'node_modules/**']
+  },
   devtool: isProd ? false : 'cheap-module-eval-source-map',
   plugins:[
     /*new BundleAnalyzerPlugin(),*/

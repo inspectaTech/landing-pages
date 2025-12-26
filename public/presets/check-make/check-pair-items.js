@@ -33,22 +33,26 @@
       return requested_pair;
     }
 
-    if(!exists(requested_pair)){
-      pair_obj.link_id = link_id;
+    if(!exists(requested_pair) /*&& !exists(link_id)*/){
+      // don't make a pair without a link_id
+      if(display_console) console.log(chalk.green("[check_pair_items] no requested_pair was found or created"),requested_pair);
+      return requested_pair;
+    // } else if(!exists(requested_pair) && exists(link_id)){
+      // pair_obj.link_id = link_id;
 
-      if(exists(host_type)){
-        pair_obj.host_type = host_type;
-      }
+      // if(exists(host_type)){
+      //   pair_obj.host_type = host_type;
+      // }
 
-      pair_obj.admin = admin;// admin generated pair
+      // pair_obj.admin = admin;// admin generated pair
 
-      let newPair = new Pair(pair_obj);
-      await newPair.save();
-      if(display_console) console.log(chalk.green("[check_pair_items] newPair"),newPair);
+      // let newPair = new Pair(pair_obj);
+      // await newPair.save();
+      // if(display_console) console.log(chalk.green("[check_pair_items] newPair"),newPair);
 
-      let lean_newPair = newPair.toObject();
+      // let lean_newPair = newPair.toObject();
 
-      return lean_newPair;
+      // return lean_newPair;
 
     }else{
       if(display_console) console.log(chalk.green("[check_pair_items] a requested_pair was found"),requested_pair);

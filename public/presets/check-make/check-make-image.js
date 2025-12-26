@@ -2,6 +2,7 @@
   // const User = require('../../../../models/user');// centralized models
   const Item = require('../../../models/item');// centralized models ./check-make
   const User = require('../../../models/user');// centralized models  ./check-make
+const { pair_item } = require('../../core/guest/controllers/lib/getData/pair_item');
   const { alias_maker } = require('./alias_maker');
   const {exists} = require('./exists');
   const display_console = false;
@@ -65,9 +66,11 @@
       }
 
       // test_image = {...test_image, ...additions};
-      let newItem = new Item(test_image);
+      // let newItem = new Item(test_image);
+      // await newItem.save();
 
-      await newItem.save();
+      let newItem = await Item.create(test_image);
+      await pair_item({item: newItem});
 
 
       // add the new image to the user image_id

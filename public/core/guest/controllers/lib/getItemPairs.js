@@ -15,9 +15,9 @@ const display_console = false;
   {
 
       if(display_console) console.log("addMyInfo running!");
-      if(display_console) console.log("[getItemPairs] body ",req.body);
-      if(display_console) console.log("[getItemPairs] body item_data ",req.body.item_data);
-      if(display_console) console.log("[getItemPairs] body item_data id ",req.body.item_data._id);
+      if(display_console) console.log("[guest/getItemPairs] body ",req.body);
+      if(display_console) console.log("[guest/getItemPairs] body item_data ",req.body.item_data);
+      if(display_console) console.log("[guest/getItemPairs] body item_data id ",req.body.item_data._id);
       // if(display_console) console.log("[addMyInfo] type ", typeof req.body.arc_input);
 
     let item_data = req.body.item_data,
@@ -47,7 +47,7 @@ const display_console = false;
       // let updated = await Item.updateMany({}, {desc_data: ""});// worked
       // let updated = await Item.updateMany({}, {$rename:{"description": "desc_data"}});//failed until schema
 
-        if(display_console) console.log("[ancestor] searching....");
+        if(display_console) console.log("[guest/getItemPairs][ancestor] searching....");
         // [using equals](https://docs.mongodb.com/manual/reference/operator/query/eq/#op._S_eq)
 
         // NO ITEM DATA
@@ -61,7 +61,7 @@ const display_console = false;
         return_obj.filter = (ancestor_obj && ancestor_obj.filter != undefined) ? ancestor_obj.filter : "alpha";
 
 
-      if(display_console) console.log("[updating many]");
+      if(display_console) console.log("[guest/getItemPairs][updating many]");
 
 
 
@@ -83,11 +83,11 @@ const display_console = false;
 
       // for data and full modes
       // data_mode == "data"
-      if(display_console) console.log(chalk.yellow("[rows] length"),rows.length);
+      if(display_console) console.log(chalk.yellow("[guest/getItemPairs][rows] length"),rows.length);
       // this section is deprecated
       for(let y = 0; y < rows.length; y++)
       {
-        if(display_console) console.log(chalk.yellow("[rows] for loop entered..."));
+        if(display_console) console.log(chalk.yellow("[guest/getItemPairs][rows] for loop entered..."));
         //I have to get this on a case by case basis.
         //get my pair data
 
@@ -169,8 +169,8 @@ const display_console = false;
         }// for
 
         //if hold_me array is not empty pass its data in string form to a data getter
-        if(display_console) console.log(chalk.magenta(`[item_data ancestor]`),item_data._id);
-        if(display_console) console.log(chalk.magenta(`[hold_me]`),hold_me);
+        if(display_console) console.log(chalk.magenta(`[guest/getItemPairs][item_data ancestor]`),item_data._id);
+        if(display_console) console.log(chalk.magenta(`[guest/getItemPairs][hold_me]`),hold_me);
         if(hold_me.length != 0 && isValid(hold_me[0]))
         {
           //get the info_data
@@ -182,7 +182,7 @@ const display_console = false;
 
             hold_ary = [...hold_ary, ...attached_items];
           }
-          if(display_console) console.log(chalk.magenta(`[hold_ary] after`),hold_ary, typeof hold_ary);
+          if(display_console) console.log(chalk.magenta(`[guest/getItemPairs][hold_ary] after`),hold_ary, typeof hold_ary);
         }//if
 
         //merge the data attachment array with the data rows array
@@ -256,7 +256,7 @@ const display_console = false;
       });
 
     } catch (err) {
-      console.log(chalk.red("[update Many ] error"),err);
+      console.log(chalk.red("[guest/getItemPairs][update Many ] error"),err);
 
       res.json({
         message:"an error occured",

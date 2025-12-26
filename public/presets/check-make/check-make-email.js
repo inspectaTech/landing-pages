@@ -2,6 +2,7 @@
   // const User = require('../../../../models/user');// centralized models
   const Item = require('../../../models/item');// centralized models ./check-make
   const User = require('../../../models/user');// centralized models  ./check-make
+const { pair_item } = require('../../core/guest/controllers/lib/getData/pair_item');
   const { alias_maker } = require('./alias_maker');
   const display_console = false;
 
@@ -68,9 +69,11 @@
       }
 
       // test_email = {...test_email, ...additions};
-      let newItem = new Item(test_email);
+      // let newItem = new Item(test_email);
+      // await newItem.save();
 
-      await newItem.save();
+      let newItem = await Item.create(test_email);
+      await pair_item({item: newItem});
 
       let update_obj = await alias_maker(newItem);
 

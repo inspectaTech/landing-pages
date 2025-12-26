@@ -1,5 +1,7 @@
 /*
-    DEMO STYLE
+    DEMO STYLE DEPRECATED
+    i think its using the one found in css/style.scss
+    idk why i moved it
 */
 
 
@@ -70,9 +72,16 @@
 .profile_panel_icon_box{
   grid-area:right;
   display:grid;
-  grid-template-areas:"home core ctrl ctrl";
+  grid-template-areas:"note home core ctrl ctrl";
   // grid-template-columns: repeat( auto-fit, minmax(25px, 1fr) );// not needed, works fine without this
-  .pp_panelHomeBtn{grid-area:home;}
+  .pp_panelHomeBtn{
+    grid-area:home;
+    &.dash-text{
+      border: 2px solid white;
+      padding: 0 .25rem;
+      border-radius: 5px;
+    }
+  }// pp_panelHomeBtn
   .pp_panelCtrl{grid-area:ctrl; width: 4rem;}
   .portable_core_cont{grid-area:core;}
 

@@ -57,6 +57,30 @@ const pairSchema = new Schema({
   },
   pair_caption: {
     type: Schema.Types.Mixed,
+    active: {
+      type: Boolean,
+      default: true
+    },
+    text: {
+      type: String,
+      trim: true,
+      default: "",
+    },
+    mode: {
+      type: String,
+      trim: true,
+      default: "owner",
+    },
+    editor: {
+      type: Schema.Types.ObjectId
+    }
+  },
+  pair_wim: {
+    type: Schema.Types.Mixed,
+    active: {
+      type: Boolean,
+      default: true
+    },
     text: {
       type: String,
       trim: true,
@@ -89,6 +113,22 @@ const pairSchema = new Schema({
     type: Boolean,
     default: false,//LATER - see also getData/pair_item.js and getRecent.js
   },
+  pair_solution: {
+    type: Boolean,
+    default: false,
+  },
+  pair_contrast: {
+    type: Boolean,
+    default: false,
+  },
+  pair_alt_types: {
+    type: Array,
+    default: [],
+  },
+  pair_container: {
+    type: Boolean,
+    default: false
+  },
   primary: {
     type: Boolean,
     default: false
@@ -100,6 +140,40 @@ const pairSchema = new Schema({
   attachment: {
     type: Boolean,
     default: false
+  },
+  pair_featured: {
+    type: Schema.Types.Mixed,
+    active: {
+      type: Boolean,
+      default: false
+    },
+    recommended: {
+      type: Boolean,
+      default: false
+    },
+    expires: {
+      type: Boolean,
+      default: true
+    },
+    date: {
+      type: Date,
+      default: Date.now,
+    },
+    expiration: {
+      type: Date,
+      default: Date.now,
+    }
+  },
+  pair_trending: {
+    type: Schema.Types.Mixed,
+    active: {
+      type: Boolean,
+      default: false
+    },
+    date: {
+      type: Date,
+      default: Date.now,
+    }
   },
   pair_created: {
     type: Date,

@@ -62,6 +62,15 @@ const commentSchema = new Schema({
       type: Number
     }
   },
+  topic_id: {
+    type: Schema.Types.ObjectId,
+    validate: {
+      validator: (value) => {
+        // make sure ObjectId is valid
+        return true;
+      }
+    }
+  },
   reply_id: {
     type: Schema.Types.ObjectId,
     validate: {

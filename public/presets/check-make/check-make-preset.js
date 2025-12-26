@@ -7,6 +7,7 @@
   const {is_objectId_valid} = require('./is_objectId_valid');
   const {exists} = require('./exists');
   const keys = require('./keys');
+  const { pair_item } = require('../../core/guest/controllers/lib/getData/pair_item');
   const display_console = false;
 
   const check_make_preset = async ({user, method, type = "info", category = "preset", title = "default preset"}, rtn) => {
@@ -64,9 +65,12 @@
         if(display_console) console.log(chalk.yellow('making preset'),test_preset);
 
         // test_preset = {...test_preset, ...additions};
-        let newItem = new Item(test_preset);
+        // let newItem = new Item(test_preset);
+        // await newItem.save();
 
-        await newItem.save();
+        let newItem = await Item.create(test_preset);
+        // pair the new preset
+        await pair_item({item: newItem});
 
         let update_obj = await alias_maker(newItem);
 

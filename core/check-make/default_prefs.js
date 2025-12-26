@@ -3,13 +3,15 @@
   */
 
   const default_sections = [
-  "sunzao_sunzao",
+  // "sunzao_sunzao",// always shows for everyone
+  // "admin_admin",// always shows for editors
   "library_library",
   "bookmarks_bookmarks",
   "profile_profile",
   "home_home",
   "recent_recent",
   "pin_pin",
+  // "activity_activity",
   // "projects_projects"
   ];
 
@@ -20,7 +22,7 @@
       name: "sunzao",
       type: "sunzao",
       owner: true,
-      guest: true
+      guest: "public"// ignores anything else
     },
     "library_library":{
       home: true,
@@ -28,7 +30,7 @@
       name: "library",
       type: "library",
       owner: true,
-      guest: true
+      guest: "published"
     },
     "bookmarks_bookmarks":{
       home: false,
@@ -36,7 +38,7 @@
       name: "bookmarks",
       type: "bookmarks",
       owner: true,
-      guest: true
+      guest: "public"
     },
     "profile_profile":{
       home: false,
@@ -44,7 +46,7 @@
       name: "profile",
       type: "profile",
       owner: true,
-      guest: true
+      guest: "public"
     },
     "home_home": {
       home: false,
@@ -52,7 +54,7 @@
       name: "home",
       type: "home",
       owner: true,
-      guest: true
+      guest: "public"
     },
     "recent_recent":{
       home: false,
@@ -60,7 +62,7 @@
       name: "recent",
       type: "recent",
       owner: true,
-      guest: true
+      guest: "public"
     },
     "pin_pin":{
       home: false,
@@ -68,7 +70,7 @@
       name: "pin",
       type: "pin",
       owner: true,
-      guest: false
+      guest: "published"
     },
     "projects_projects":{
       home: false,
@@ -76,14 +78,22 @@
       name: "projects",
       type: "projects",
       owner: true,
-      guest: false
-    }
+      guest: "published",
+    },
+    // "activity_activity":{
+    //   home: false,
+    //   icon: "doing",
+    //   name: "activity",
+    //   type: "activity",
+    //   owner: true,
+    //   guest: "public"
+    // }
   };
 
   const default_prefs = {
     bookmarks: {
         protected:["bookmarks","faith","recommended","community","events",
-          "discussions","wishlist","projects", "issues","ideas"
+          "discussions","wishlist","projects", "issues","ideas", "activity"
         ],
         active:"bookmarks",
         bookmarks:{

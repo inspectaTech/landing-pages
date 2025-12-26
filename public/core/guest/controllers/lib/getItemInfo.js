@@ -29,12 +29,12 @@
     // migrate_dates(req);
   try {
 
-    throw "[getItemInfo] is this thing on?";
+    throw "[guest/getItemInfo] is this thing on?";
     return;
 
-    if(display_console || true) console.log(chalk.bgCyan("[getItemInfo] running!"));
-    if(display_console || true) console.log(chalk.cyan("[getItemInfo] body "),req.body);
-    console.log(`[getItemInfo] is this thing working?`);
+    if(display_console || true) console.log(chalk.bgCyan("[guest/getItemInfo] running!"));
+    if(display_console || true) console.log(chalk.cyan("[guest/getItemInfo] body "),req.body);
+    console.log(`[guest/getItemInfo] is this thing working?`);
     // if(display_console || false) console.log("[addMyInfo] type ", typeof req.body.arc_input);
 
     // let my_data = req.body.my_data;
@@ -124,7 +124,7 @@
         // im not sure if i need the type or not. (it may not matter if attachments aren't typed - which they aren't)
 
         if(exists(search_value)){
-          // if(display_console || false) console.log(chalk.yellow("[getItemInfo] adding search_value"));
+          // if(display_console || false) console.log(chalk.yellow("[guest/getItemInfo] adding search_value"));
           query['$text'] = { "$search": search_value };// works
 
         }//if

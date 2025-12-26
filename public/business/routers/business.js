@@ -26,6 +26,16 @@ const corsOptions = require('../../../src/utils/cors-options');// use the main o
   //   })
   // })
 
+  router.options('/*', cors(corsOptions),function(req,res){
+    // GOTCHA: this is required so i don't have to use crossorigin in img, link, and style tags
+    // i don't see this triggering
+    if(display_console || false) console.log(chalk.bgYellow('[alight route] setting Access-Control header'));
+    //if it gets through run this script
+    res.setHeader("Access-Control-Allow-Origin",`*`);///firebasejs/3.6.0/firebase.js
+    // res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    res.end();
+  });
+
   router.get('/business', cors(corsOptions), (req, res) => {
     // res.send('Hello express!')
     res.render('business', {

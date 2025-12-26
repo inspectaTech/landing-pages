@@ -45,3 +45,17 @@ fix:  i has to update 'A' record on cloudflare's dns server
 ```
   nodemon src/index.js
 ```
+
+#### total landing pages install list
+
+```
+  npm i axios bcryptjs chalk cheerio cors dotenv express hbs i joi jsdom mongoose nodemailer passport puppeteer request body-parser express-promise-router express-rate-limit passport-facebook-token passport-google-oauth20 passport-google-plus-token passport-google-token passport-jwt passport-local promise.any google-auth-library
+```
+
+npm i metascraper produces errors
+
+also omitted:
+metascraper-description metascraper-image metascraper-instagram metascraper-logo metascraper-title metascraper-url 
+
+try the package version
+> i made my own version of metascraper that should be able to do the same work (parsing html)

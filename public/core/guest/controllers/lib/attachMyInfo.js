@@ -80,7 +80,7 @@
       }
       // return retData;
 
-      if(display_console) console.log(chalk.green("[attach my info]"));
+      if(display_console || 0) console.log(chalk.green("[guest/attachMyInfo]"));
 
       res.json({
         data: retData,
@@ -89,7 +89,7 @@
 
 
     } catch (e) {
-      console.log(chalk.red("[controller attach] error"),e);
+      console.log(chalk.red("[guest/attachMyInfo][controller attach] error"),e);
 
       // using a 500 error stopped all other client side processes
       // res.status(500).json({

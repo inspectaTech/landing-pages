@@ -1,16 +1,78 @@
 # JWT strategy
 
+### How do we combine methods?
+> what if a local login wants to start using google login? - if google is their verified login
+> then using google login should work automatically (verified only? - actually in this case even for unverified)
+### What does "method" do? Why would i need it outside the strategy being checked?
+
+#### how does passport know which strategy to use?
+
+**oauth_client/src/js/actions/index.js**
+```
+  export const oauthGoogle = data => {
+  return async dispatch => {
+    try {
+      const res = await axios.post(`${location.origin}/api/auth/oauth/google`, { access_token: data });
+```
+> actions calls a specific route based on the users choice of login method
+> actions are added to the component at the bottom through compose
+
+**js/components/SignIn.js**
+```
+  import * as actions from '../actions/';
+  . . .
+  export default compose(
+    /*connect(null, actions),*/
+    connect(mapStateToProps, actions),
+    reduxForm({ form: 'signin' })
+  )(SignIn)
+```
+
+**root/src/index.js**
+```
+  app.use('/auth', oauthClientRouter);// client side auth
+  app.use('/api/auth', oauthServerRouter);// server side auth
+```
+> server routes targeting routers oauth_client/.../auth.js & oauth_server/.../oauth.js 
+
+
+**oauth_servers/routers/oauth.js**
+```
+  const passportSignIn = passport.authenticate('local', {session: false });
+  const passportJWT = passport.authenticate('jwt', {session: false });
+  // const passportGoogle = passport.authenticate('google', { scope:['profile'], session: false });
+  const passportGoogleToken = passport.authenticate('googleToken', { session: false });
+  const passportFacebookToken = passport.authenticate('facebookToken', { session: false });
+
+  ...
+
+  router.route('/signin')
+  .post(validateBody(schemas.authSchema), passportSignIn, UsersController.signIn);
+```
+> strategies are prepared at the top of the oauth.js file then applied to specific routes
+> im not sure how passport.authenticate knows 'local' or 'jwt' is the name for LocalStrategy or JwtStrategy - maybe thats found in the docs?
+
+
 #### creating the initial token
 oauth_server/controllers/users.js
 ```
   const token = await signToken(req.user);
 ```
+>NOTE: for signin, google and facebook the req.user is generated in passport.js
+
+**oauth_client/src/js/actions/index.js**
+```
+  router.route('/signup')
+  .post(validateBody(schemas.authSchema),UsersController.signUp);
+```
+> signup action dispatch route doesn't even use passport
 
 #### creating the updated session/project_id token
-alight/controllers/lib/getProjectToken
+
+**alight/controllers/lib/getProjectToken**
 ```
   if(project) has_access = check_access({user_id, project});
-  let token = await signProjectToken({user_id,project_id});
+  let token = await signProjectToken({user_id, project_id, editor_id, admin_id});
 ```
 
 #### extracting the user_id (& project_id if available)
@@ -130,4 +192,49 @@ GOTCHA IMPORTANT NOTE: new claims still have to be added to JwtStrategy in passp
       if(display_console || false) console.log(chalk.yellow(`[JwtStrategy] project_claim detected`),payload);
       user.project_id = payload[`${project_claim}`];
     }
+```
+
+#### verifying user dashboard display
+
+**alight/controllers/firestarter.js**
+```
+  let verified = is_verified(user);
+  host_data.verified = verified;
+```
+
+#### verifying the viewer
+
+**alight/xfiles/js/app.js**
+```
+  let gvp = await get_viewer_prefs();
+```
+
+**alight/xfiles/js/lib/user_prefs/user_prefs.js > download_user_prefs**
+```
+  export const download_user_prefs = (bkmk) =>
+  {
+    var urlMod = "getUserPrefs";
+
+    const ctrl_Url = `${location.origin}/api/alight/users/${urlMod}`;
+
+    try {
+      const result = await axios.get(ctrl_Url);
+```
+
+**alight/xfiles/js/lib/user_prefs/user_prefs.js > download_user_prefs**
+```
+  export const get_viewer_prefs = async () =>
+  {
+    return await download_user_prefs().then(async (result)=>{
+
+      let viewer_data = Object.freeze({...my_results, DEMO: {...demo_data}, HELP:{}});
+      
+      window['VIEWER_DATA'] = viewer_data;// frozen like const
+```
+
+**alight/controllers/lib/getUserPrefs.js**
+```
+  let verified = is_verified(req.user);
+
+  res.json({_id: prefs._id, user_id, editor_id, admin_id, project_name, project_id: prefs.project_id, prefs, preset_data: preset, project_item, verified});
 ```

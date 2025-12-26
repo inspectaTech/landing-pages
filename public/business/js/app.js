@@ -1,4 +1,4 @@
-// require('../css/style.scss');
+require('../css/style.scss');
 // require('action.j's);
 console.log("app.js is loaded");
 

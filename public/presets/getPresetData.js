@@ -4,7 +4,7 @@
     const User = require('../../models/user');// ./presets
       // const {getItemPreset} = require('./getItemPreset');
       // const {getPublicBinder} = require('./getPublicBinder');
-      const {check_make_binder} = require('../../core/check-make/check-make-binder');
+      // const {check_make_binder} = require('../../core/check-make/check-make-binder');
       const {check_pair_preset} = require('../../core/check-make/check-pair-preset');
       const {check_make_preset} = require('../../core/check-make/check-make-preset');
       const {check_pair_items} = require('../../core/check-make/check-pair-items');
@@ -205,14 +205,16 @@
             // get all preset item's attachments (paired items) - returns an array of "Pair" data not "Item" data
             let preset_attachments = preset_id ? await check_pair_items({user, host_id: preset_id, all: true}, true) : null;
 
-            if(display_console || false) console.log(chalk.yellow("[getPresetData] preset attachments"),preset_attachments);
+            if(display_console || 0) console.log(chalk.yellow("[getPresetData] preset attachments"),preset_attachments);
 
-            if(display_console || false) console.log(chalk.magenta("[preset_attachments] exist? "),exists(preset_attachments));
+            if(display_console || 0) console.log(chalk.magenta("[preset_attachments] exist? "),exists(preset_attachments));
             // if no preset attachments exists make defaults
             if(!exists(preset_attachments)){
 
+              preset_attachments = [];
+
               // if there are no preset_attachments fall back to user defaults
-              if(display_console || false) console.log(chalk.yellow("[getPresetData] no attachments found, finding default data"));
+              if(display_console || 0) console.log(chalk.yellow("[getPresetData] no attachments found, finding default data"));
 
               /**
                * preset email item data
@@ -221,6 +223,7 @@
                */
               item_email = await check_make_email({ user }, true);//user, method, type, category, title, email
 
+              if(display_console || 0) console.log(chalk.yellow("[getPresetData] item_email"),item_email);
               if(item_email) preset_attachments.push(item_email);
 
               /**
@@ -246,7 +249,11 @@
               let limit = 20;
 
               //get all items whose ancestor is preset_id - use generic sorts and limits
-              let sort_array = [ [ [ 'priority' ], [ -1 ] ], [ [ 'created' ], [ -1 ] ] ];
+              // let sort_array = [ [ [ 'priority' ], [ -1 ] ], [ [ 'created' ], [ -1 ] ] ];// recently FAILS
+              // let sort_array = [ [ {priority:-1} ], [ {created:-1}] ];
+              // let sort_array = [ {priority:-1} , {created:-1} ];// must be an array of arrays
+              let sort_array = {priority:-1, created:-1} ;// WORKS
+
               let query = { project_id, ancestor: preset_id/*, data_type: {$ne:"folder"}*/ };// probably filter out unwanted types later
               all_nested_items = await Item.find(query).collation({locale: "en" }).sort(sort_array).limit(limit).lean();
               if(display_console || false) console.log(chalk.yellow(`[getPresetData] all_nested_items`), all_nested_items);

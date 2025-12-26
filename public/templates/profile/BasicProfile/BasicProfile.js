@@ -10,6 +10,8 @@ const {exists} = require('../../lib/exists');
 const {htmlDecode} = require('../../lib/html_decode');
 const {detect_project_type} = require('../../lib/detect_project_type');
 
+const display_console = false;
+
 require('./BasicProfile.scss');
 /**
  * @module BasicProfile
@@ -38,7 +40,7 @@ const BasicProfile = props => {
   // console.log(`[basicProfile] PRESET_DATA`,data);
 
   useEffect(() => {
-    console.warn(`[BasicProfile] update detected.`);
+    if(display_console || true) console.warn(`[BasicProfile] update detected.`);
   })
 
   const get_path = () => {

@@ -3,6 +3,7 @@
 const path = require('path');
 const express = require('express');
 const app = express();
+const limiter = require('express-rate-limit');
 // var http = require('http').Server(app);// added for socket.io
 // const io = require('socket.io')(http);
 const hbs = require('hbs');
@@ -14,12 +15,12 @@ const mongoose = require('mongoose');
 const passport = require('passport');
 const passportConfig = require('./oauth_server/passport');// OAUTH
 // const Keys = require('./utils/keys').mongodb;
-// const {SITE_SERVER, HOSTNAME} = require('./utils/keys');
 const display_console = false;
 if(display_console || true) console.log(process.versions);
 
 const Keys = require('../configuration/keys').mongodb;
 const { SITE_SERVER, HOSTNAME } = require('../configuration/keys');
+const { is_local } = require('../configuration/is_local');
 
 const corsOptions = require('./utils/cors-options.js');
 const process_memory = require('./utils/process_memory.js');
@@ -28,13 +29,11 @@ if(display_console || false) console.log(`[server] Keys`,Keys);
 
 
 // GOTCHA: make sure Keys hostname matches os.hostname (don't use subdomain name in .env file)
-if(display_console || true) console.log(`[server] key hostname`, HOSTNAME);
-if(display_console || true) console.log(`[server] hostname`, os.hostname());
 if(display_console || false) console.log(`[server] SITE_SERVER`, SITE_SERVER);
 
 const SERVER_PORT = typeof SITE_SERVER != "undefined" && SITE_SERVER == "beta" ? 1028 : 1027;
 
-let PORT = (os.hostname().includes(HOSTNAME)) ? SERVER_PORT : 3000 ;// local doesn't work because my laptop was 'DESKTOP' not local
+let PORT = (!is_local()) ? SERVER_PORT : 3000 ;// local doesn't work because my laptop was 'DESKTOP' not local
 // let dbConnect = (os.hostname().includes("sunzao")) ? 'mongodb://167.99.57.20:27017/APIAuthentication' : 'mongodb://localhost/APIAuthentication' ;
 
 // app.set('socketio', io);
@@ -51,14 +50,34 @@ let PORT = (os.hostname().includes(HOSTNAME)) ? SERVER_PORT : 3000 ;// local doe
 
 // set up mongoose
 // let dbConnect = 'mongodb://localhost/SunzaoAlight';// what is this in production?
-let dbConnect = (os.hostname().includes(HOSTNAME)) ? Keys.liveDB : Keys.db;// what is this in production?
-mongoose.connect(dbConnect,{ useNewUrlParser: true, useUnifiedTopology: true });
-mongoose.set('useFindAndModify', false);
-mongoose.set('useCreateIndex', true);
+let dbConnect = (!is_local()) ? Keys.liveDB : Keys.db;// what is this in production?
+
+
+// IMPORTANT - never use in production
+// reveals db login info
+// if(display_console || 0) console.log(`[mongoose]`,dbConnect);
+// [mongoose] mongodb://username:pwd@127.0.0.1:port/targetDB
+// IMPORTANT - never use in production
+
+// mongoose.connect(dbConnect,{ useNewUrlParser: true, useUnifiedTopology: true })
+mongoose.connect(dbConnect,{ useNewUrlParser: true, useUnifiedTopology: true }).
+// mongoose.connect(dbConnect,{useUnifiedTopology: true }).
+// mongoose.connect(dbConnect).
+catch(error => {
+  console.error(`[src][mongoose.connect] an initial error has occured`, error);
+});
+
+try {
+  mongoose.set('useFindAndModify', false);// DEPRECATED
+  // mongoose.set('useCreateIndex', true);// DEPRECATED
+} catch (error) {
+  console.error(`[src][mongoose.set] an error has occured`, error);
+}
 // [mongoose deprecations](https://mongoosejs.com/docs/deprecations.html#-findandmodify-)
 
-// if(display_console || false) console.log("[port]",os.hostname);
-
+mongoose.connection.on('error', err => {
+  console.error(`[src][mongoose.connect] an error has occured`, err);
+});
 
 //routers
 // const landingpagesRouter = require("./routers/lead-pages");
@@ -80,6 +99,7 @@ const rocketRouter = require("../public/rocket/routers/rocket");
 
 const oauthClientRouter = require('../public/oauth_client/routers/auth');
 const oauthServerRouter = require('./oauth_server/routers/oauth');
+
 // const liftoffRouter = require("../public/rocket/routers/liftoff");
 
 
@@ -95,9 +115,35 @@ if(display_console || false) console.log(`[dirname public path]`,path.join(__dir
 
 // const app = express();
 //GOTCHA: when i tried to leave the files in templates instead of templates/views it failed
-
 // mongo db setup
 app.use(express.json());//bodyParser.json - no longer bodyParser
+
+// app.enable('trust proxy');
+let numberOfProxies = 1;
+if(display_console || 0) console.log(`[server] numberOfProxies`, numberOfProxies);
+app.set('trust proxy', numberOfProxies);// WORKS
+// app.set('trust proxy', ['loopback', 'linklocal', 'uniquelocal'])// FAILS no change
+
+// NOTE GOTCHA: terrible place for a rate limiter
+
+const router_rate_limit = function({ms = 5000, max = 10} = {}){
+    let message = "Too many requests, please try again later";
+    return limiter({ 
+      windowMS: ms, 
+      max, 
+      // validate: {
+      //   xForwardedForHeader: false,
+      //   default: true,
+      // doesn't do anything different
+      // },
+      message: async (req, res)=>{ 
+        console.log(`[server][server_rate_limits]`, message);
+        return { code: 429, message}
+      }
+    });
+  }
+
+  app.use(router_rate_limit({max: 100}))
 
 // set up location of the hbs views files
 const viewsPath = path.join(__dirname,"../templates/views");// default views location
@@ -143,14 +189,23 @@ hbs.registerHelper('json', function(context) {
   // why stringify the data?
     let data_str = JSON.stringify(context);
     return JSON.stringify(data_str);
+    /**
+      * usage:
+      * window['HOST_DATA'] = JSON.parse({{{json data}}});//its a string
+      */
 });
 
 hbs.registerHelper('vendor', function(name, use_local_files, force_local) {
-  if(display_console || true) console.log(chalk.red(`[vendor] use_local_files name = `),name, typeof name);
-  if(display_console || true) console.log(chalk.red(`[vendor] use_local_files`),use_local_files, typeof use_local_files);
+  if(display_console || false) console.log(chalk.red(`[vendor] use_local_files name = `),name, typeof name);
+  if(display_console || false) console.log(chalk.red(`[vendor] use_local_files`),use_local_files, typeof use_local_files);
   // if(display_console || false) console.log(chalk.red(`[vendor] force_local`),force_local, typeof force_local);
   let force_local_file = (typeof force_local == "boolean" && force_local == true) ? true : false;
     return (typeof use_local_files == "string" && use_local_files == "true" || force_local_file ) ? `${name}_local` : name;
+    /**
+     * usages:
+     * {{>(vendor 'vendor' use_local_files)}}
+     * {{>(vendor 'vendor' use_local_files true)}}
+      */
 });
 
 hbs.registerHelper('fireman', function (name, use_local_files, force_local) {
@@ -187,7 +242,12 @@ app.use('/details/:val1?',express.static(publicDirectoryPath));// needed for the
 // app.use('/details/:val1?/:val2?',express.static(publicDirectoryPath));// needed for the links and scripts to work // deprecated
 // app.use('/view/:val1?/:val2?/:val3?',express.static(publicDirectoryPath));// needed for the links and scripts to work
 app.use('/auth',express.static(publicDirectoryPath));// client side auth
+app.use('/auth/:val1?',express.static(publicDirectoryPath));
+app.use('/auth/:val1?/:val2?',express.static(publicDirectoryPath));
+
 app.use('/brand',express.static(publicDirectoryPath));
+// app.use('/brand/:val1?',express.static(publicDirectoryPath));
+// app.use('/brand/:val1?/:val2?',express.static(publicDirectoryPath));
 
 app.use('/updraft',express.static(publicDirectoryPath));//
 app.use('/updraft/:val1?',express.static(publicDirectoryPath));// needed for the links and scripts to work
@@ -235,21 +295,36 @@ app.use('/rocket',rocketRouter);
 //   res.end();
 // });
 
+// NOTE GOTCHA: terrible place for a rate limiter
 
-  app.get('/', (req, res) => {
-    // res.send('Help page')
-    res.redirect('/core');
-  })
+  const server_rate_limits = function({ms = 5000, max = 10} = {}){
+    let message = "Too many requests, please try again later";
+    return limiter({ 
+      windowMS: ms, 
+      max, 
+      message: async (req, res)=>{ 
+        console.log(`[server][server_rate_limits]`, message);
+        return { code: 429, message}
+      }
+    })
+  }
+  app.get('/', 
+    server_rate_limits({max: 100}),
+    (req, res) => {
+      if (display_console || true) console.log('[express server] redirecting to core', req.originalUrl);
+      // res.send('Help page')
+      res.redirect('/core');
+    }
+  );
 
   //catchall has to be last to work
   app.get('*', cors(corsOptions), (req, res) => {
     // res.send('my 404 page')
     if (display_console || true) console.log('[express server] rendering 404', req.originalUrl);
     res.render('404', {
-      title:'404',
+      title:'404 sample',
       errorMessage:'page not found'
     });
-
   });
 
 // app.get('/help', (req, res) => {

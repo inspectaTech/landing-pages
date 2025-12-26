@@ -10,7 +10,7 @@ const { alias_maker } = require('./getData/alias_maker');
 const display_console = false;
 
 // getItemData
-if(display_console) console.log("editMyInfo loaded!");
+if(display_console) console.log("[guest/editMyInfo] loaded!");
 
 const editMyInfo = async function(req, res)
 {
@@ -66,7 +66,7 @@ const editMyInfo = async function(req, res)
 
 
   } catch (e) {
-    console.log("[controller edit] error",e);
+    console.log("[guest/editMyInfo][controller edit] error",e);
 
     // using a 500 error stopped all other client side processes
     // res.status(500).json({

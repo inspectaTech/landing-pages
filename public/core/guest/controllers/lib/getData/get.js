@@ -3,7 +3,7 @@
   const Item = require('../../../../../../models/item');
   const getItemData = require('./getItemData');
   const {pair_order} = require('./pair');
-  const { get_sort_option, compare } = require('./sort');
+  const { get_sort_option } = require('./sort');
   const { exists } = require('./exists');
   //   const { getPairObject } = require('./getData/get');
 

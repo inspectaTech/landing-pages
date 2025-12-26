@@ -1,13 +1,16 @@
 const Project = require('../../models/project');
 const Item = require('../../models/item');
 const chalk = require('chalk');
-const display_console = true;
+const display_console = false;
 
+/**
+ * @see root/src/oauth_server/controllers/setup.js > initiate_starter_data
+ */
 const check_make_project = async (obj, upsert = false) => {
   try {
 
     //
-    if(display_console || false) console.log(chalk.yellow(`[check_make_project] user`,JSON.stringify(obj)));
+    if(display_console || 1) console.log(chalk.yellow(`[core/check_make_project] user`,JSON.stringify(obj)));
 
     let {_id, owner_id, parent_project, title, alias, path} = obj;
 
@@ -16,7 +19,7 @@ const check_make_project = async (obj, upsert = false) => {
 
     // if(!project){
     //
-    //   if(display_console || false) console.log(chalk.yellow(`[check_make_project] has_project = false`));
+    //   if(display_console || false) console.log(chalk.yellow(`[core/check_make_project] has_project = false`));
     //   const newProject = new Project({
     //     _id,
     //     owner_id,
@@ -30,14 +33,14 @@ const check_make_project = async (obj, upsert = false) => {
     //   project = await newProject.save();
     //
     // }else{
-    //   if(display_console || false) console.log(chalk.yellow(`[check_make_project] has_project detected`));
+    //   if(display_console || false) console.log(chalk.yellow(`[core/check_make_project] has_project detected`));
     // }
 
     
     let project = await Project.findOne({ _id });
 
-    if (display_console || true) console.log(chalk.bgCyan("[check-make-project] project",project));
-    if (display_console || true) console.log(chalk.bgCyan("[check-make-project] upsert",upsert));
+    if (display_console || 1) console.log(chalk.bgCyan("[check-make-project] project",project));
+    if (display_console || 1 ) console.log(chalk.bgCyan("[check-make-project] upsert",upsert));
 
     // GOTCHA: if there's not project, force upsert to be true otherwise doc on the callback will be null 
     // because the project isn't being made
@@ -46,14 +49,17 @@ const check_make_project = async (obj, upsert = false) => {
     
     if(!project || upsert == true){
 
+      if (display_console || 1 ) console.log(chalk.bgCyan(`[check-make-project] making project (${project}) upsert = ${upsert}`));
+
       let project_data = {
-        _id,
         owner_id,
         parent_project,
         name: title,/*if creating the initial project, the title & alias will be the user's id*/
         alias: alias,
         path: path
       };
+
+      if (display_console || 1 ) console.log(chalk.bgCyan("[check-make-project] project_data",project_data));
       
       // [new returns the document after update is applied](https://mongoosejs.com/docs/tutorials/findoneandupdate.html)
       // why not an upsert? upserting here is like force update. back to title = owner_id
@@ -61,24 +67,27 @@ const check_make_project = async (obj, upsert = false) => {
 
         if (err) console.error(chalk.red("[check-make-project] err", err));
 
-        if (display_console || true) console.log(chalk.bgCyan("[check-make-project] doc", doc));
+        if (display_console || false) console.log(chalk.bgCyan("[check-make-project] doc", doc));
 
         let id_str = doc._id.toString();
         if(typeof doc.access != "undefined" && typeof doc.access.data != "undefined"){
           
           if(!doc.access.data.includes(id_str)){
-            doc.access.data = [id_str, ...doc.access.data];
-            doc.save((err) => {
-              if(err) throw "results failed to save";
-              if(display_console || true) console.log(chalk.green("[check-make-project] doc saved successfully"));
-            });
+            // doc.access.data = [id_str, ...doc.access.data];
+            let access_data = [id_str, ...doc.access.data];
+            // doc.save((err) => {
+            //   if(err) throw "results failed to save";
+            //   if(display_console || true) console.log(chalk.green("[check-make-project] doc saved successfully"));
+            // });
+            // Project.updateOne({_id: doc._id}, {$set: {...doc}});
+            Project.updateOne({_id: doc._id}, {$set: {"access.data": access_data}});
           }
         }else{
-          doc.access = {data:[id_str]};
-          doc.save((err) => {
-            if(err) throw "results failed to save";
-            if(display_console || true) console.log(chalk.green("[check-make-project] doc saved successfully"));
-          })
+          // if undefined
+          // doc.access = {data:[id_str]};
+          let access_data = [id_str]
+          // Project.updateOne({_id: doc._id}, {$set: {...doc}});
+          Project.updateOne({_id: doc._id}, {$set: {"access": {data: access_data}}});
         }// else
       })//.lean();// the .lean() causes the .save() fn inside the callback to fail
       
@@ -88,8 +97,8 @@ const check_make_project = async (obj, upsert = false) => {
 
     return project;
   } catch (e) {
-    let error_msg = "[check_make_project] an error occured";
-    console.error(chalk.red(error_msg));
+    let error_msg = "[core][core/check_make_project] an error occured";
+    console.error(chalk.red(error_msg),e);
     return {
       error: true,
       message: error_msg,
